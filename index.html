@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>FI Planner</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -32,7 +32,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .setup-sub{font-size:13px;color:var(--text2);margin-bottom:24px;line-height:1.55;}
 .sf{margin-bottom:16px;}
 .sl{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px;display:block;}
-.si{width:100%;padding:11px 13px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;transition:border-color .2s;-webkit-appearance:none;}
+.si{width:100%;padding:11px 13px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;transition:border-color .2s;-webkit-appearance:none;}
 .si:focus{outline:none;border-color:var(--accent2);box-shadow:0 0 0 3px #22d3ee12;}
 .sh{font-size:11px;color:var(--text3);margin-top:4px;}
 .sr{display:flex;gap:10px;}
@@ -123,12 +123,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .assets-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;padding:16px;}
 .asset-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);overflow:hidden;}
 .asset-card-head{padding:10px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
-.asset-name-inp{background:transparent;border:none;font-size:13px;font-weight:600;color:var(--text);font-family:'DM Sans',sans-serif;width:130px;}
+.asset-name-inp{background:transparent;border:none;font-size:16px;font-weight:600;color:var(--text);font-family:'DM Sans',sans-serif;width:130px;}
 .asset-name-inp:focus{outline:none;border-bottom:1px solid var(--accent2);}
 .asset-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px 12px;}
 .afl{font-size:11px;color:var(--text2);margin-bottom:4px;display:flex;align-items:center;gap:4px;}
 .afl .badge{font-size:9px;background:var(--border);color:var(--text3);padding:1px 5px;border-radius:10px;}
-input[type=number],input[type=text],select{width:100%;padding:7px 9px;background:var(--bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:12px;-webkit-appearance:none;}
+input[type=number],input[type=text],select{width:100%;padding:7px 9px;background:var(--bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;-webkit-appearance:none;}
+@media(max-width:640px){input[type=number],input[type=text],select{font-size:16px;}}
 input[type=number]:focus,input[type=text]:focus,select:focus{outline:none;border-color:var(--accent2);}
 select option{background:var(--surface2);}
 .asset-card-foot{padding:7px 12px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;}
