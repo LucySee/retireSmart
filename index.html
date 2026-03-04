@@ -1,803 +1,894 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="theme-color" content="#0d1821" />
-<meta name="description" content="RetireSmart – Multi-asset retirement & FI simulator for Malaysians" />
-<title>RetireSmart – FI Simulator</title>
-<link rel="manifest" href="manifest.json" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FI Planner</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
-
 :root {
-  --bg: #0d1821;
-  --surface: #141f2e;
-  --surface2: #1a2840;
-  --surface3: #1f3050;
-  --accent: #e8b84b;
-  --accent2: #3ecf8e;
-  --accent3: #5b9cf6;
-  --danger: #f87171;
-  --text: #e8edf3;
-  --text2: #8fa3bc;
-  --text3: #5a7390;
-  --border: rgba(255,255,255,0.07);
-  --r: 14px;
-  --rs: 8px;
+  --bg:#0d0f14; --surface:#161920; --surface2:#1e2230; --border:#2a2f3d;
+  --accent:#4ade80; --accent2:#22d3ee; --accent3:#f59e0b; --accent4:#f472b6;
+  --text:#e8eaf0; --text2:#8b91a8; --text3:#555b70; --danger:#f87171;
+  --r:12px; --rs:8px;
 }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;}
 
-.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:rgba(13,24,33,0.97);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;gap:10px}
-.brand{font-family:'DM Serif Display',Georgia,serif;font-size:1.25rem;color:var(--accent);display:flex;align-items:center;gap:6px;white-space:nowrap}
-.brand em{color:var(--text2);font-style:normal;font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:300}
-.nav-btns{display:flex;gap:8px;flex-shrink:0}
-.nbtn{background:var(--surface2);border:1px solid var(--border);color:var(--text2);border-radius:var(--rs);padding:7px 13px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;display:flex;align-items:center;gap:5px;transition:all .2s;white-space:nowrap}
-.nbtn:hover{background:var(--surface3);color:var(--text)}
-.nbtn.on{background:var(--accent);color:#0d1821;border-color:var(--accent);font-weight:600}
+/* ── SETUP OVERLAY ── */
+.overlay{position:fixed;inset:0;background:var(--bg);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;}
+.overlay.hidden{display:none;}
+.setup-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:40px 36px;width:100%;max-width:440px;box-shadow:0 32px 80px #00000099;}
+.setup-logo{display:flex;align-items:center;gap:12px;margin-bottom:28px;}
+.setup-logo-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:22px;}
+.setup-logo-name{font-size:19px;font-weight:700;letter-spacing:-.3px;}
+.setup-logo-sub{font-size:11px;color:var(--text2);}
+.dots{display:flex;gap:5px;margin-bottom:24px;}
+.dot{height:4px;border-radius:2px;background:var(--border);transition:all .3s;width:16px;}
+.dot.active{background:var(--accent);width:26px;}
+.dot.done{background:var(--accent2);width:16px;}
+.setup-h{font-size:21px;font-weight:700;letter-spacing:-.3px;margin-bottom:6px;}
+.setup-sub{font-size:13px;color:var(--text2);margin-bottom:24px;line-height:1.55;}
+.sf{margin-bottom:16px;}
+.sl{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px;display:block;}
+.si{width:100%;padding:11px 13px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;transition:border-color .2s;-webkit-appearance:none;}
+.si:focus{outline:none;border-color:var(--accent2);box-shadow:0 0 0 3px #22d3ee12;}
+.sh{font-size:11px;color:var(--text3);margin-top:4px;}
+.sr{display:flex;gap:10px;}
+.sr .sf{flex:1;}
+.setup-btn{width:100%;padding:13px;border-radius:var(--rs);background:var(--accent);color:#0d1a10;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;border:none;cursor:pointer;margin-top:4px;transition:background .15s;}
+.setup-btn:hover{background:#86efac;}
+.back-link{display:block;text-align:center;margin-top:12px;background:none;border:none;color:var(--text3);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.back-link:hover{color:var(--text2);}
 
-.app{display:grid;grid-template-columns:370px 1fr;min-height:calc(100vh - 53px)}
-@media(max-width:860px){.app{grid-template-columns:1fr}.sidebar{position:static;height:auto;max-height:none;border-right:none;border-bottom:1px solid var(--border)}}
+/* ── MAIN SHELL ── */
+.shell{display:flex;min-height:100vh;}
 
-.sidebar{border-right:1px solid var(--border);overflow-y:auto;position:sticky;top:53px;height:calc(100vh - 53px);padding:18px;display:flex;flex-direction:column;gap:14px}
-.sidebar::-webkit-scrollbar{width:3px}
-.sidebar::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px}
-.sec-lbl{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);padding-bottom:6px;border-bottom:1px solid var(--border)}
+/* ── TOP NAV ── */
+.topnav{
+  position:sticky;top:0;z-index:100;
+  background:var(--surface);border-bottom:1px solid var(--border);
+  padding:0 24px;height:56px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{display:flex;align-items:center;gap:9px;}
+.nav-logo-icon{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:14px;}
+.nav-logo-name{font-size:15px;font-weight:700;letter-spacing:-.3px;}
+.nav-right{display:flex;align-items:center;gap:8px;}
+.nav-profile-btn{display:flex;align-items:center;gap:8px;padding:5px 11px 5px 7px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;cursor:pointer;transition:border-color .15s;}
+.nav-profile-btn:hover{border-color:var(--text3);}
+.nav-avatar{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--accent2),var(--accent));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#0d1a10;}
+.nav-profile-label{font-size:12px;font-weight:500;color:var(--text2);}
 
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.field{display:flex;flex-direction:column;gap:4px}
-.field label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.8px}
-.field input,.field select{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:8px 11px;width:100%;outline:none;transition:border-color .2s;-webkit-appearance:none;appearance:none}
-.field input:focus,.field select:focus{border-color:var(--accent)}
-.field input::placeholder{color:var(--text3)}
-.field.full{grid-column:1/-1}
+/* ── PAGE LAYOUT ── */
+.page{flex:1;overflow-x:hidden;}
+.content{padding:22px 24px;max-width:1100px;margin:0 auto;}
 
-.apanel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:border-color .2s}
-.apanel.open{border-color:rgba(232,184,75,0.35)}
-.ahead{display:flex;align-items:center;gap:9px;padding:13px 14px;cursor:pointer;user-select:none}
-.adot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
-.aname{flex:1;background:transparent;border:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;outline:none;min-width:0}
-.abadge{font-size:11px;color:var(--text3);background:var(--surface2);padding:2px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0}
-.achev{color:var(--text3);font-size:11px;transition:transform .2s;flex-shrink:0}
-.apanel.open .achev{transform:rotate(180deg)}
-.abody{display:none;padding:0 14px 14px;grid-template-columns:1fr 1fr;gap:9px}
-.apanel.open .abody{display:grid}
-.adel{grid-column:1/-1;display:flex;justify-content:flex-end}
-.delbtn{background:transparent;border:1px solid var(--border);color:var(--danger);border-radius:var(--rs);padding:5px 11px;cursor:pointer;font-size:11px;font-family:'DM Sans',sans-serif;transition:all .2s}
-.delbtn:hover{background:rgba(248,113,113,0.1);border-color:var(--danger)}
+/* ── RETIRE BANNER ── */
+.retire-banner{
+  background:linear-gradient(135deg,#4ade8010,#22d3ee0c);
+  border:1px solid #4ade8025;border-radius:var(--r);
+  padding:18px 22px;display:flex;align-items:center;gap:20px;
+  margin-bottom:18px;flex-wrap:wrap;
+}
+.retire-num{font-family:'DM Mono',monospace;font-size:52px;font-weight:500;color:var(--accent);line-height:1;letter-spacing:-2px;}
+.retire-info{flex:1;}
+.retire-info h2{font-size:17px;font-weight:700;margin-bottom:3px;}
+.retire-info p{font-size:12px;color:var(--text2);}
+.prog-wrap{margin-top:10px;}
+.prog-label{display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:5px;}
+.prog-bar{height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width .5s;}
 
-.addbtn{background:transparent;border:1.5px dashed var(--surface3);color:var(--text2);border-radius:var(--r);padding:13px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;width:100%;text-align:center;transition:all .2s}
-.addbtn:hover{border-color:var(--accent);color:var(--accent)}
-.priv-note{text-align:center;font-size:10px;color:var(--text3);padding:6px}
+/* ── STAT CARDS ── */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:12px;margin-bottom:18px;}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.sc-green::before{background:var(--accent);}
+.sc-cyan::before{background:var(--accent2);}
+.sc-amber::before{background:var(--accent3);}
+.sc-pink::before{background:var(--accent4);}
+.stat-label{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.9px;font-weight:700;}
+.stat-val{font-family:'DM Mono',monospace;font-size:22px;font-weight:500;margin-top:5px;letter-spacing:-.5px;}
+.sv-green{color:var(--accent);}
+.sv-cyan{color:var(--accent2);}
+.sv-amber{color:var(--accent3);}
+.stat-sub{font-size:11px;color:var(--text3);margin-top:3px;}
 
-.dash{padding:20px;overflow-y:auto;display:flex;flex-direction:column;gap:20px}
+/* ── CHART CARD ── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:18px;}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+.card-title{font-size:13px;font-weight:600;}
+.chart-wrap{position:relative;height:240px;}
+.chart-tabs{display:flex;gap:4px;}
+.ct{padding:4px 11px;border-radius:20px;font-size:12px;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text2);transition:all .15s;font-family:'DM Sans',sans-serif;}
+.ct.active{background:var(--accent2);color:#0d1a1e;border-color:var(--accent2);font-weight:600;}
 
-.onboard{background:linear-gradient(135deg,rgba(232,184,75,.07),rgba(91,156,246,.07));border:1px solid rgba(232,184,75,.2);border-radius:var(--r);padding:28px;text-align:center}
-.onboard-icon{font-size:2.8rem;margin-bottom:12px}
-.onboard h2{font-family:'DM Serif Display',Georgia,serif;font-size:1.4rem;margin-bottom:8px}
-.onboard p{font-size:13px;color:var(--text2);max-width:300px;margin:0 auto 20px}
-.steps{display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
-.step{display:flex;flex-direction:column;align-items:center;gap:6px;max-width:90px}
-.snum{width:30px;height:30px;border-radius:50%;background:var(--accent);color:#0d1821;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}
-.step p{font-size:11px;color:var(--text2);text-align:center;line-height:1.4}
+/* ── ASSETS ACCORDION ── */
+.assets-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:18px;overflow:hidden;}
+.assets-panel-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;cursor:pointer;user-select:none;
+  transition:background .15s;
+}
+.assets-panel-header:hover{background:var(--surface2);}
+.aph-left{display:flex;align-items:center;gap:10px;}
+.aph-title{font-size:13px;font-weight:600;}
+.aph-meta{font-size:11px;color:var(--text2);}
+.aph-chevron{font-size:12px;color:var(--text3);transition:transform .25s;}
+.aph-chevron.open{transform:rotate(180deg);}
+.assets-body{display:none;border-top:1px solid var(--border);}
+.assets-body.open{display:block;}
+.assets-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;padding:16px;}
+.asset-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);overflow:hidden;}
+.asset-card-head{padding:10px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
+.asset-name-inp{background:transparent;border:none;font-size:13px;font-weight:600;color:var(--text);font-family:'DM Sans',sans-serif;width:130px;}
+.asset-name-inp:focus{outline:none;border-bottom:1px solid var(--accent2);}
+.asset-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px 12px;}
+.afl{font-size:11px;color:var(--text2);margin-bottom:4px;display:flex;align-items:center;gap:4px;}
+.afl .badge{font-size:9px;background:var(--border);color:var(--text3);padding:1px 5px;border-radius:10px;}
+input[type=number],input[type=text],select{width:100%;padding:7px 9px;background:var(--bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:12px;-webkit-appearance:none;}
+input[type=number]:focus,input[type=text]:focus,select:focus{outline:none;border-color:var(--accent2);}
+select option{background:var(--surface2);}
+.asset-card-foot{padding:7px 12px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;}
+.assets-panel-footer{
+  border-top:1px solid var(--border);padding:12px 16px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  background:var(--surface2);
+}
+.add-asset-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border-radius:var(--rs);background:transparent;border:1px solid var(--border);color:var(--text2);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;}
+.add-asset-btn:hover{border-color:var(--text2);color:var(--text);}
+.ok-btn{padding:9px 28px;border-radius:var(--rs);background:var(--accent);color:#0d1a10;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;border:none;cursor:pointer;transition:background .15s;}
+.ok-btn:hover{background:#86efac;}
 
-.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-@media(max-width:1000px){.kpi-row{grid-template-columns:1fr 1fr}}
-@media(max-width:600px){.kpi-row{grid-template-columns:1fr}}
-.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;position:relative;overflow:hidden}
-.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
-.kpi.g::before{background:var(--accent2)}
-.kpi.y::before{background:var(--accent)}
-.kpi.b::before{background:var(--accent3)}
-.kpi-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;font-weight:600}
-.kpi-val{font-family:'DM Serif Display',Georgia,serif;font-size:1.85rem;color:var(--text);margin:5px 0 3px;transition:filter .3s}
-.kpi-val.blur{filter:blur(8px)}
-.kpi-sub{font-size:11px;color:var(--text3)}
-.retire-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(62,207,142,.12);color:var(--accent2);border:1px solid rgba(62,207,142,.2);border-radius:20px;padding:5px 13px;font-size:13px;font-weight:600;margin:5px 0 3px}
-.rbdot{width:7px;height:7px;border-radius:50%;background:var(--accent2);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.5)}}
+/* ── SCENARIO ROW ── */
+.scenario-row{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-bottom:18px;}
+.scenario-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.scenario-label{font-size:13px;font-weight:600;white-space:nowrap;}
+.scenario-select{
+  flex:1;min-width:200px;max-width:340px;
+  padding:9px 12px;background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--rs);color:var(--text);font-family:'DM Sans',sans-serif;
+  font-size:13px;cursor:pointer;-webkit-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b91a8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 10px center;padding-right:30px;
+}
+.scenario-select:focus{outline:none;border-color:var(--accent2);}
+.scenario-result{margin-top:14px;display:none;}
+.scenario-result.show{display:block;}
+.scen-compare{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+.scen-stat{flex:1;min-width:110px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:12px;}
+.scen-stat-label{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.6px;font-weight:700;}
+.scen-stat-val{font-family:'DM Mono',monospace;font-size:16px;font-weight:500;margin-top:4px;}
+.sv-base{color:var(--accent2);}
+.sv-scen{color:var(--accent3);}
+.scen-chart-wrap{position:relative;height:200px;}
 
-.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px}
-.chart-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
-.chart-ttl{font-family:'DM Serif Display',Georgia,serif;font-size:1.05rem}
-.toggles{display:flex;gap:6px;flex-wrap:wrap}
-.tbtn{background:var(--surface2);border:1px solid var(--border);color:var(--text2);border-radius:20px;padding:4px 12px;cursor:pointer;font-size:11px;font-family:'DM Sans',sans-serif;transition:all .2s}
-.tbtn:hover{color:var(--text)}
-.tbtn.on{background:var(--accent);color:#0d1821;border-color:var(--accent);font-weight:600}
-.canvas-wrap{position:relative;width:100%;height:280px}
-canvas{display:block}
-.chart-legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
-.leg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)}
-.leg-line{width:16px;height:3px;border-radius:2px;flex-shrink:0}
+/* ── TABLE ── */
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+th{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--text3);text-align:left;padding:9px 12px;border-bottom:1px solid var(--border);}
+td{padding:10px 12px;font-size:13px;border-bottom:1px solid #2a2f3d44;}
+td.mono{font-family:'DM Mono',monospace;font-size:12px;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#1e223040;}
+.growth-pill{display:inline-flex;align-items:center;gap:2px;padding:2px 7px;border-radius:20px;font-size:11px;}
+.pill-up{background:#4ade8015;color:var(--accent);}
+.pill-down{background:#f8717115;color:var(--danger);}
+.type-badge{font-size:10px;padding:2px 7px;border-radius:20px;font-weight:600;text-transform:uppercase;}
+.tb-stable{background:#4ade8015;color:var(--accent);}
+.tb-volatile{background:#f59e0b15;color:var(--accent3);}
+.tb-cash{background:#22d3ee15;color:var(--accent2);}
 
-.info-row{display:flex;align-items:center;gap:10px;background:var(--surface2);border-radius:var(--rs);padding:11px 14px;flex-wrap:wrap}
-.info-lbl{font-size:12px;color:var(--text2);flex:1;min-width:100px}
-.inf-toggles{display:flex;gap:6px}
+/* ── EMPTY STATE ── */
+.dash-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:55vh;text-align:center;padding:40px 20px;}
+.empty-icon{width:72px;height:72px;border-radius:18px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 18px;}
+.empty-title{font-size:19px;font-weight:700;margin-bottom:7px;letter-spacing:-.3px;}
+.empty-sub{font-size:13px;color:var(--text2);line-height:1.6;max-width:320px;margin-bottom:22px;}
+.empty-steps{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:4px 18px;text-align:left;max-width:340px;width:100%;margin-bottom:22px;}
+.estep{display:flex;align-items:flex-start;gap:11px;padding:13px 0;}
+.estep:not(:last-child){border-bottom:1px solid var(--border);}
+.enum{width:22px;height:22px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin-top:1px;}
+.e-done{background:#4ade8018;color:var(--accent);}
+.e-todo{background:var(--surface2);color:var(--text3);border:1px solid var(--border);}
+.etext{font-size:12px;line-height:1.45;}
+.etext strong{color:var(--text);display:block;margin-bottom:2px;}
+.etext span{color:var(--text2);}
+.open-assets-btn{padding:11px 26px;border-radius:var(--rs);background:var(--accent);color:#0d1a10;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;border:none;cursor:pointer;transition:background .15s;}
+.open-assets-btn:hover{background:#86efac;}
 
-.tbl-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
-.tbl-card table{width:100%;border-collapse:collapse}
-.tbl-card th{padding:10px 14px;text-align:left;font-size:10px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.8px;background:var(--surface2);border-bottom:1px solid var(--border)}
-.tbl-card td{padding:11px 14px;font-size:13px;color:var(--text2);border-bottom:1px solid var(--border)}
-.tbl-card tr:last-child td{border-bottom:none}
-.tbl-card tr:hover td{background:rgba(255,255,255,.02)}
-.tname{display:flex;align-items:center;gap:7px;color:var(--text);font-weight:500}
-.tdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.tproj{color:var(--accent2);font-weight:500}
-.vblur{filter:blur(6px);transition:filter .2s}
+/* ── PROFILE MODAL ── */
+.modal-bg{position:fixed;inset:0;background:#00000088;z-index:150;display:flex;align-items:center;justify-content:center;padding:20px;}
+.modal-bg.hidden{display:none;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:26px;width:100%;max-width:420px;box-shadow:0 24px 60px #00000070;max-height:90vh;overflow-y:auto;}
+.modal-title{font-size:16px;font-weight:700;margin-bottom:3px;}
+.modal-sub{font-size:12px;color:var(--text2);margin-bottom:20px;}
+.mf{margin-bottom:12px;}
+.ml{font-size:12px;color:var(--text2);margin-bottom:5px;font-weight:500;}
+.modal-section{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin:16px 0 10px;padding-top:14px;border-top:1px solid var(--border);}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;}
+.tlabel{font-size:13px;color:var(--text2);}
+.toggle{width:36px;height:20px;border-radius:10px;background:var(--border);cursor:pointer;position:relative;transition:background .2s;border:none;flex-shrink:0;}
+.toggle.on{background:var(--accent);}
+.toggle::after{content:'';position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:white;transition:left .2s;}
+.toggle.on::after{left:19px;}
+.modal-actions{display:flex;gap:8px;margin-top:18px;}
+.btn{padding:8px 14px;border-radius:var(--rs);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s;display:inline-flex;align-items:center;gap:5px;}
+.btn-primary{background:var(--accent);color:#0d1a10;}
+.btn-primary:hover{background:#86efac;}
+.btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border);}
+.btn-secondary:hover{border-color:var(--text2);}
+.btn-danger{background:transparent;color:var(--danger);border:1px solid #f8717128;}
+.btn-danger:hover{background:#f8717112;}
+.btn-full{width:100%;justify-content:center;}
+.btn-sm{padding:5px 9px;font-size:11px;}
 
-.sc-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px}
-.sc-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.sc-ttl{font-family:'DM Serif Display',Georgia,serif;font-size:1.05rem}
-.sc-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
-.chip{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:5px 13px;font-size:11px;cursor:pointer;color:var(--text2);transition:all .2s;font-family:'DM Sans',sans-serif}
-.chip:hover{border-color:var(--accent3);color:var(--accent3)}
-.chip.on{background:rgba(91,156,246,.12);border-color:var(--accent3);color:var(--accent3)}
-.sc-result{background:var(--surface2);border-radius:var(--rs);padding:14px;display:none}
-.sc-result.show{display:block}
-.sc-cmp{display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:center}
-.cmp-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px}
-.cmp-val{font-family:'DM Serif Display',Georgia,serif;font-size:1.4rem}
-.cmp-val.base{color:var(--text2)}
-.cmp-val.scen{color:var(--accent3)}
-.cmp-diff{font-size:11px;margin-top:3px}
+/* ── NOTIFY ── */
+.notif{position:fixed;bottom:18px;right:18px;background:var(--surface2);border:1px solid var(--accent);color:var(--text);padding:9px 15px;border-radius:var(--rs);font-size:12px;z-index:999;opacity:0;transition:opacity .25s;pointer-events:none;}
+.notif.show{opacity:1;}
 
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
-.overlay.show{display:flex}
-.modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:26px;max-width:400px;width:100%;animation:mIn .2s ease}
-@keyframes mIn{from{transform:scale(.95);opacity:0}to{transform:scale(1);opacity:1}}
-.m-ttl{font-family:'DM Serif Display',Georgia,serif;font-size:1.2rem;margin-bottom:5px}
-.m-sub{font-size:13px;color:var(--text2);margin-bottom:18px}
-.m-btns{display:flex;justify-content:flex-end;gap:9px}
-.btn-p{background:var(--accent);color:#0d1821;border:none;border-radius:var(--rs);padding:9px 18px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600}
-.btn-s{background:var(--surface2);color:var(--text2);border:1px solid var(--border);border-radius:var(--rs);padding:9px 18px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px}
-.btn-s:hover{color:var(--text)}
+/* ── RESPONSIVE ── */
+@media(max-width:640px){
+  .content{padding:14px;}
+  .stat-grid{grid-template-columns:1fr 1fr;}
+  .assets-grid{grid-template-columns:1fr;}
+  .retire-num{font-size:38px;}
+  .topnav{padding:0 14px;}
+}
+@media(max-width:400px){.stat-grid{grid-template-columns:1fr;}}
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
 </style>
 </head>
 <body>
 
-<nav class="nav">
-  <div class="brand">◈ RetireSmart <em>/ FI Simulator</em></div>
-  <div class="nav-btns">
-    <button class="nbtn" id="btnHide" onclick="toggleHide()">👁 Hide</button>
-    <button class="nbtn" onclick="confirmReset()">↺ Reset</button>
-  </div>
-</nav>
+<!-- ══ SETUP OVERLAY ══════════════════════════════════════════ -->
+<div class="overlay" id="setupOverlay">
+  <div class="setup-card">
+    <div class="setup-logo">
+      <div class="setup-logo-icon">📈</div>
+      <div>
+        <div class="setup-logo-name">FI Planner</div>
+        <div class="setup-logo-sub">Retirement Simulator</div>
+      </div>
+    </div>
+    <div class="dots">
+      <div class="dot active" id="d1"></div>
+      <div class="dot" id="d2"></div>
+    </div>
 
-<div class="overlay" id="resetModal">
+    <div id="step1">
+      <div class="setup-h">Set up your profile</div>
+      <div class="setup-sub">Two quick fields to get started. You can always edit later.</div>
+      <div class="sf">
+        <label class="sl">Your current age</label>
+        <input class="si" type="number" id="s_age" min="18" max="80" placeholder="e.g. 30">
+      </div>
+      <div class="sf">
+        <label class="sl">Monthly expenses at retirement (RM)</label>
+        <input class="si" type="number" id="s_exp" min="0" placeholder="e.g. 5,000">
+        <div class="sh">How much you plan to spend per month when retired</div>
+      </div>
+      <button class="setup-btn" onclick="s1next()">Continue →</button>
+    </div>
+
+    <div id="step2" style="display:none">
+      <div class="setup-h">Fine-tune defaults</div>
+      <div class="setup-sub">These work for most people — adjust if needed.</div>
+      <div class="sr">
+        <div class="sf">
+          <label class="sl">Withdrawal rate (%)</label>
+          <input class="si" type="number" id="s_wr" value="4" min="1" max="10" step="0.1">
+          <div class="sh">Safe standard: 4%</div>
+        </div>
+        <div class="sf">
+          <label class="sl">Inflation rate (%)</label>
+          <input class="si" type="number" id="s_inf" value="3" min="0" max="15" step="0.1">
+          <div class="sh">Malaysia avg: ~3%</div>
+        </div>
+      </div>
+      <button class="setup-btn" onclick="s2save()">Save &amp; Start →</button>
+      <button class="back-link" onclick="s1back()">← Back</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PROFILE MODAL ══════════════════════════════════════════ -->
+<div class="modal-bg hidden" id="profileModal">
   <div class="modal">
-    <div class="m-ttl">Reset Everything?</div>
-    <div class="m-sub">All entered data will be cleared. This cannot be undone.</div>
-    <div class="m-btns">
-      <button class="btn-s" onclick="closeModal()">Cancel</button>
-      <button class="btn-p" onclick="doReset()">Yes, Reset</button>
+    <div class="modal-title">Profile &amp; Settings</div>
+    <div class="modal-sub">Edit your retirement profile and app preferences.</div>
+
+    <div class="modal-section">Retirement Profile</div>
+    <div class="mf"><div class="ml">Current Age</div><input type="number" id="m_age" min="18" max="80"></div>
+    <div class="mf"><div class="ml">Monthly Retirement Expenses (RM)</div><input type="number" id="m_exp" min="0"></div>
+    <div class="mf"><div class="ml">Withdrawal Rate (%)</div><input type="number" id="m_wr" min="1" max="10" step="0.1"></div>
+    <div class="mf"><div class="ml">Inflation Rate (%)</div><input type="number" id="m_inf" min="0" max="15" step="0.1"></div>
+
+    <div class="modal-section">View &amp; Display</div>
+    <div class="toggle-row">
+      <span class="tlabel">Inflation Adjusted View</span>
+      <button class="toggle" id="m_inflToggle" onclick="toggleM_infl()"></button>
+    </div>
+    <div class="toggle-row">
+      <span class="tlabel">Hide All Values (Privacy)</span>
+      <button class="toggle" id="m_hideToggle" onclick="toggleM_hide()"></button>
+    </div>
+
+    <div class="modal-section">Data</div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn btn-secondary" style="flex:1;justify-content:center;" onclick="exportData()">⬇ Export JSON</button>
+      <button class="btn btn-danger" style="flex:1;justify-content:center;" onclick="resetAll()">🔄 Reset All</button>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-secondary btn-full" onclick="closeProfile()">Cancel</button>
+      <button class="btn btn-primary btn-full" onclick="saveProfile()">Save Changes</button>
     </div>
   </div>
 </div>
 
-<div class="app">
-  <div class="sidebar">
-    <div class="sec-lbl">Your Profile</div>
-    <div class="card">
-      <div class="grid2">
-        <div class="field">
-          <label>Current Age</label>
-          <input type="number" id="currentAge" placeholder="e.g. 30" min="18" max="80" oninput="calculate()" />
-        </div>
-        <div class="field">
-          <label>Target Retire Age</label>
-          <input type="number" id="targetAge" placeholder="e.g. 55" min="25" max="90" oninput="calculate()" />
-        </div>
-        <div class="field full">
-          <label>Monthly Retirement Expense (RM)</label>
-          <input type="number" id="monthlyExpense" placeholder="e.g. 5000" min="0" oninput="calculate()" />
-        </div>
-        <div class="field">
-          <label>Withdrawal Rate (%)</label>
-          <input type="number" id="withdrawalRate" value="4" min="1" max="20" step="0.1" oninput="calculate()" />
-        </div>
-        <div class="field">
-          <label>Inflation Rate (%)</label>
-          <input type="number" id="inflationRate" value="3" min="0" max="15" step="0.1" oninput="calculate()" />
+<!-- ══ APP ════════════════════════════════════════════════════ -->
+<div class="shell">
+  <div class="page">
+
+    <!-- TOP NAV -->
+    <div class="topnav">
+      <div class="nav-logo">
+        <div class="nav-logo-icon">📈</div>
+        <div class="nav-logo-name">FI Planner</div>
+      </div>
+      <div class="nav-right">
+        <div class="nav-profile-btn" onclick="openProfile()">
+          <div class="nav-avatar" id="navAvatar">—</div>
+          <div class="nav-profile-label" id="navLabel">Profile</div>
         </div>
       </div>
     </div>
 
-    <div class="sec-lbl">Assets</div>
-    <div id="assetPanels"></div>
-    <button class="addbtn" onclick="addAsset()">＋ Add Asset</button>
-    <div class="priv-note">🔒 All data stays in your browser only. Nothing is sent anywhere.</div>
-  </div>
+    <!-- MAIN CONTENT -->
+    <div class="content">
 
-  <div class="dash">
-    <div class="onboard" id="onboard">
-      <div class="onboard-icon">📊</div>
-      <h2>Welcome to RetireSmart</h2>
-      <p>Fill in your profile and assets on the left to instantly see your retirement projection.</p>
-      <div class="steps">
-        <div class="step"><div class="snum">1</div><p>Enter your age &amp; monthly expenses</p></div>
-        <div class="step"><div class="snum">2</div><p>Tap each asset to fill in details</p></div>
-        <div class="step"><div class="snum">3</div><p>Your retirement age appears instantly</p></div>
-      </div>
-    </div>
-
-    <div class="kpi-row" id="kpiRow" style="display:none">
-      <div class="kpi g">
-        <div class="kpi-lbl">Retirement Age</div>
-        <div class="retire-badge"><span class="rbdot"></span><span id="kRetire">–</span></div>
-        <div class="kpi-sub" id="kYears">Enter your details</div>
-      </div>
-      <div class="kpi y">
-        <div class="kpi-lbl">FI Target</div>
-        <div class="kpi-val" id="kFI">–</div>
-        <div class="kpi-sub">Annual expense ÷ withdrawal rate</div>
-      </div>
-      <div class="kpi b">
-        <div class="kpi-lbl">Portfolio Today</div>
-        <div class="kpi-val" id="kCurrent">–</div>
-        <div class="kpi-sub" id="kPct">across all assets</div>
-      </div>
-    </div>
-
-    <div class="info-row" id="infoRow" style="display:none">
-      <div class="info-lbl">📈 Projection view</div>
-      <div class="inf-toggles">
-        <button class="tbtn on" id="btnNom" onclick="setInflation('nominal')">Nominal</button>
-        <button class="tbtn" id="btnReal" onclick="setInflation('real')">Inflation Adjusted</button>
-      </div>
-    </div>
-
-    <div class="chart-card" id="chartCard" style="display:none">
-      <div class="chart-hdr">
-        <div class="chart-ttl">Portfolio Projection</div>
-        <div class="toggles">
-          <button class="tbtn on" id="btnCombined" onclick="setChartMode('combined')">Combined</button>
-          <button class="tbtn" id="btnBreakdown" onclick="setChartMode('breakdown')">Breakdown</button>
-        </div>
-      </div>
-      <div class="canvas-wrap" id="canvasWrap">
-        <canvas id="myChart"></canvas>
-      </div>
-      <div class="chart-legend" id="chartLegend"></div>
-    </div>
-
-    <div class="tbl-card" id="tblCard" style="display:none">
-      <table>
-        <thead>
-          <tr>
-            <th>Asset</th>
-            <th>Current (RM)</th>
-            <th>At Retirement (RM)</th>
-            <th>Return</th>
-            <th>Type</th>
-          </tr>
-        </thead>
-        <tbody id="tblBody"></tbody>
-      </table>
-    </div>
-
-    <div class="sc-card" id="scCard" style="display:none">
-      <div class="sc-hdr">
-        <div class="sc-ttl">Scenario Comparison</div>
-        <button class="tbtn" id="scClearBtn" onclick="clearScenario()" style="display:none">✕ Clear</button>
-      </div>
-      <div class="sc-chips" id="scChips"></div>
-      <div class="sc-result" id="scResult">
-        <div class="sc-cmp">
-          <div>
-            <div class="cmp-lbl">Base Plan</div>
-            <div class="cmp-val base" id="scBase">–</div>
-            <div class="cmp-diff" id="scBaseSub" style="color:var(--text3)"></div>
+      <!-- EMPTY STATE -->
+      <div id="dashEmpty" class="dash-empty">
+        <div class="empty-icon">📊</div>
+        <div class="empty-title">Dashboard is ready</div>
+        <div class="empty-sub">Add your asset values below to see your retirement forecast appear instantly.</div>
+        <div class="empty-steps">
+          <div class="estep">
+            <div class="enum e-done">✓</div>
+            <div class="etext"><strong>Profile saved</strong><span>Your age and retirement goal are set</span></div>
           </div>
-          <div>
-            <div class="cmp-lbl">With Scenario</div>
-            <div class="cmp-val scen" id="scScen">–</div>
-            <div class="cmp-diff" id="scDiff"></div>
+          <div class="estep">
+            <div class="enum e-todo">2</div>
+            <div class="etext"><strong>Fill in your assets</strong><span>Expand the Assets panel below and enter your EPF, savings, stocks and other holdings</span></div>
+          </div>
+          <div class="estep">
+            <div class="enum e-todo">3</div>
+            <div class="etext"><strong>Forecast appears here</strong><span>Retirement age, FI number and portfolio chart show up automatically</span></div>
           </div>
         </div>
+        <button class="open-assets-btn" onclick="openAssetsPanel()">Open Assets ↓</button>
       </div>
-    </div>
-  </div>
-</div>
+
+      <!-- DASHBOARD DATA -->
+      <div id="dashData" style="display:none">
+
+        <!-- RETIRE BANNER -->
+        <div class="retire-banner">
+          <div>
+            <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin-bottom:3px;">Retirement Age</div>
+            <div class="retire-num" id="retireNum">—</div>
+          </div>
+          <div class="retire-info">
+            <h2 id="retireTitle">Calculating…</h2>
+            <p id="retireSub"></p>
+            <div class="prog-wrap" id="progWrap" style="display:none">
+              <div class="prog-label"><span>Progress to FI</span><span id="progPct">0%</span></div>
+              <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STATS -->
+        <div class="stat-grid">
+          <div class="stat-card sc-cyan">
+            <div class="stat-label">FI Target</div>
+            <div class="stat-val sv-cyan" id="sFI">—</div>
+            <div class="stat-sub">Annual expense ÷ withdrawal rate</div>
+          </div>
+          <div class="stat-card sc-green">
+            <div class="stat-label">Portfolio Today</div>
+            <div class="stat-val sv-green" id="sCur">—</div>
+            <div class="stat-sub">All assets combined</div>
+          </div>
+          <div class="stat-card sc-amber">
+            <div class="stat-label">Portfolio @ Retirement</div>
+            <div class="stat-val sv-amber" id="sAtRet">—</div>
+            <div class="stat-sub" id="sAtRetSub">Projected value</div>
+          </div>
+          <div class="stat-card sc-pink">
+            <div class="stat-label">Years to FI</div>
+            <div class="stat-val" style="color:var(--accent4)" id="sYrs">—</div>
+            <div class="stat-sub" id="sYrsSub">From today</div>
+          </div>
+        </div>
+
+        <!-- CHART -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Portfolio Projection</div>
+            <div class="chart-tabs">
+              <button class="ct active" id="ctAll" onclick="setChart('combined')">Combined</button>
+              <button class="ct" id="ctBreak" onclick="setChart('breakdown')">By Asset</button>
+            </div>
+          </div>
+          <div class="chart-wrap"><canvas id="mainChart"></canvas></div>
+        </div>
+
+        <!-- SCENARIO -->
+        <div class="scenario-row">
+          <div class="scenario-top">
+            <div class="scenario-label">📊 Scenario</div>
+            <select class="scenario-select" id="scenSelect" onchange="onScenChange()">
+              <option value="">— No scenario selected —</option>
+              <option value="boost_etf">🚀 Boost ETF Contribution (2×)</option>
+              <option value="low_stocks">📉 Stock Market Slowdown (4% return)</option>
+              <option value="stop_epf">✋ Stop EPF Contributions at 55</option>
+              <option value="stock_crash">💥 One-time 20% Stock Crash</option>
+              <option value="shift_savings">🔄 Shift Savings → ETF</option>
+              <option value="expense_cut">🏖 Reduce Retirement Expenses by 20%</option>
+            </select>
+            <button class="btn btn-secondary btn-sm" onclick="clearScenario()" id="scenClearBtn" style="display:none">✕ Clear</button>
+          </div>
+          <div class="scenario-result" id="scenResult">
+            <div class="scen-compare">
+              <div class="scen-stat"><div class="scen-stat-label">Base Retire Age</div><div class="scen-stat-val sv-base" id="cBase">—</div></div>
+              <div class="scen-stat"><div class="scen-stat-label">Scenario Retire Age</div><div class="scen-stat-val sv-scen" id="cScen">—</div></div>
+              <div class="scen-stat"><div class="scen-stat-label">Difference</div><div class="scen-stat-val" id="cDiff">—</div></div>
+            </div>
+            <div class="scen-chart-wrap"><canvas id="scenChart"></canvas></div>
+          </div>
+        </div>
+
+        <!-- ASSET SUMMARY TABLE -->
+        <div class="card">
+          <div class="card-header"><div class="card-title">Asset Summary</div></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Asset</th><th>Type</th><th>Current</th><th>Return</th><th>@ Retirement</th><th>Growth</th></tr></thead>
+              <tbody id="summaryBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div><!-- /dashData -->
+
+      <!-- ASSETS ACCORDION (always visible at bottom) -->
+      <div class="assets-panel" id="assetsPanel">
+        <div class="assets-panel-header" onclick="toggleAssets()">
+          <div class="aph-left">
+            <span style="font-size:16px">💼</span>
+            <div>
+              <div class="aph-title">My Assets</div>
+              <div class="aph-meta" id="assetsMeta">Tap to expand and edit your assets</div>
+            </div>
+          </div>
+          <div class="aph-chevron" id="apChevron">▾</div>
+        </div>
+        <div class="assets-body" id="assetsBody">
+          <div class="assets-grid" id="assetsGrid"></div>
+          <div class="assets-panel-footer">
+            <button class="add-asset-btn" onclick="addAsset()">+ Add Asset</button>
+            <button class="ok-btn" onclick="closeAssetsPanel()">Done ✓</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /page -->
+</div><!-- /shell -->
+
+<div class="notif" id="notif"></div>
 
 <script>
-const COLORS=['#e8b84b','#3ecf8e','#5b9cf6','#f87171','#a78bfa','#fb923c','#38bdf8','#4ade80'];
-const DEFAULTS=[
-  {name:'EPF',type:'Stable',ret:5.5,freq:'monthly'},
-  {name:'Fixed Deposit',type:'Stable',ret:3.5,freq:'monthly'},
-  {name:'Savings',type:'Cash',ret:2.0,freq:'monthly'},
-  {name:'Stocks',type:'Volatile',ret:8.0,freq:'monthly'},
-  {name:'ETF',type:'Volatile',ret:7.0,freq:'monthly'},
+// ── STATE ──────────────────────────────────────────────────────
+let P = {age:0, exp:0, wr:4, inf:3};
+let assets = [];
+let inflAdj = false, hideVals = false;
+let chartMode = 'combined';
+let mainChart = null, scenChart = null;
+let activeScen = null;
+let calc = null;
+let saved = false;
+let nextId = 10;
+
+// temp modal toggles (before save)
+let m_inflAdj = false, m_hideVals = false;
+
+const COLORS = ['#4ade80','#22d3ee','#f59e0b','#f472b6','#a78bfa','#fb923c','#34d399','#60a5fa'];
+
+const DEF_ASSETS = [
+  {id:1,name:'EPF',          amount:'',rate:6.5,contrib:'',freq:'monthly',  startAge:'',endAge:'',type:'stable'},
+  {id:2,name:'Fixed Deposit',amount:'',rate:3.5,contrib:'',freq:'monthly',  startAge:'',endAge:'',type:'stable'},
+  {id:3,name:'Savings',      amount:'',rate:1.5,contrib:'',freq:'monthly',  startAge:'',endAge:'',type:'cash'},
+  {id:4,name:'Stocks',       amount:'',rate:8,  contrib:'',freq:'monthly',  startAge:'',endAge:'',type:'volatile'},
+  {id:5,name:'ETF',          amount:'',rate:7,  contrib:'',freq:'monthly',  startAge:'',endAge:'',type:'volatile'},
 ];
-const SCENARIOS=[
-  {id:'etf_boost',label:'📈 Boost ETF +50%',desc:'Increase ETF contribution by 50%'},
-  {id:'stock_crash',label:'📉 Stock Crash -20%',desc:'One-time 20% drop in stock value'},
-  {id:'stock_low',label:'🐌 Stocks at 4%',desc:'Reduce stock return rate to 4%'},
-  {id:'epf_stop55',label:'🔒 Stop EPF at 55',desc:'EPF contributions end at age 55'},
-  {id:'shift_sav',label:'🔄 Savings → ETF',desc:'Move savings balance into ETF'},
-];
 
-let assets=[],aid=0,inflMode='nominal',chartMode='combined';
-let hidden=false,activeScen=null,chartData=null;
+const SCENS = {
+  boost_etf:   {apply: a => a.name==='ETF'    ? {...a,contrib:String((+a.contrib||0)*2)} : a},
+  low_stocks:  {apply: a => a.name==='Stocks' ? {...a,rate:4} : a},
+  stop_epf:    {apply: a => a.name==='EPF'    ? {...a,endAge:'55'} : a},
+  stock_crash: {apply: a => a.name==='Stocks' ? {...a,amount:String((+a.amount||0)*0.8)} : a},
+  shift_savings:{apply: a => {const s=assets.find(x=>x.name==='Savings');if(a.name==='Savings')return{...a,contrib:'0'};if(a.name==='ETF')return{...a,contrib:String((+a.contrib||0)+(+s?.contrib||0))};return a;}},
+  expense_cut: {special:'expense_cut'},
+};
 
-window.addEventListener('DOMContentLoaded',()=>{
-  DEFAULTS.forEach(d=>addAsset(d));
-  calculate();
-});
-
-function addAsset(d={}){
-  const id=++aid;
-  assets.push({
-    id,color:COLORS[(id-1)%COLORS.length],
-    name:d.name||'New Asset',
-    amount:d.amount||'',
-    ret:d.ret!==undefined?d.ret:'',
-    contrib:d.contrib||'',
-    freq:d.freq||'monthly',
-    startAge:d.startAge||'',
-    endAge:d.endAge||'',
-    type:d.type||'Stable',
-  });
+// ── INIT ──────────────────────────────────────────────────────
+window.onload = () => {
+  assets = DEF_ASSETS.map(a=>({...a}));
   renderAssets();
+};
+
+// ── SETUP ─────────────────────────────────────────────────────
+function s1next(){
+  const age=+document.getElementById('s_age').value;
+  const exp=+document.getElementById('s_exp').value;
+  if(!age||age<18){notify('Enter a valid age (18+)');return;}
+  if(!exp||exp<=0){notify('Enter your expected monthly expense');return;}
+  document.getElementById('step1').style.display='none';
+  document.getElementById('step2').style.display='block';
+  document.getElementById('d1').className='dot done';
+  document.getElementById('d2').className='dot active';
+}
+function s1back(){
+  document.getElementById('step2').style.display='none';
+  document.getElementById('step1').style.display='block';
+  document.getElementById('d2').className='dot';
+  document.getElementById('d1').className='dot active';
+}
+function s2save(){
+  P.age=+document.getElementById('s_age').value||0;
+  P.exp=+document.getElementById('s_exp').value||0;
+  P.wr =+document.getElementById('s_wr').value ||4;
+  P.inf=+document.getElementById('s_inf').value||3;
+  saved=true;
+  document.getElementById('setupOverlay').classList.add('hidden');
+  updateNavChip();
+  recalc();
+  notify('✓ Profile saved — expand Assets below to fill in your holdings');
 }
 
-function delAsset(id){
-  assets=assets.filter(a=>a.id!==id);
-  renderAssets();calculate();
+// ── NAV CHIP ──────────────────────────────────────────────────
+function updateNavChip(){
+  document.getElementById('navAvatar').textContent=P.age||'—';
+  document.getElementById('navLabel').textContent=`Age ${P.age} · RM${short(P.exp)}/mo`;
 }
 
-function setA(id,k,v){
-  const a=assets.find(x=>x.id===id);
-  if(!a)return;
-  a[k]=v;
-  if(k==='amount'){
-    const b=document.getElementById('ab'+id);
-    if(b)b.textContent=v?'RM '+fmt(+v):'Not set';
-  }
-  calculate();
+// ── PROFILE MODAL ─────────────────────────────────────────────
+function openProfile(){
+  document.getElementById('m_age').value=P.age;
+  document.getElementById('m_exp').value=P.exp;
+  document.getElementById('m_wr').value=P.wr;
+  document.getElementById('m_inf').value=P.inf;
+  m_inflAdj=inflAdj; m_hideVals=hideVals;
+  document.getElementById('m_inflToggle').classList.toggle('on',inflAdj);
+  document.getElementById('m_hideToggle').classList.toggle('on',hideVals);
+  document.getElementById('profileModal').classList.remove('hidden');
+}
+function closeProfile(){document.getElementById('profileModal').classList.add('hidden');}
+function saveProfile(){
+  const age=+document.getElementById('m_age').value;
+  const exp=+document.getElementById('m_exp').value;
+  if(!age||age<18){notify('Enter a valid age');return;}
+  if(!exp||exp<=0){notify('Enter monthly expense');return;}
+  P.age=age; P.exp=exp;
+  P.wr=+document.getElementById('m_wr').value||4;
+  P.inf=+document.getElementById('m_inf').value||3;
+  inflAdj=m_inflAdj; hideVals=m_hideVals;
+  closeProfile();
+  updateNavChip();
+  recalc();
+  applyHide();
+  notify('✓ Settings saved');
+}
+function toggleM_infl(){
+  m_inflAdj=!m_inflAdj;
+  document.getElementById('m_inflToggle').classList.toggle('on',m_inflAdj);
+}
+function toggleM_hide(){
+  m_hideVals=!m_hideVals;
+  document.getElementById('m_hideToggle').classList.toggle('on',m_hideVals);
 }
 
-function renderAssets(){
-  const c=document.getElementById('assetPanels');
-  c.innerHTML='';
-  assets.forEach(a=>{
-    const el=document.createElement('div');
-    el.className='apanel';
-    el.id='ap'+a.id;
-    el.innerHTML=`
-      <div class="ahead" onclick="toggleA(${a.id})">
-        <div class="adot" style="background:${a.color}"></div>
-        <input class="aname" type="text" value="${esc(a.name)}"
-          onclick="event.stopPropagation()"
-          onchange="setA(${a.id},'name',this.value)"/>
-        <span class="abadge" id="ab${a.id}">${a.amount?'RM '+fmt(+a.amount):'Not set'}</span>
-        <span class="achev">▼</span>
-      </div>
-      <div class="abody">
-        <div class="field">
-          <label>Current Amount (RM)</label>
-          <input type="number" placeholder="0" value="${a.amount}" oninput="setA(${a.id},'amount',this.value)" min="0"/>
-        </div>
-        <div class="field">
-          <label>Annual Return (%)</label>
-          <input type="number" placeholder="e.g. 5" value="${a.ret}" oninput="setA(${a.id},'ret',this.value)" min="0" max="50" step="0.1"/>
-        </div>
-        <div class="field">
-          <label>Contribution (RM)</label>
-          <input type="number" placeholder="0" value="${a.contrib}" oninput="setA(${a.id},'contrib',this.value)" min="0"/>
-        </div>
-        <div class="field">
-          <label>Frequency</label>
-          <select onchange="setA(${a.id},'freq',this.value)">
-            <option value="monthly" ${a.freq==='monthly'?'selected':''}>Monthly</option>
-            <option value="quarterly" ${a.freq==='quarterly'?'selected':''}>Quarterly</option>
-            <option value="yearly" ${a.freq==='yearly'?'selected':''}>Yearly</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Start Age (optional)</label>
-          <input type="number" placeholder="Default: current" value="${a.startAge}" oninput="setA(${a.id},'startAge',this.value)" min="18" max="80"/>
-        </div>
-        <div class="field">
-          <label>End Age (optional)</label>
-          <input type="number" placeholder="No end" value="${a.endAge}" oninput="setA(${a.id},'endAge',this.value)" min="18" max="100"/>
-        </div>
-        <div class="field">
-          <label>Asset Type</label>
-          <select onchange="setA(${a.id},'type',this.value)">
-            <option value="Stable" ${a.type==='Stable'?'selected':''}>Stable (EPF, FD)</option>
-            <option value="Volatile" ${a.type==='Volatile'?'selected':''}>Volatile (Stocks, ETF)</option>
-            <option value="Cash" ${a.type==='Cash'?'selected':''}>Cash (Savings)</option>
-          </select>
-        </div>
-        <div class="adel">
-          <button class="delbtn" onclick="delAsset(${a.id})">✕ Remove</button>
-        </div>
-      </div>`;
-    c.appendChild(el);
-  });
+// ── CALC ENGINE ───────────────────────────────────────────────
+function effRate(r){
+  const nr=r/100;
+  if(!inflAdj)return nr;
+  return (1+nr)/(1+P.inf/100)-1;
 }
-
-function toggleA(id){
-  const p=document.getElementById('ap'+id);
-  if(p)p.classList.toggle('open');
-}
-
 function annualPMT(a){
   const c=+a.contrib||0;
   return a.freq==='monthly'?c*12:a.freq==='quarterly'?c*4:c;
 }
-
-function effRate(nominal){
-  const r=(+nominal||0)/100;
-  if(inflMode==='real'){
-    const inf=(+document.getElementById('inflationRate').value||3)/100;
-    return(1+r)/(1+inf)-1;
+function calcAsset(a,age,yrs){
+  let v=+a.amount||0;
+  const r=effRate(+a.rate||0);
+  const pmt=annualPMT(a);
+  const sa=+a.startAge||age;
+  const ea=+a.endAge||9999;
+  const out=[];
+  for(let t=0;t<=yrs;t++){
+    const cur=age+t;
+    if(cur<sa){out.push(v);continue;}
+    const p=cur<=ea?pmt:0;
+    v=r===0?v+p:v*(1+r)+p;
+    out.push(Math.max(0,v));
   }
-  return r;
+  return out;
 }
+function hasData(){return assets.some(a=>(+a.amount||0)>0||(+a.contrib||0)>0);}
 
-function projectAsset(a,fromAge,toAge,ov={}){
-  let P=+a.amount||0;
-  if(ov.crash)P*=(1-ov.crash);
-  if(ov.addBal)P+=ov.addBal;
-  const nomR=ov.ret!==undefined?ov.ret:(+a.ret||0);
-  const r=effRate(nomR);
-  const endC=ov.endAge!==undefined?ov.endAge:(+a.endAge||999);
-  const startC=+a.startAge||fromAge;
-  const yrs=toAge-fromAge;
-  const vals=[];
-  let cur=P;
-  for(let y=0;y<=yrs;y++){
-    if(y>0){
-      const age=fromAge+y;
-      const contributing=age>=startC&&age<endC;
-      const pmt=contributing?(ov.contribMult?annualPMT(a)*ov.contribMult:annualPMT(a)):0;
-      cur=cur*(1+r)+pmt;
-    }
-    vals.push(Math.max(0,cur));
-  }
-  return vals;
-}
-
-function calculate(ov=null){
-  const cAge=+document.getElementById('currentAge').value||0;
-  const tAge=+document.getElementById('targetAge').value||80;
-  const mExp=+document.getElementById('monthlyExpense').value||0;
-  const wRate=(+document.getElementById('withdrawalRate').value||4)/100;
-
-  const hasData=cAge>0&&assets.some(a=>+a.amount>0||+a.contrib>0);
-
-  document.getElementById('onboard').style.display=hasData?'none':'block';
-  ['kpiRow','infoRow','chartCard','tblCard','scCard'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el)el.style.display=hasData?(id==='kpiRow'?'grid':'block'):'none';
-  });
-  if(!hasData)return null;
-
-  const maxAge=Math.max(tAge+15,85);
-  const yrs=maxAge-cAge;
-  const fiNum=mExp>0?(mExp*12)/wRate:0;
-
-  const projs=assets.map(a=>({a,vals:projectAsset(a,cAge,maxAge,ov?.(a.id)||{})}));
-  const total=Array.from({length:yrs+1},(_,y)=>projs.reduce((s,p)=>s+(p.vals[y]||0),0));
-
+function recalc(){
+  if(!saved)return;
+  const age=P.age, yrs=Math.max(1,80-age);
+  const fi=P.wr>0?(P.exp*12)/(P.wr/100):0;
+  const aY=assets.map(a=>calcAsset(a,age,yrs));
+  const tot=[];
+  for(let t=0;t<=yrs;t++){let s=0;aY.forEach(ay=>s+=ay[t]||0);tot.push(s);}
   let retAge=null;
-  if(fiNum>0){
-    for(let y=0;y<=yrs;y++){
-      if(total[y]>=fiNum){retAge=cAge+y;break;}
-    }
-  }
+  if(fi>0)for(let t=0;t<=yrs;t++)if(tot[t]>=fi){retAge=age+t;break;}
+  const cur=tot[0]||0;
+  const rIdx=retAge?Math.min(retAge-age,yrs):yrs;
+  const atRet=tot[rIdx]||0;
+  calc={age,yrs,tot,aY,fi,retAge,cur,atRet};
 
-  const retIdx=Math.min(tAge-cAge,yrs);
-  const curTotal=total[0];
-
-  document.getElementById('kRetire').textContent=retAge?'Age '+retAge:(fiNum>0?'Not reached':'Set expenses');
-  document.getElementById('kYears').textContent=retAge?(retAge<=cAge?'🎉 You can retire now!':`${retAge-cAge} years from now`):'Try increasing contributions';
-
-  const kfi=document.getElementById('kFI');
-  if(kfi)kfi.textContent=fiNum>0?'RM '+fmt(fiNum):'–';
-  const kc=document.getElementById('kCurrent');
-  if(kc)kc.textContent='RM '+fmt(curTotal);
-  const kp=document.getElementById('kPct');
-  if(kp)kp.textContent=fiNum>0?`${Math.min(100,(curTotal/fiNum*100)).toFixed(1)}% of FI target`:'across all assets';
-
-  if(hidden)blurVals(true);
-
-  const labels=Array.from({length:yrs+1},(_,i)=>cAge+i);
-  chartData={labels,total,projs,fiNum,retAge,cAge,retIdx};
-  drawChart();
-  drawTable(projs,retIdx);
-  drawScenarios();
-
-  return{total,retAge,fiNum,cAge,maxAge,yrs,projs};
+  const show=hasData();
+  document.getElementById('dashEmpty').style.display=show?'none':'flex';
+  document.getElementById('dashData').style.display=show?'block':'none';
+  if(show){renderDash();renderChart();renderTable();}
+  if(activeScen)runScen(activeScen);
+  updateAssetsMeta();
 }
 
-function drawChart(){
-  if(!chartData)return;
-  const{labels,total,projs,fiNum,retAge}=chartData;
-  const wrap=document.getElementById('canvasWrap');
-  const canvas=document.getElementById('myChart');
-  const W=wrap.clientWidth||600;
-  const H=280;
-  const dpr=window.devicePixelRatio||1;
-  canvas.width=W*dpr;
-  canvas.height=H*dpr;
-  canvas.style.width=W+'px';
-  canvas.style.height=H+'px';
-  const ctx=canvas.getContext('2d');
-  ctx.scale(dpr,dpr);
-
-  const pad={top:16,right:16,bottom:36,left:65};
-  const cW=W-pad.left-pad.right;
-  const cH=H-pad.top-pad.bottom;
-
-  ctx.clearRect(0,0,W,H);
-
-  const series=chartMode==='combined'
-    ?[{label:'Total Portfolio',data:total,color:'#e8b84b'}]
-    :projs.map(p=>({label:p.a.name,data:p.vals,color:p.a.color}));
-
-  let maxV=0;
-  series.forEach(s=>s.data.forEach(v=>{if(v>maxV)maxV=v;}));
-  if(fiNum>maxV)maxV=fiNum;
-  maxV*=1.1;
-  if(maxV===0)maxV=1;
-
-  const xS=i=>pad.left+(i/(labels.length-1||1))*cW;
-  const yS=v=>pad.top+cH-(Math.max(0,v)/maxV)*cH;
-
-  // Grid
-  for(let i=0;i<=5;i++){
-    const y=pad.top+(cH/5)*i;
-    ctx.strokeStyle='rgba(255,255,255,0.05)';
-    ctx.lineWidth=1;
-    ctx.setLineDash([]);
-    ctx.beginPath();ctx.moveTo(pad.left,y);ctx.lineTo(pad.left+cW,y);ctx.stroke();
-    const val=maxV-(maxV/5)*i;
-    ctx.fillStyle='#5a7390';
-    ctx.font=`10px DM Sans,system-ui,sans-serif`;
-    ctx.textAlign='right';
-    ctx.fillText('RM '+shortFmt(val),pad.left-5,y+4);
-  }
-
-  // X labels
-  const step=Math.max(1,Math.floor(labels.length/7));
-  ctx.fillStyle='#5a7390';
-  ctx.textAlign='center';
-  ctx.font=`10px DM Sans,system-ui,sans-serif`;
-  labels.forEach((lbl,i)=>{
-    if(i%step===0||i===labels.length-1){
-      ctx.fillText(lbl,xS(i),H-pad.bottom+14);
-    }
-  });
-
-  // FI line
-  if(fiNum>0&&fiNum<=maxV){
-    const fy=yS(fiNum);
-    ctx.strokeStyle='#3ecf8e';
-    ctx.lineWidth=1.5;
-    ctx.setLineDash([5,4]);
-    ctx.beginPath();ctx.moveTo(pad.left,fy);ctx.lineTo(pad.left+cW,fy);ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.fillStyle='#3ecf8e';
-    ctx.textAlign='right';
-    ctx.font=`9px DM Sans,system-ui,sans-serif`;
-    ctx.fillText('FI Target',pad.left+cW,fy-3);
-  }
-
-  // Retire line
-  if(retAge){
-    const ri=retAge-labels[0];
-    if(ri>=0&&ri<labels.length){
-      const rx=xS(ri);
-      ctx.strokeStyle='rgba(232,184,75,0.35)';
-      ctx.lineWidth=1;
-      ctx.setLineDash([4,4]);
-      ctx.beginPath();ctx.moveTo(rx,pad.top);ctx.lineTo(rx,pad.top+cH);ctx.stroke();
-      ctx.setLineDash([]);
-    }
-  }
-
-  // Series
-  series.forEach(s=>{
-    if(!s.data||s.data.length<2)return;
-    // Fill
-    ctx.beginPath();
-    s.data.forEach((v,i)=>{
-      const x=xS(i),y=yS(v);
-      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
-    });
-    ctx.lineTo(xS(s.data.length-1),pad.top+cH);
-    ctx.lineTo(pad.left,pad.top+cH);
-    ctx.closePath();
-    ctx.fillStyle=s.color+(chartMode==='combined'?'22':'10');
-    ctx.fill();
-    // Line
-    ctx.beginPath();
-    s.data.forEach((v,i)=>{
-      const x=xS(i),y=yS(v);
-      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
-    });
-    ctx.strokeStyle=s.color;
-    ctx.lineWidth=chartMode==='combined'?2.5:1.8;
-    ctx.lineJoin='round';
-    ctx.setLineDash([]);
-    ctx.stroke();
-  });
-
-  // Legend
-  const leg=document.getElementById('chartLegend');
-  leg.innerHTML='';
-  series.forEach(s=>{
-    const item=document.createElement('div');
-    item.className='leg-item';
-    item.innerHTML=`<div class="leg-line" style="background:${s.color}"></div>${esc(s.label)}`;
-    leg.appendChild(item);
-  });
-  if(fiNum>0){
-    const item=document.createElement('div');
-    item.className='leg-item';
-    item.innerHTML=`<div class="leg-line" style="background:#3ecf8e"></div>FI Target`;
-    leg.appendChild(item);
-  }
-}
-
-window.addEventListener('resize',()=>{if(chartData)drawChart();});
-
-function drawTable(projs,retIdx){
-  const tbody=document.getElementById('tblBody');
-  tbody.innerHTML='';
-  projs.forEach(p=>{
-    const proj=p.vals[Math.min(retIdx,p.vals.length-1)]||0;
-    const tr=document.createElement('tr');
-    tr.innerHTML=`
-      <td><div class="tname"><div class="tdot" style="background:${p.a.color}"></div>${esc(p.a.name)}</div></td>
-      <td class="${hidden?'vblur':''}">RM ${fmt(+p.a.amount||0)}</td>
-      <td class="tproj ${hidden?'vblur':''}">RM ${fmt(proj)}</td>
-      <td>${p.a.ret||0}%</td>
-      <td>${p.a.type}</td>`;
-    tbody.appendChild(tr);
-  });
-}
-
-function drawScenarios(){
-  const c=document.getElementById('scChips');
-  c.innerHTML='';
-  SCENARIOS.forEach(s=>{
-    const b=document.createElement('button');
-    b.className='chip'+(activeScen===s.id?' on':'');
-    b.textContent=s.label;
-    b.title=s.desc;
-    b.onclick=()=>runScenario(s.id);
-    c.appendChild(b);
-  });
-}
-
-function buildOv(id){
-  const ov={};
-  if(id==='etf_boost'){
-    const a=assets.find(x=>x.name.toLowerCase().includes('etf'));
-    if(a)ov[a.id]={contribMult:1.5};
-  }
-  if(id==='stock_crash'){
-    const a=assets.find(x=>x.name.toLowerCase().includes('stock'));
-    if(a)ov[a.id]={crash:0.2};
-  }
-  if(id==='stock_low'){
-    const a=assets.find(x=>x.name.toLowerCase().includes('stock'));
-    if(a)ov[a.id]={ret:4};
-  }
-  if(id==='epf_stop55'){
-    const a=assets.find(x=>x.name.toLowerCase().includes('epf'));
-    if(a)ov[a.id]={endAge:55};
-  }
-  if(id==='shift_sav'){
-    const sav=assets.find(x=>x.name.toLowerCase().includes('sav'));
-    const etf=assets.find(x=>x.name.toLowerCase().includes('etf'));
-    if(sav&&etf){ov[sav.id]={crash:1};ov[etf.id]={addBal:+sav.amount||0};}
-  }
-  return ov;
-}
-
-function calcWithOv(ov){
-  const cAge=+document.getElementById('currentAge').value||0;
-  const tAge=+document.getElementById('targetAge').value||80;
-  const mExp=+document.getElementById('monthlyExpense').value||0;
-  const wRate=(+document.getElementById('withdrawalRate').value||4)/100;
-  const fiNum=mExp>0?(mExp*12)/wRate:0;
-  const maxAge=Math.max(tAge+15,85);
-  const yrs=maxAge-cAge;
-  const total=Array.from({length:yrs+1},(_,y)=>
-    assets.reduce((s,a)=>s+(projectAsset(a,cAge,maxAge,ov[a.id]||{})[y]||0),0)
-  );
-  let retAge=null;
-  if(fiNum>0)for(let y=0;y<=yrs;y++)if(total[y]>=fiNum){retAge=cAge+y;break;}
-  return{retAge,fiNum};
-}
-
-function runScenario(id){
-  if(activeScen===id){clearScenario();return;}
-  activeScen=id;
-  document.getElementById('scClearBtn').style.display='inline-flex';
-  const base=calculate();
-  const ov=buildOv(id);
-  const scen=calcWithOv(ov);
-  document.getElementById('scResult').classList.add('show');
-  document.getElementById('scBase').textContent=base&&base.retAge?'Age '+base.retAge:'Not reached';
-  document.getElementById('scBaseSub').textContent=base&&base.fiNum>0?'FI: RM '+fmt(base.fiNum):'';
-  document.getElementById('scScen').textContent=scen.retAge?'Age '+scen.retAge:'Not reached';
-  const diff=scen.retAge&&base&&base.retAge?scen.retAge-base.retAge:null;
-  const diffEl=document.getElementById('scDiff');
-  if(diff===null){diffEl.textContent='';}
-  else if(diff<0){diffEl.textContent=`🎉 ${Math.abs(diff)} yrs earlier!`;diffEl.style.color='var(--accent2)';}
-  else if(diff>0){diffEl.textContent=`⚠ ${diff} yrs later`;diffEl.style.color='var(--danger)';}
-  else{diffEl.textContent='Same retirement age';diffEl.style.color='var(--text3)';}
-  drawScenarios();
-}
-
-function clearScenario(){
-  activeScen=null;
-  document.getElementById('scClearBtn').style.display='none';
-  document.getElementById('scResult').classList.remove('show');
-  drawScenarios();calculate();
-}
-
-function setInflation(m){
-  inflMode=m;
-  document.getElementById('btnNom').classList.toggle('on',m==='nominal');
-  document.getElementById('btnReal').classList.toggle('on',m==='real');
-  calculate();
-}
-
-function setChartMode(m){
-  chartMode=m;
-  document.getElementById('btnCombined').classList.toggle('on',m==='combined');
-  document.getElementById('btnBreakdown').classList.toggle('on',m==='breakdown');
-  drawChart();
-}
-
-function toggleHide(){
-  hidden=!hidden;
-  document.getElementById('btnHide').classList.toggle('on',hidden);
-  blurVals(hidden);
-}
-
-function blurVals(on){
-  document.querySelectorAll('.kpi-val').forEach(el=>el.classList.toggle('blur',on));
-  document.querySelectorAll('.tproj').forEach(el=>el.classList.toggle('vblur',on));
-  document.querySelectorAll('#tblBody td:nth-child(2)').forEach(el=>el.classList.toggle('vblur',on));
-}
-
-function confirmReset(){document.getElementById('resetModal').classList.add('show');}
-function closeModal(){document.getElementById('resetModal').classList.remove('show');}
-function doReset(){
-  closeModal();
-  ['currentAge','targetAge','monthlyExpense'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('withdrawalRate').value='4';
-  document.getElementById('inflationRate').value='3';
-  assets=[];aid=0;activeScen=null;hidden=false;
-  document.getElementById('btnHide').classList.remove('on');
-  DEFAULTS.forEach(d=>addAsset(d));
-  calculate();
-}
-
+// ── DASHBOARD ─────────────────────────────────────────────────
+function short(n){if(!n||isNaN(n))return'0';if(n>=1e6)return(n/1e6).toFixed(2)+'M';if(n>=1e3)return(n/1e3).toFixed(1)+'K';return(+n).toFixed(0);}
 function fmt(n){
-  if(!isFinite(n)||n===0)return'0';
-  if(n>=1e9)return(n/1e9).toFixed(2)+'B';
-  if(n>=1e6)return(n/1e6).toFixed(2)+'M';
-  if(n>=1e3)return(n/1e3).toFixed(1)+'k';
-  return Math.round(n).toLocaleString();
+  if(hideVals)return'●●●●●';
+  if(!n||isNaN(n))return'—';
+  if(n>=1e9)return'RM '+(n/1e9).toFixed(2)+'B';
+  if(n>=1e6)return'RM '+(n/1e6).toFixed(2)+'M';
+  if(n>=1e3)return'RM '+(n/1e3).toFixed(1)+'K';
+  return'RM '+n.toFixed(0);
 }
-function shortFmt(n){
-  if(n>=1e9)return(n/1e9).toFixed(1)+'B';
-  if(n>=1e6)return(n/1e6).toFixed(1)+'M';
-  if(n>=1e3)return(n/1e3).toFixed(0)+'k';
-  return Math.round(n);
+function renderDash(){
+  const r=calc;
+  document.getElementById('sFI').textContent=fmt(r.fi);
+  document.getElementById('sCur').textContent=fmt(r.cur);
+  document.getElementById('sAtRet').textContent=fmt(r.atRet);
+  const yl=r.retAge?r.retAge-r.age:null;
+  document.getElementById('sYrs').textContent=yl!==null?yl+' yrs':'—';
+  document.getElementById('sYrsSub').textContent=r.retAge?'Retire at age '+r.retAge:'Not reached in range';
+  if(r.retAge){
+    document.getElementById('retireNum').textContent=r.retAge;
+    document.getElementById('retireTitle').textContent=`You can retire at ${r.retAge}! 🎉`;
+    document.getElementById('retireSub').textContent=`${r.retAge-r.age} years from now`;
+  }else{
+    document.getElementById('retireNum').textContent='?';
+    document.getElementById('retireTitle').textContent='FI not reached in projection';
+    document.getElementById('retireSub').textContent='Increase contributions or return rates';
+  }
+  const pw=document.getElementById('progWrap');
+  if(r.fi>0&&r.cur>0){
+    const pct=Math.min(100,Math.round(r.cur/r.fi*100));
+    document.getElementById('progFill').style.width=pct+'%';
+    document.getElementById('progPct').textContent=pct+'% of FI target';
+    pw.style.display='block';
+  }else pw.style.display='none';
+  applyHide();
 }
-function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function applyHide(){
+  document.querySelectorAll('.stat-val').forEach(e=>e.style.filter=hideVals?'blur(6px)':'');
+  document.querySelectorAll('td.mono').forEach(e=>e.style.filter=hideVals?'blur(5px)':'');
+}
+
+// ── CHART ─────────────────────────────────────────────────────
+function lbls(){return Array.from({length:calc.yrs+1},(_,i)=>calc.age+i);}
+function setChart(m){
+  chartMode=m;
+  document.getElementById('ctAll').classList.toggle('active',m==='combined');
+  document.getElementById('ctBreak').classList.toggle('active',m==='breakdown');
+  renderChart();
+}
+function renderChart(){
+  if(mainChart){mainChart.destroy();mainChart=null;}
+  if(!calc)return;
+  const r=calc, lbl=lbls();
+  const fiLine={label:'FI Target',data:Array(r.yrs+1).fill(r.fi),borderColor:'#f87171',borderDash:[6,4],borderWidth:1.5,pointRadius:0,fill:false,tension:0};
+  let ds=[];
+  if(chartMode==='combined'){
+    ds=[{label:'Total Portfolio',data:r.tot,borderColor:'#4ade80',backgroundColor:'rgba(74,222,128,0.07)',borderWidth:2,pointRadius:0,fill:true,tension:0.3},fiLine];
+  }else{
+    assets.forEach((a,i)=>ds.push({label:a.name,data:r.aY[i],borderColor:COLORS[i%COLORS.length],backgroundColor:COLORS[i%COLORS.length]+'15',borderWidth:2,pointRadius:0,fill:true,tension:0.3}));
+    ds.push(fiLine);
+  }
+  mainChart=new Chart(document.getElementById('mainChart').getContext('2d'),{
+    type:'line',data:{labels:lbl,datasets:ds},
+    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+      plugins:{legend:{labels:{color:'#8b91a8',font:{family:'DM Sans',size:11},usePointStyle:true,pointStyleWidth:7}},
+        tooltip:{backgroundColor:'#1e2230',borderColor:'#2a2f3d',borderWidth:1,titleColor:'#e8eaf0',bodyColor:'#8b91a8',callbacks:{label:c=>` ${c.dataset.label}: ${fmt(c.parsed.y)}`}}},
+      scales:{x:{ticks:{color:'#555b70',font:{size:10}},grid:{color:'#2a2f3d55'}},y:{ticks:{color:'#555b70',font:{size:10},callback:v=>fmt(v)},grid:{color:'#2a2f3d55'}}}}
+  });
+}
+
+// ── TABLE ─────────────────────────────────────────────────────
+function renderTable(){
+  if(!calc)return;
+  const rIdx=calc.retAge?Math.min(calc.retAge-calc.age,calc.yrs):calc.yrs;
+  document.getElementById('summaryBody').innerHTML=assets.map((a,i)=>{
+    const cur=+a.amount||0, proj=(calc.aY[i]||[])[rIdx]||0;
+    const g=cur>0?(proj-cur)/cur*100:0;
+    const pill=g>=0?`<span class="growth-pill pill-up">↑ ${g.toFixed(0)}%</span>`:`<span class="growth-pill pill-down">↓ ${Math.abs(g).toFixed(0)}%</span>`;
+    return`<tr><td><strong>${a.name}</strong></td><td><span class="type-badge tb-${a.type}">${a.type}</span></td><td class="mono">${fmt(cur)}</td><td class="mono">${a.rate}%</td><td class="mono">${fmt(proj)}</td><td>${pill}</td></tr>`;
+  }).join('');
+}
+
+// ── ASSETS ACCORDION ──────────────────────────────────────────
+function toggleAssets(){
+  const body=document.getElementById('assetsBody');
+  const chev=document.getElementById('apChevron');
+  const open=body.classList.contains('open');
+  body.classList.toggle('open',!open);
+  chev.classList.toggle('open',!open);
+}
+function openAssetsPanel(){
+  const body=document.getElementById('assetsBody');
+  const chev=document.getElementById('apChevron');
+  body.classList.add('open'); chev.classList.add('open');
+  document.getElementById('assetsPanel').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function closeAssetsPanel(){
+  document.getElementById('assetsBody').classList.remove('open');
+  document.getElementById('apChevron').classList.remove('open');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function updateAssetsMeta(){
+  const count=assets.filter(a=>(+a.amount||0)>0||(+a.contrib||0)>0).length;
+  document.getElementById('assetsMeta').textContent=
+    count>0?`${count} of ${assets.length} assets have data — tap to edit`:`${assets.length} assets — tap to expand and fill in amounts`;
+}
+function renderAssets(){
+  const grid=document.getElementById('assetsGrid');
+  if(!assets.length){grid.innerHTML='<div style="padding:20px;color:var(--text2);text-align:center;grid-column:1/-1">No assets. Click Add Asset.</div>';return;}
+  grid.innerHTML=assets.map(a=>`
+  <div class="asset-card" id="ac-${a.id}">
+    <div class="asset-card-head">
+      <input class="asset-name-inp" type="text" value="${a.name}" placeholder="Asset Name" onchange="ua(${a.id},'name',this.value)">
+      <select style="width:80px;padding:4px 6px;font-size:11px;" onchange="ua(${a.id},'type',this.value)">
+        <option value="stable"   ${a.type==='stable'  ?'selected':''}>Stable</option>
+        <option value="volatile" ${a.type==='volatile'?'selected':''}>Volatile</option>
+        <option value="cash"     ${a.type==='cash'    ?'selected':''}>Cash</option>
+      </select>
+    </div>
+    <div class="asset-fields">
+      <div><div class="afl">Amount (RM)</div><input type="number" min="0" placeholder="0" value="${a.amount}" oninput="ua(${a.id},'amount',this.value)"></div>
+      <div><div class="afl">Return (%)</div><input type="number" min="0" max="50" step="0.1" value="${a.rate}" oninput="ua(${a.id},'rate',this.value)"></div>
+      <div><div class="afl">Contribution</div><input type="number" min="0" placeholder="0" value="${a.contrib}" oninput="ua(${a.id},'contrib',this.value)"></div>
+      <div><div class="afl">Frequency</div>
+        <select onchange="ua(${a.id},'freq',this.value)">
+          <option value="monthly"   ${a.freq==='monthly'  ?'selected':''}>Monthly</option>
+          <option value="quarterly" ${a.freq==='quarterly'?'selected':''}>Quarterly</option>
+          <option value="yearly"    ${a.freq==='yearly'   ?'selected':''}>Yearly</option>
+        </select>
+      </div>
+      <div><div class="afl">Start Age <span class="badge">opt</span></div><input type="number" min="18" max="80" placeholder="Now" value="${a.startAge}" oninput="ua(${a.id},'startAge',this.value)"></div>
+      <div><div class="afl">End Age <span class="badge">opt</span></div><input type="number" min="18" max="100" placeholder="Ever" value="${a.endAge}" oninput="ua(${a.id},'endAge',this.value)"></div>
+    </div>
+    <div class="asset-card-foot">
+      <button class="btn btn-danger btn-sm" onclick="delAsset(${a.id})">✕ Remove</button>
+    </div>
+  </div>`).join('');
+}
+function ua(id,field,val){const a=assets.find(x=>x.id===id);if(a){a[field]=val;recalc();updateAssetsMeta();}}
+function delAsset(id){assets=assets.filter(x=>x.id!==id);renderAssets();recalc();notify('Asset removed');}
+function addAsset(){
+  assets.push({id:nextId++,name:'New Asset',amount:'',rate:5,contrib:'',freq:'monthly',startAge:'',endAge:'',type:'stable'});
+  renderAssets();
+  setTimeout(()=>document.getElementById('assetsGrid').lastElementChild?.scrollIntoView({behavior:'smooth',block:'nearest'}),100);
+}
+
+// ── SCENARIOS ─────────────────────────────────────────────────
+function onScenChange(){
+  const id=document.getElementById('scenSelect').value;
+  document.getElementById('scenClearBtn').style.display=id?'inline-flex':'none';
+  if(!id){
+    document.getElementById('scenResult').classList.remove('show');
+    activeScen=null; return;
+  }
+  activeScen=id; runScen(id);
+}
+function clearScenario(){
+  document.getElementById('scenSelect').value='';
+  document.getElementById('scenClearBtn').style.display='none';
+  document.getElementById('scenResult').classList.remove('show');
+  activeScen=null;
+}
+function runScen(id){
+  if(!calc)return;
+  const scen=SCENS[id]; if(!scen)return;
+  const {age,yrs,fi:baseFI}=calc;
+  let exp=P.exp; const wr=P.wr/100;
+  let sa=scen.special==='expense_cut'?(exp=exp*0.8,assets):assets.map(a=>scen.apply({...a}));
+  const fi=wr>0?(exp*12)/wr:0;
+  const aY=sa.map(a=>calcAsset(a,age,yrs));
+  const tot=[];
+  for(let t=0;t<=yrs;t++){let s=0;aY.forEach(a=>s+=a[t]||0);tot.push(s);}
+  let sr=null;
+  for(let t=0;t<=yrs;t++)if(tot[t]>=fi){sr=age+t;break;}
+  const ba=calc.retAge, diff=sr&&ba?sr-ba:null;
+  document.getElementById('cBase').textContent=ba?ba+' yrs':'—';
+  document.getElementById('cScen').textContent=sr?sr+' yrs':'Not reached';
+  const de=document.getElementById('cDiff');
+  if(diff!==null){de.textContent=diff<0?Math.abs(diff)+' yrs earlier':diff===0?'No change':diff+' yrs later';de.style.color=diff<0?'var(--accent)':diff>0?'var(--danger)':'var(--text2)';}
+  else{de.textContent='—';de.style.color='var(--text2)';}
+  document.getElementById('scenResult').classList.add('show');
+  drawScenChart(Array.from({length:yrs+1},(_,i)=>age+i),calc.tot,tot,baseFI);
+}
+function drawScenChart(lbl,base,scen,fi){
+  if(scenChart){scenChart.destroy();scenChart=null;}
+  scenChart=new Chart(document.getElementById('scenChart').getContext('2d'),{
+    type:'line',
+    data:{labels:lbl,datasets:[
+      {label:'Base',data:base,borderColor:'#22d3ee',borderWidth:2,pointRadius:0,fill:false,tension:0.3},
+      {label:'Scenario',data:scen,borderColor:'#f59e0b',borderWidth:2,pointRadius:0,fill:false,tension:0.3,borderDash:[5,3]},
+      {label:'FI Target',data:Array(lbl.length).fill(fi),borderColor:'#f87171',borderDash:[6,4],borderWidth:1.5,pointRadius:0,fill:false,tension:0},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:'#8b91a8',font:{family:'DM Sans',size:11},usePointStyle:true}},
+        tooltip:{backgroundColor:'#1e2230',borderColor:'#2a2f3d',borderWidth:1,titleColor:'#e8eaf0',bodyColor:'#8b91a8',callbacks:{label:c=>` ${c.dataset.label}: ${fmt(c.parsed.y)}`}}},
+      scales:{x:{ticks:{color:'#555b70',font:{size:10}},grid:{color:'#2a2f3d55'}},y:{ticks:{color:'#555b70',font:{size:10},callback:v=>fmt(v)},grid:{color:'#2a2f3d55'}}}}
+  });
+}
+
+// ── EXPORT / RESET ────────────────────────────────────────────
+function exportData(){
+  const d={profile:P,assets,results:calc?{fi:calc.fi,retireAge:calc.retAge,cur:calc.cur}:null};
+  const b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='fi-planner.json';a.click();
+  notify('Data exported');
+}
+function resetAll(){
+  if(!confirm('Reset everything? This cannot be undone.'))return;
+  assets=DEF_ASSETS.map(a=>({...a}));
+  P={age:0,exp:0,wr:4,inf:3};
+  saved=false;inflAdj=false;hideVals=false;activeScen=null;calc=null;
+  document.getElementById('profileModal').classList.add('hidden');
+  document.getElementById('dashEmpty').style.display='flex';
+  document.getElementById('dashData').style.display='none';
+  document.getElementById('step1').style.display='block';
+  document.getElementById('step2').style.display='none';
+  document.getElementById('d1').className='dot active';
+  document.getElementById('d2').className='dot';
+  document.getElementById('s_age').value='';
+  document.getElementById('s_exp').value='';
+  document.getElementById('scenSelect').value='';
+  document.getElementById('scenResult').classList.remove('show');
+  document.getElementById('scenClearBtn').style.display='none';
+  renderAssets();
+  document.getElementById('setupOverlay').classList.remove('hidden');
+  notify('All data reset');
+}
+
+// ── NOTIFY ────────────────────────────────────────────────────
+let nt=null;
+function notify(msg){
+  const el=document.getElementById('notif');
+  el.textContent=msg;el.classList.add('show');
+  clearTimeout(nt);nt=setTimeout(()=>el.classList.remove('show'),2400);
+}
 </script>
 </body>
 </html>
