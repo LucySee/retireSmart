@@ -3,466 +3,192 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="theme-color" content="#0f1923" />
-<meta name="description" content="Retirement Simulator – Plan your financial independence with multi-asset projection" />
-<title>RetireSmart – Financial Independence Simulator</title>
+<meta name="theme-color" content="#0d1821" />
+<meta name="description" content="RetireSmart – Multi-asset retirement & FI simulator for Malaysians" />
+<title>RetireSmart – FI Simulator</title>
 <link rel="manifest" href="manifest.json" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
-  :root {
-    --bg: #0d1821;
-    --surface: #141f2e;
-    --surface2: #1a2840;
-    --surface3: #1f3050;
-    --accent: #e8b84b;
-    --accent2: #3ecf8e;
-    --accent3: #5b9cf6;
-    --danger: #f87171;
-    --text: #e8edf3;
-    --text2: #8fa3bc;
-    --text3: #5a7390;
-    --border: rgba(255,255,255,0.07);
-    --radius: 14px;
-    --radius-sm: 8px;
-    --shadow: 0 4px 24px rgba(0,0,0,0.4);
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    font-size: 15px;
-    line-height: 1.6;
-  }
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
 
-  /* TOP NAV */
-  .nav {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 16px 24px;
-    background: rgba(13,24,33,0.95);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    position: sticky; top: 0; z-index: 100;
-  }
-  .nav-brand {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.3rem; color: var(--accent);
-    display: flex; align-items: center; gap: 8px;
-  }
-  .nav-brand span { color: var(--text); font-size: 1rem; font-family: 'DM Sans', sans-serif; font-weight: 300; opacity: 0.7; }
-  .nav-actions { display: flex; gap: 10px; align-items: center; }
-  .btn-icon {
-    background: var(--surface2); border: 1px solid var(--border);
-    color: var(--text2); border-radius: var(--radius-sm);
-    padding: 8px 14px; cursor: pointer; font-family: 'DM Sans', sans-serif;
-    font-size: 13px; display: flex; align-items: center; gap: 6px;
-    transition: all 0.2s;
-  }
-  .btn-icon:hover { background: var(--surface3); color: var(--text); }
-  .btn-icon.active { background: var(--accent); color: #0d1821; font-weight: 600; border-color: var(--accent); }
+:root {
+  --bg: #0d1821;
+  --surface: #141f2e;
+  --surface2: #1a2840;
+  --surface3: #1f3050;
+  --accent: #e8b84b;
+  --accent2: #3ecf8e;
+  --accent3: #5b9cf6;
+  --danger: #f87171;
+  --text: #e8edf3;
+  --text2: #8fa3bc;
+  --text3: #5a7390;
+  --border: rgba(255,255,255,0.07);
+  --r: 14px;
+  --rs: 8px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6}
 
-  /* LAYOUT */
-  .app {
-    display: grid;
-    grid-template-columns: 380px 1fr;
-    min-height: calc(100vh - 57px);
-  }
-  @media (max-width: 900px) {
-    .app { grid-template-columns: 1fr; }
-    .sidebar { max-height: none; position: static; border-right: none; border-bottom: 1px solid var(--border); }
-  }
+.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:rgba(13,24,33,0.97);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;gap:10px}
+.brand{font-family:'DM Serif Display',Georgia,serif;font-size:1.25rem;color:var(--accent);display:flex;align-items:center;gap:6px;white-space:nowrap}
+.brand em{color:var(--text2);font-style:normal;font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:300}
+.nav-btns{display:flex;gap:8px;flex-shrink:0}
+.nbtn{background:var(--surface2);border:1px solid var(--border);color:var(--text2);border-radius:var(--rs);padding:7px 13px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;display:flex;align-items:center;gap:5px;transition:all .2s;white-space:nowrap}
+.nbtn:hover{background:var(--surface3);color:var(--text)}
+.nbtn.on{background:var(--accent);color:#0d1821;border-color:var(--accent);font-weight:600}
 
-  /* SIDEBAR */
-  .sidebar {
-    border-right: 1px solid var(--border);
-    overflow-y: auto;
-    position: sticky; top: 57px; height: calc(100vh - 57px);
-    padding: 20px;
-    display: flex; flex-direction: column; gap: 16px;
-  }
-  .sidebar::-webkit-scrollbar { width: 4px; }
-  .sidebar::-webkit-scrollbar-track { background: transparent; }
-  .sidebar::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 4px; }
+.app{display:grid;grid-template-columns:370px 1fr;min-height:calc(100vh - 53px)}
+@media(max-width:860px){.app{grid-template-columns:1fr}.sidebar{position:static;height:auto;max-height:none;border-right:none;border-bottom:1px solid var(--border)}}
 
-  /* SECTION HEADER */
-  .section-label {
-    font-size: 10px; font-weight: 600; letter-spacing: 1.5px;
-    text-transform: uppercase; color: var(--text3);
-    padding-bottom: 8px; border-bottom: 1px solid var(--border);
-    margin-bottom: 4px;
-  }
+.sidebar{border-right:1px solid var(--border);overflow-y:auto;position:sticky;top:53px;height:calc(100vh - 53px);padding:18px;display:flex;flex-direction:column;gap:14px}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px}
+.sec-lbl{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);padding-bottom:6px;border-bottom:1px solid var(--border)}
 
-  /* GLOBAL SETTINGS CARD */
-  .settings-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 18px;
-  }
-  .settings-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
-  }
-  .field { display: flex; flex-direction: column; gap: 5px; }
-  .field label {
-    font-size: 11px; font-weight: 500; color: var(--text2);
-    text-transform: uppercase; letter-spacing: 0.8px;
-  }
-  .field input, .field select {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    padding: 9px 12px;
-    width: 100%;
-    transition: border-color 0.2s;
-    outline: none;
-  }
-  .field input:focus, .field select:focus {
-    border-color: var(--accent);
-  }
-  .field input::placeholder { color: var(--text3); }
-  .field select option { background: var(--surface2); }
-  .field.full { grid-column: 1/-1; }
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.8px}
+.field input,.field select{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:8px 11px;width:100%;outline:none;transition:border-color .2s;-webkit-appearance:none;appearance:none}
+.field input:focus,.field select:focus{border-color:var(--accent)}
+.field input::placeholder{color:var(--text3)}
+.field.full{grid-column:1/-1}
 
-  /* ASSET PANEL */
-  .asset-panel {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-    transition: border-color 0.2s;
-  }
-  .asset-panel:hover { border-color: var(--surface3); }
-  .asset-panel.expanded { border-color: var(--accent); border-opacity: 0.3; }
-  .asset-header {
-    display: flex; align-items: center; gap: 10px;
-    padding: 14px 16px;
-    cursor: pointer;
-    user-select: none;
-  }
-  .asset-dot {
-    width: 10px; height: 10px;
-    border-radius: 50%; flex-shrink: 0;
-  }
-  .asset-name-input {
-    flex: 1;
-    background: transparent;
-    border: none;
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    outline: none;
-    cursor: text;
-  }
-  .asset-name-input::placeholder { color: var(--text3); }
-  .asset-badge {
-    font-size: 11px; color: var(--text3);
-    background: var(--surface2);
-    padding: 3px 8px; border-radius: 20px;
-    white-space: nowrap;
-  }
-  .asset-toggle { color: var(--text3); font-size: 12px; transition: transform 0.2s; }
-  .asset-toggle.open { transform: rotate(180deg); }
-  .asset-body {
-    padding: 0 16px 16px;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-    display: none;
-  }
-  .asset-body.open { display: grid; }
-  .asset-actions {
-    grid-column: 1/-1;
-    display: flex; justify-content: flex-end;
-  }
-  .btn-delete {
-    background: transparent; border: 1px solid var(--border);
-    color: var(--danger); border-radius: var(--radius-sm);
-    padding: 6px 12px; cursor: pointer; font-size: 12px;
-    font-family: 'DM Sans', sans-serif;
-    transition: all 0.2s;
-  }
-  .btn-delete:hover { background: rgba(248,113,113,0.1); border-color: var(--danger); }
+.apanel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:border-color .2s}
+.apanel.open{border-color:rgba(232,184,75,0.35)}
+.ahead{display:flex;align-items:center;gap:9px;padding:13px 14px;cursor:pointer;user-select:none}
+.adot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.aname{flex:1;background:transparent;border:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;outline:none;min-width:0}
+.abadge{font-size:11px;color:var(--text3);background:var(--surface2);padding:2px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+.achev{color:var(--text3);font-size:11px;transition:transform .2s;flex-shrink:0}
+.apanel.open .achev{transform:rotate(180deg)}
+.abody{display:none;padding:0 14px 14px;grid-template-columns:1fr 1fr;gap:9px}
+.apanel.open .abody{display:grid}
+.adel{grid-column:1/-1;display:flex;justify-content:flex-end}
+.delbtn{background:transparent;border:1px solid var(--border);color:var(--danger);border-radius:var(--rs);padding:5px 11px;cursor:pointer;font-size:11px;font-family:'DM Sans',sans-serif;transition:all .2s}
+.delbtn:hover{background:rgba(248,113,113,0.1);border-color:var(--danger)}
 
-  /* ADD ASSET */
-  .btn-add-asset {
-    background: transparent;
-    border: 1.5px dashed var(--surface3);
-    color: var(--text2);
-    border-radius: var(--radius);
-    padding: 14px;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    width: 100%;
-    text-align: center;
-    transition: all 0.2s;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-  }
-  .btn-add-asset:hover { border-color: var(--accent); color: var(--accent); }
+.addbtn{background:transparent;border:1.5px dashed var(--surface3);color:var(--text2);border-radius:var(--r);padding:13px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;width:100%;text-align:center;transition:all .2s}
+.addbtn:hover{border-color:var(--accent);color:var(--accent)}
+.priv-note{text-align:center;font-size:10px;color:var(--text3);padding:6px}
 
-  /* DASHBOARD */
-  .dashboard { padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 24px; }
+.dash{padding:20px;overflow-y:auto;display:flex;flex-direction:column;gap:20px}
 
-  /* KPI CARDS */
-  .kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-  @media (max-width: 1100px) { .kpi-row { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 700px) { .kpi-row { grid-template-columns: 1fr; } }
+.onboard{background:linear-gradient(135deg,rgba(232,184,75,.07),rgba(91,156,246,.07));border:1px solid rgba(232,184,75,.2);border-radius:var(--r);padding:28px;text-align:center}
+.onboard-icon{font-size:2.8rem;margin-bottom:12px}
+.onboard h2{font-family:'DM Serif Display',Georgia,serif;font-size:1.4rem;margin-bottom:8px}
+.onboard p{font-size:13px;color:var(--text2);max-width:300px;margin:0 auto 20px}
+.steps{display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
+.step{display:flex;flex-direction:column;align-items:center;gap:6px;max-width:90px}
+.snum{width:30px;height:30px;border-radius:50%;background:var(--accent);color:#0d1821;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}
+.step p{font-size:11px;color:var(--text2);text-align:center;line-height:1.4}
 
-  .kpi-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 20px;
-    position: relative; overflow: hidden;
-  }
-  .kpi-card::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  }
-  .kpi-card.green::before { background: var(--accent2); }
-  .kpi-card.yellow::before { background: var(--accent); }
-  .kpi-card.blue::before { background: var(--accent3); }
-  .kpi-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
-  .kpi-value {
-    font-family: 'DM Serif Display', serif;
-    font-size: 2rem; color: var(--text);
-    margin: 6px 0 4px;
-    transition: all 0.3s;
-  }
-  .kpi-value.blurred { filter: blur(8px); }
-  .kpi-sub { font-size: 12px; color: var(--text3); }
-  .kpi-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: rgba(62,207,142,0.12); color: var(--accent2);
-    border: 1px solid rgba(62,207,142,0.2);
-    border-radius: 20px; padding: 4px 12px;
-    font-size: 13px; font-weight: 600;
-    margin: 6px 0 4px;
-  }
-  .kpi-badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent2); animation: pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{ opacity:1; transform:scale(1); } 50%{ opacity:0.5; transform:scale(1.4); } }
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:1000px){.kpi-row{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.kpi-row{grid-template-columns:1fr}}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.kpi.g::before{background:var(--accent2)}
+.kpi.y::before{background:var(--accent)}
+.kpi.b::before{background:var(--accent3)}
+.kpi-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+.kpi-val{font-family:'DM Serif Display',Georgia,serif;font-size:1.85rem;color:var(--text);margin:5px 0 3px;transition:filter .3s}
+.kpi-val.blur{filter:blur(8px)}
+.kpi-sub{font-size:11px;color:var(--text3)}
+.retire-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(62,207,142,.12);color:var(--accent2);border:1px solid rgba(62,207,142,.2);border-radius:20px;padding:5px 13px;font-size:13px;font-weight:600;margin:5px 0 3px}
+.rbdot{width:7px;height:7px;border-radius:50%;background:var(--accent2);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.5)}}
 
-  /* CHART CARD */
-  .chart-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 20px;
-  }
-  .chart-header {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 16px; flex-wrap: wrap; gap: 10px;
-  }
-  .chart-title { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: var(--text); }
-  .chart-controls { display: flex; gap: 8px; flex-wrap: wrap; }
-  .toggle-btn {
-    background: var(--surface2); border: 1px solid var(--border);
-    color: var(--text2); border-radius: 20px;
-    padding: 5px 12px; cursor: pointer; font-size: 12px;
-    font-family: 'DM Sans', sans-serif;
-    transition: all 0.2s;
-  }
-  .toggle-btn:hover { color: var(--text); }
-  .toggle-btn.active { background: var(--accent); color: #0d1821; border-color: var(--accent); font-weight: 600; }
-  .chart-wrap { position: relative; height: 300px; }
+.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px}
+.chart-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.chart-ttl{font-family:'DM Serif Display',Georgia,serif;font-size:1.05rem}
+.toggles{display:flex;gap:6px;flex-wrap:wrap}
+.tbtn{background:var(--surface2);border:1px solid var(--border);color:var(--text2);border-radius:20px;padding:4px 12px;cursor:pointer;font-size:11px;font-family:'DM Sans',sans-serif;transition:all .2s}
+.tbtn:hover{color:var(--text)}
+.tbtn.on{background:var(--accent);color:#0d1821;border-color:var(--accent);font-weight:600}
+.canvas-wrap{position:relative;width:100%;height:280px}
+canvas{display:block}
+.chart-legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.leg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)}
+.leg-line{width:16px;height:3px;border-radius:2px;flex-shrink:0}
 
-  /* TABLE */
-  .table-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-  }
-  .table-card table { width: 100%; border-collapse: collapse; }
-  .table-card th {
-    padding: 12px 16px; text-align: left;
-    font-size: 11px; color: var(--text3); font-weight: 500;
-    text-transform: uppercase; letter-spacing: 0.8px;
-    background: var(--surface2);
-    border-bottom: 1px solid var(--border);
-  }
-  .table-card td {
-    padding: 12px 16px; font-size: 13px; color: var(--text2);
-    border-bottom: 1px solid var(--border);
-  }
-  .table-card tr:last-child td { border-bottom: none; }
-  .table-card tr:hover td { background: var(--surface2); }
-  .td-name { display: flex; align-items: center; gap: 8px; color: var(--text) !important; font-weight: 500; }
-  .td-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .td-projected { color: var(--accent2) !important; font-weight: 500; }
-  .td-blur { filter: blur(6px); transition: filter 0.2s; }
+.info-row{display:flex;align-items:center;gap:10px;background:var(--surface2);border-radius:var(--rs);padding:11px 14px;flex-wrap:wrap}
+.info-lbl{font-size:12px;color:var(--text2);flex:1;min-width:100px}
+.inf-toggles{display:flex;gap:6px}
 
-  /* SCENARIO PANEL */
-  .scenario-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 20px;
-  }
-  .scenario-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-  .scenario-title { font-family: 'DM Serif Display', serif; font-size: 1.1rem; }
-  .scenario-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-  .scenario-chip {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 20px; padding: 6px 14px;
-    font-size: 12px; cursor: pointer;
-    color: var(--text2); transition: all 0.2s;
-  }
-  .scenario-chip:hover { border-color: var(--accent3); color: var(--accent3); }
-  .scenario-chip.active { background: rgba(91,156,246,0.12); border-color: var(--accent3); color: var(--accent3); }
-  .scenario-result {
-    background: var(--surface2); border-radius: var(--radius-sm);
-    padding: 14px; display: none;
-  }
-  .scenario-result.show { display: block; }
-  .scenario-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .compare-item { text-align: center; }
-  .compare-label { font-size: 11px; color: var(--text3); text-transform: uppercase; margin-bottom: 4px; }
-  .compare-val { font-family: 'DM Serif Display', serif; font-size: 1.4rem; }
-  .compare-val.base { color: var(--text2); }
-  .compare-val.scenario { color: var(--accent3); }
-  .compare-diff { font-size: 11px; margin-top: 4px; }
+.tbl-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.tbl-card table{width:100%;border-collapse:collapse}
+.tbl-card th{padding:10px 14px;text-align:left;font-size:10px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.8px;background:var(--surface2);border-bottom:1px solid var(--border)}
+.tbl-card td{padding:11px 14px;font-size:13px;color:var(--text2);border-bottom:1px solid var(--border)}
+.tbl-card tr:last-child td{border-bottom:none}
+.tbl-card tr:hover td{background:rgba(255,255,255,.02)}
+.tname{display:flex;align-items:center;gap:7px;color:var(--text);font-weight:500}
+.tdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.tproj{color:var(--accent2);font-weight:500}
+.vblur{filter:blur(6px);transition:filter .2s}
 
-  /* INFLATION ROW */
-  .inflation-row {
-    display: flex; align-items: center; gap: 12px;
-    background: var(--surface2); border-radius: var(--radius-sm);
-    padding: 12px 14px; flex-wrap: wrap;
-  }
-  .inflation-label { font-size: 13px; color: var(--text2); flex: 1; min-width: 120px; }
-  .inflation-field { display: flex; align-items: center; gap: 8px; }
-  .inflation-field input {
-    width: 70px; padding: 6px 10px;
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius-sm); color: var(--text);
-    font-family: 'DM Sans', sans-serif; font-size: 13px; outline: none;
-  }
-  .inflation-field input:focus { border-color: var(--accent); }
-  .inflation-toggle { display: flex; gap: 6px; }
+.sc-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px}
+.sc-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.sc-ttl{font-family:'DM Serif Display',Georgia,serif;font-size:1.05rem}
+.sc-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
+.chip{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:5px 13px;font-size:11px;cursor:pointer;color:var(--text2);transition:all .2s;font-family:'DM Sans',sans-serif}
+.chip:hover{border-color:var(--accent3);color:var(--accent3)}
+.chip.on{background:rgba(91,156,246,.12);border-color:var(--accent3);color:var(--accent3)}
+.sc-result{background:var(--surface2);border-radius:var(--rs);padding:14px;display:none}
+.sc-result.show{display:block}
+.sc-cmp{display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:center}
+.cmp-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px}
+.cmp-val{font-family:'DM Serif Display',Georgia,serif;font-size:1.4rem}
+.cmp-val.base{color:var(--text2)}
+.cmp-val.scen{color:var(--accent3)}
+.cmp-diff{font-size:11px;margin-top:3px}
 
-  /* MODAL */
-  .modal-overlay {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
-    z-index: 200; display: none;
-    align-items: center; justify-content: center; padding: 20px;
-  }
-  .modal-overlay.show { display: flex; }
-  .modal {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 28px; max-width: 440px; width: 100%;
-    animation: modalIn 0.2s ease;
-  }
-  @keyframes modalIn { from{ transform:scale(0.95); opacity:0; } to{ transform:scale(1); opacity:1; } }
-  .modal-title { font-family: 'DM Serif Display', serif; font-size: 1.3rem; margin-bottom: 6px; }
-  .modal-sub { font-size: 13px; color: var(--text2); margin-bottom: 20px; }
-  .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
-  .btn-primary {
-    background: var(--accent); color: #0d1821;
-    border: none; border-radius: var(--radius-sm);
-    padding: 10px 20px; cursor: pointer;
-    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
-    transition: opacity 0.2s;
-  }
-  .btn-primary:hover { opacity: 0.85; }
-  .btn-secondary {
-    background: var(--surface2); color: var(--text2);
-    border: 1px solid var(--border); border-radius: var(--radius-sm);
-    padding: 10px 20px; cursor: pointer;
-    font-family: 'DM Sans', sans-serif; font-size: 14px;
-    transition: all 0.2s;
-  }
-  .btn-secondary:hover { color: var(--text); }
-
-  /* ONBOARDING */
-  .onboarding {
-    background: linear-gradient(135deg, rgba(232,184,75,0.06), rgba(91,156,246,0.06));
-    border: 1px solid rgba(232,184,75,0.2);
-    border-radius: var(--radius); padding: 24px; text-align: center;
-  }
-  .onboarding-icon { font-size: 2.5rem; margin-bottom: 12px; }
-  .onboarding h2 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; margin-bottom: 8px; }
-  .onboarding p { font-size: 13px; color: var(--text2); max-width: 320px; margin: 0 auto 16px; }
-  .steps { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
-  .step { display: flex; flex-direction: column; align-items: center; gap: 6px; max-width: 100px; }
-  .step-num {
-    width: 32px; height: 32px; border-radius: 50%;
-    background: var(--accent); color: #0d1821;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 600; font-size: 13px;
-  }
-  .step p { font-size: 11px; color: var(--text2); text-align: center; }
-
-  /* FOOTER NOTE */
-  .footer-note {
-    text-align: center; font-size: 11px; color: var(--text3);
-    padding: 12px; border-top: 1px solid var(--border);
-  }
-
-  /* EMPTY STATE */
-  .empty-chart {
-    height: 300px; display: flex; align-items: center; justify-content: center;
-    color: var(--text3); font-size: 14px; flex-direction: column; gap: 8px;
-  }
-
-  /* RESPONSIVE */
-  @media (max-width: 600px) {
-    .kpi-value { font-size: 1.5rem; }
-    .chart-wrap { height: 220px; }
-  }
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+.overlay.show{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:26px;max-width:400px;width:100%;animation:mIn .2s ease}
+@keyframes mIn{from{transform:scale(.95);opacity:0}to{transform:scale(1);opacity:1}}
+.m-ttl{font-family:'DM Serif Display',Georgia,serif;font-size:1.2rem;margin-bottom:5px}
+.m-sub{font-size:13px;color:var(--text2);margin-bottom:18px}
+.m-btns{display:flex;justify-content:flex-end;gap:9px}
+.btn-p{background:var(--accent);color:#0d1821;border:none;border-radius:var(--rs);padding:9px 18px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600}
+.btn-s{background:var(--surface2);color:var(--text2);border:1px solid var(--border);border-radius:var(--rs);padding:9px 18px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px}
+.btn-s:hover{color:var(--text)}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav class="nav">
-  <div class="nav-brand">
-    ◈ RetireSmart <span>/ FI Simulator</span>
-  </div>
-  <div class="nav-actions">
-    <button class="btn-icon" id="btnHide" onclick="toggleHide()">👁 Hide Values</button>
-    <button class="btn-icon" id="btnReset" onclick="confirmReset()">↺ Reset</button>
+  <div class="brand">◈ RetireSmart <em>/ FI Simulator</em></div>
+  <div class="nav-btns">
+    <button class="nbtn" id="btnHide" onclick="toggleHide()">👁 Hide</button>
+    <button class="nbtn" onclick="confirmReset()">↺ Reset</button>
   </div>
 </nav>
 
-<!-- RESET MODAL -->
-<div class="modal-overlay" id="resetModal">
+<div class="overlay" id="resetModal">
   <div class="modal">
-    <div class="modal-title">Reset Everything?</div>
-    <div class="modal-sub">All your entered data will be cleared. This cannot be undone.</div>
-    <div class="modal-actions">
-      <button class="btn-secondary" onclick="closeModal()">Cancel</button>
-      <button class="btn-primary" onclick="doReset()">Yes, Reset</button>
+    <div class="m-ttl">Reset Everything?</div>
+    <div class="m-sub">All entered data will be cleared. This cannot be undone.</div>
+    <div class="m-btns">
+      <button class="btn-s" onclick="closeModal()">Cancel</button>
+      <button class="btn-p" onclick="doReset()">Yes, Reset</button>
     </div>
   </div>
 </div>
 
-<!-- APP -->
 <div class="app">
-
-  <!-- SIDEBAR -->
   <div class="sidebar">
-
-    <!-- GLOBAL SETTINGS -->
-    <div class="section-label">Your Profile</div>
-    <div class="settings-card">
-      <div class="settings-grid">
+    <div class="sec-lbl">Your Profile</div>
+    <div class="card">
+      <div class="grid2">
         <div class="field">
           <label>Current Age</label>
           <input type="number" id="currentAge" placeholder="e.g. 30" min="18" max="80" oninput="calculate()" />
         </div>
         <div class="field">
           <label>Target Retire Age</label>
-          <input type="number" id="targetAge" placeholder="e.g. 55" min="30" max="90" oninput="calculate()" />
+          <input type="number" id="targetAge" placeholder="e.g. 55" min="25" max="90" oninput="calculate()" />
         </div>
         <div class="field full">
           <label>Monthly Retirement Expense (RM)</label>
@@ -470,713 +196,608 @@
         </div>
         <div class="field">
           <label>Withdrawal Rate (%)</label>
-          <input type="number" id="withdrawalRate" placeholder="4" value="4" min="1" max="10" step="0.1" oninput="calculate()" />
+          <input type="number" id="withdrawalRate" value="4" min="1" max="20" step="0.1" oninput="calculate()" />
         </div>
         <div class="field">
           <label>Inflation Rate (%)</label>
-          <input type="number" id="inflationRate" placeholder="3" value="3" min="0" max="15" step="0.1" oninput="calculate()" />
+          <input type="number" id="inflationRate" value="3" min="0" max="15" step="0.1" oninput="calculate()" />
         </div>
       </div>
     </div>
 
-    <!-- ASSETS -->
-    <div class="section-label">Assets</div>
+    <div class="sec-lbl">Assets</div>
     <div id="assetPanels"></div>
-    <button class="btn-add-asset" onclick="addAsset()">+ Add Asset</button>
-
-    <div class="footer-note">All data is stored locally in your browser only. Nothing is sent to any server.</div>
+    <button class="addbtn" onclick="addAsset()">＋ Add Asset</button>
+    <div class="priv-note">🔒 All data stays in your browser only. Nothing is sent anywhere.</div>
   </div>
 
-  <!-- DASHBOARD -->
-  <div class="dashboard">
-
-    <!-- ONBOARDING -->
-    <div class="onboarding" id="onboarding">
-      <div class="onboarding-icon">📊</div>
+  <div class="dash">
+    <div class="onboard" id="onboard">
+      <div class="onboard-icon">📊</div>
       <h2>Welcome to RetireSmart</h2>
-      <p>Enter your details on the left to see your personalised retirement projection.</p>
+      <p>Fill in your profile and assets on the left to instantly see your retirement projection.</p>
       <div class="steps">
-        <div class="step"><div class="step-num">1</div><p>Enter your age & expenses</p></div>
-        <div class="step"><div class="step-num">2</div><p>Fill in each asset panel</p></div>
-        <div class="step"><div class="step-num">3</div><p>See your retirement age instantly</p></div>
+        <div class="step"><div class="snum">1</div><p>Enter your age &amp; monthly expenses</p></div>
+        <div class="step"><div class="snum">2</div><p>Tap each asset to fill in details</p></div>
+        <div class="step"><div class="snum">3</div><p>Your retirement age appears instantly</p></div>
       </div>
     </div>
 
-    <!-- KPI ROW -->
     <div class="kpi-row" id="kpiRow" style="display:none">
-      <div class="kpi-card green">
-        <div class="kpi-label">Retirement Age</div>
-        <div id="kpiRetireAge" class="kpi-badge"><span class="dot"></span><span id="kpiRetireAgeVal">–</span></div>
-        <div class="kpi-sub" id="kpiYearsLeft">Enter your details to calculate</div>
+      <div class="kpi g">
+        <div class="kpi-lbl">Retirement Age</div>
+        <div class="retire-badge"><span class="rbdot"></span><span id="kRetire">–</span></div>
+        <div class="kpi-sub" id="kYears">Enter your details</div>
       </div>
-      <div class="kpi-card yellow">
-        <div class="kpi-label">FI Target (RM)</div>
-        <div class="kpi-value" id="kpiFI">–</div>
+      <div class="kpi y">
+        <div class="kpi-lbl">FI Target</div>
+        <div class="kpi-val" id="kFI">–</div>
         <div class="kpi-sub">Annual expense ÷ withdrawal rate</div>
       </div>
-      <div class="kpi-card blue">
-        <div class="kpi-label">Portfolio Today (RM)</div>
-        <div class="kpi-value" id="kpiCurrent">–</div>
-        <div class="kpi-sub" id="kpiProgress">across all assets</div>
+      <div class="kpi b">
+        <div class="kpi-lbl">Portfolio Today</div>
+        <div class="kpi-val" id="kCurrent">–</div>
+        <div class="kpi-sub" id="kPct">across all assets</div>
       </div>
     </div>
 
-    <!-- INFLATION TOGGLE -->
-    <div class="inflation-row" id="inflationRow" style="display:none">
-      <div class="inflation-label">📈 Projection View</div>
-      <div class="inflation-toggle">
-        <button class="toggle-btn active" id="btnNominal" onclick="setInflationMode('nominal')">Nominal</button>
-        <button class="toggle-btn" id="btnReal" onclick="setInflationMode('real')">Inflation Adjusted</button>
+    <div class="info-row" id="infoRow" style="display:none">
+      <div class="info-lbl">📈 Projection view</div>
+      <div class="inf-toggles">
+        <button class="tbtn on" id="btnNom" onclick="setInflation('nominal')">Nominal</button>
+        <button class="tbtn" id="btnReal" onclick="setInflation('real')">Inflation Adjusted</button>
       </div>
     </div>
 
-    <!-- CHART -->
     <div class="chart-card" id="chartCard" style="display:none">
-      <div class="chart-header">
-        <div class="chart-title">Portfolio Projection</div>
-        <div class="chart-controls">
-          <button class="toggle-btn active" id="btnCombined" onclick="setChartMode('combined')">Combined</button>
-          <button class="toggle-btn" id="btnBreakdown" onclick="setChartMode('breakdown')">Asset Breakdown</button>
+      <div class="chart-hdr">
+        <div class="chart-ttl">Portfolio Projection</div>
+        <div class="toggles">
+          <button class="tbtn on" id="btnCombined" onclick="setChartMode('combined')">Combined</button>
+          <button class="tbtn" id="btnBreakdown" onclick="setChartMode('breakdown')">Breakdown</button>
         </div>
       </div>
-      <div class="chart-wrap">
-        <canvas id="mainChart"></canvas>
+      <div class="canvas-wrap" id="canvasWrap">
+        <canvas id="myChart"></canvas>
       </div>
+      <div class="chart-legend" id="chartLegend"></div>
     </div>
 
-    <!-- ASSET TABLE -->
-    <div class="table-card" id="tableCard" style="display:none">
+    <div class="tbl-card" id="tblCard" style="display:none">
       <table>
         <thead>
           <tr>
             <th>Asset</th>
-            <th>Current Value (RM)</th>
-            <th>Projected @ Retirement (RM)</th>
-            <th>Return Rate</th>
+            <th>Current (RM)</th>
+            <th>At Retirement (RM)</th>
+            <th>Return</th>
             <th>Type</th>
           </tr>
         </thead>
-        <tbody id="assetTableBody"></tbody>
+        <tbody id="tblBody"></tbody>
       </table>
     </div>
 
-    <!-- SCENARIO -->
-    <div class="scenario-card" id="scenarioCard" style="display:none">
-      <div class="scenario-header">
-        <div class="scenario-title">Scenario Comparison</div>
-        <button class="toggle-btn" onclick="clearScenario()" id="clearScenBtn" style="display:none">✕ Clear</button>
+    <div class="sc-card" id="scCard" style="display:none">
+      <div class="sc-hdr">
+        <div class="sc-ttl">Scenario Comparison</div>
+        <button class="tbtn" id="scClearBtn" onclick="clearScenario()" style="display:none">✕ Clear</button>
       </div>
-      <div class="scenario-list" id="scenarioList"></div>
-      <div class="scenario-result" id="scenarioResult">
-        <div class="scenario-compare">
-          <div class="compare-item">
-            <div class="compare-label">Base Plan</div>
-            <div class="compare-val base" id="scBase">–</div>
-            <div class="compare-diff" id="scBaseAge" style="color:var(--text3)"></div>
+      <div class="sc-chips" id="scChips"></div>
+      <div class="sc-result" id="scResult">
+        <div class="sc-cmp">
+          <div>
+            <div class="cmp-lbl">Base Plan</div>
+            <div class="cmp-val base" id="scBase">–</div>
+            <div class="cmp-diff" id="scBaseSub" style="color:var(--text3)"></div>
           </div>
-          <div class="compare-item">
-            <div class="compare-label">Scenario</div>
-            <div class="compare-val scenario" id="scScenario">–</div>
-            <div class="compare-diff" id="scDiff"></div>
+          <div>
+            <div class="cmp-lbl">With Scenario</div>
+            <div class="cmp-val scen" id="scScen">–</div>
+            <div class="cmp-diff" id="scDiff"></div>
           </div>
         </div>
       </div>
     </div>
-
-  </div><!-- end dashboard -->
-</div><!-- end app -->
+  </div>
+</div>
 
 <script>
-// ============================================================
-// STATE
-// ============================================================
-const COLORS = ['#e8b84b','#3ecf8e','#5b9cf6','#f87171','#a78bfa','#fb923c','#38bdf8','#4ade80'];
-let assets = [];
-let inflationMode = 'nominal';
-let chartMode = 'combined';
-let hideValues = false;
-let activeScenario = null;
-let mainChartInstance = null;
-let assetIdCounter = 0;
-
-const DEFAULT_ASSETS = [
-  { name: 'EPF', type: 'Stable', returnRate: 5.5, frequency: 'monthly' },
-  { name: 'Fixed Deposit', type: 'Stable', returnRate: 3.5, frequency: 'monthly' },
-  { name: 'Savings', type: 'Cash', returnRate: 2, frequency: 'monthly' },
-  { name: 'Stocks', type: 'Volatile', returnRate: 8, frequency: 'monthly' },
-  { name: 'ETF', type: 'Volatile', returnRate: 7, frequency: 'monthly' },
+const COLORS=['#e8b84b','#3ecf8e','#5b9cf6','#f87171','#a78bfa','#fb923c','#38bdf8','#4ade80'];
+const DEFAULTS=[
+  {name:'EPF',type:'Stable',ret:5.5,freq:'monthly'},
+  {name:'Fixed Deposit',type:'Stable',ret:3.5,freq:'monthly'},
+  {name:'Savings',type:'Cash',ret:2.0,freq:'monthly'},
+  {name:'Stocks',type:'Volatile',ret:8.0,freq:'monthly'},
+  {name:'ETF',type:'Volatile',ret:7.0,freq:'monthly'},
+];
+const SCENARIOS=[
+  {id:'etf_boost',label:'📈 Boost ETF +50%',desc:'Increase ETF contribution by 50%'},
+  {id:'stock_crash',label:'📉 Stock Crash -20%',desc:'One-time 20% drop in stock value'},
+  {id:'stock_low',label:'🐌 Stocks at 4%',desc:'Reduce stock return rate to 4%'},
+  {id:'epf_stop55',label:'🔒 Stop EPF at 55',desc:'EPF contributions end at age 55'},
+  {id:'shift_sav',label:'🔄 Savings → ETF',desc:'Move savings balance into ETF'},
 ];
 
-const SCENARIOS = [
-  { id: 'etf_boost', label: '📈 ETF Contribution +50%', desc: 'Increase ETF contribution by 50%' },
-  { id: 'stock_crash', label: '📉 Stock Market Crash -20%', desc: 'One-time 20% reduction in stock value' },
-  { id: 'stock_low', label: '🐌 Stocks at 4% Return', desc: 'Reduce stock return to 4%' },
-  { id: 'early_epf', label: '🔒 Stop EPF at 55', desc: 'EPF contributions stop at age 55' },
-  { id: 'shift_savings', label: '🔄 Shift Savings → ETF', desc: 'Move savings balance into ETF' },
-];
+let assets=[],aid=0,inflMode='nominal',chartMode='combined';
+let hidden=false,activeScen=null,chartData=null;
 
-// ============================================================
-// INIT
-// ============================================================
-window.onload = () => {
-  DEFAULT_ASSETS.forEach(a => addAsset(a));
-  loadState();
+window.addEventListener('DOMContentLoaded',()=>{
+  DEFAULTS.forEach(d=>addAsset(d));
   calculate();
-};
+});
 
-// ============================================================
-// ASSET MANAGEMENT
-// ============================================================
-function addAsset(defaults = {}) {
-  const id = ++assetIdCounter;
-  const color = COLORS[(id - 1) % COLORS.length];
-  const asset = {
-    id,
-    name: defaults.name || 'New Asset',
-    currentAmount: defaults.currentAmount || '',
-    returnRate: defaults.returnRate !== undefined ? defaults.returnRate : '',
-    contribution: defaults.contribution || '',
-    frequency: defaults.frequency || 'monthly',
-    startAge: defaults.startAge || '',
-    endAge: defaults.endAge || '',
-    type: defaults.type || 'Stable',
-    color,
-  };
-  assets.push(asset);
+function addAsset(d={}){
+  const id=++aid;
+  assets.push({
+    id,color:COLORS[(id-1)%COLORS.length],
+    name:d.name||'New Asset',
+    amount:d.amount||'',
+    ret:d.ret!==undefined?d.ret:'',
+    contrib:d.contrib||'',
+    freq:d.freq||'monthly',
+    startAge:d.startAge||'',
+    endAge:d.endAge||'',
+    type:d.type||'Stable',
+  });
   renderAssets();
 }
 
-function removeAsset(id) {
-  assets = assets.filter(a => a.id !== id);
-  renderAssets();
+function delAsset(id){
+  assets=assets.filter(a=>a.id!==id);
+  renderAssets();calculate();
+}
+
+function setA(id,k,v){
+  const a=assets.find(x=>x.id===id);
+  if(!a)return;
+  a[k]=v;
+  if(k==='amount'){
+    const b=document.getElementById('ab'+id);
+    if(b)b.textContent=v?'RM '+fmt(+v):'Not set';
+  }
   calculate();
 }
 
-function renderAssets() {
-  const container = document.getElementById('assetPanels');
-  container.innerHTML = '';
-  assets.forEach(asset => {
-    const div = document.createElement('div');
-    div.className = 'asset-panel';
-    div.id = `panel-${asset.id}`;
-    div.innerHTML = `
-      <div class="asset-header" onclick="togglePanel(${asset.id})">
-        <div class="asset-dot" style="background:${asset.color}"></div>
-        <input class="asset-name-input" type="text" value="${asset.name}"
+function renderAssets(){
+  const c=document.getElementById('assetPanels');
+  c.innerHTML='';
+  assets.forEach(a=>{
+    const el=document.createElement('div');
+    el.className='apanel';
+    el.id='ap'+a.id;
+    el.innerHTML=`
+      <div class="ahead" onclick="toggleA(${a.id})">
+        <div class="adot" style="background:${a.color}"></div>
+        <input class="aname" type="text" value="${esc(a.name)}"
           onclick="event.stopPropagation()"
-          onchange="updateAsset(${asset.id},'name',this.value)" />
-        <span class="asset-badge" id="badge-${asset.id}">${asset.currentAmount ? 'RM '+fmt(parseFloat(asset.currentAmount)) : 'Not set'}</span>
-        <span class="asset-toggle" id="toggle-${asset.id}">▼</span>
+          onchange="setA(${a.id},'name',this.value)"/>
+        <span class="abadge" id="ab${a.id}">${a.amount?'RM '+fmt(+a.amount):'Not set'}</span>
+        <span class="achev">▼</span>
       </div>
-      <div class="asset-body" id="body-${asset.id}">
+      <div class="abody">
         <div class="field">
           <label>Current Amount (RM)</label>
-          <input type="number" placeholder="0" value="${asset.currentAmount}"
-            onchange="updateAsset(${asset.id},'currentAmount',this.value)" oninput="updateAsset(${asset.id},'currentAmount',this.value)" min="0" />
+          <input type="number" placeholder="0" value="${a.amount}" oninput="setA(${a.id},'amount',this.value)" min="0"/>
         </div>
         <div class="field">
           <label>Annual Return (%)</label>
-          <input type="number" placeholder="e.g. 5" value="${asset.returnRate}"
-            onchange="updateAsset(${asset.id},'returnRate',this.value)" oninput="updateAsset(${asset.id},'returnRate',this.value)" min="0" max="50" step="0.1" />
+          <input type="number" placeholder="e.g. 5" value="${a.ret}" oninput="setA(${a.id},'ret',this.value)" min="0" max="50" step="0.1"/>
         </div>
         <div class="field">
           <label>Contribution (RM)</label>
-          <input type="number" placeholder="0" value="${asset.contribution}"
-            onchange="updateAsset(${asset.id},'contribution',this.value)" oninput="updateAsset(${asset.id},'contribution',this.value)" min="0" />
+          <input type="number" placeholder="0" value="${a.contrib}" oninput="setA(${a.id},'contrib',this.value)" min="0"/>
         </div>
         <div class="field">
           <label>Frequency</label>
-          <select onchange="updateAsset(${asset.id},'frequency',this.value)">
-            <option value="monthly" ${asset.frequency==='monthly'?'selected':''}>Monthly</option>
-            <option value="quarterly" ${asset.frequency==='quarterly'?'selected':''}>Quarterly</option>
-            <option value="yearly" ${asset.frequency==='yearly'?'selected':''}>Yearly</option>
+          <select onchange="setA(${a.id},'freq',this.value)">
+            <option value="monthly" ${a.freq==='monthly'?'selected':''}>Monthly</option>
+            <option value="quarterly" ${a.freq==='quarterly'?'selected':''}>Quarterly</option>
+            <option value="yearly" ${a.freq==='yearly'?'selected':''}>Yearly</option>
           </select>
         </div>
         <div class="field">
           <label>Start Age (optional)</label>
-          <input type="number" placeholder="Default: current" value="${asset.startAge}"
-            onchange="updateAsset(${asset.id},'startAge',this.value)" oninput="updateAsset(${asset.id},'startAge',this.value)" min="18" max="80" />
+          <input type="number" placeholder="Default: current" value="${a.startAge}" oninput="setA(${a.id},'startAge',this.value)" min="18" max="80"/>
         </div>
         <div class="field">
           <label>End Age (optional)</label>
-          <input type="number" placeholder="No end" value="${asset.endAge}"
-            onchange="updateAsset(${asset.id},'endAge',this.value)" oninput="updateAsset(${asset.id},'endAge',this.value)" min="18" max="100" />
+          <input type="number" placeholder="No end" value="${a.endAge}" oninput="setA(${a.id},'endAge',this.value)" min="18" max="100"/>
         </div>
         <div class="field">
           <label>Asset Type</label>
-          <select onchange="updateAsset(${asset.id},'type',this.value)">
-            <option value="Stable" ${asset.type==='Stable'?'selected':''}>Stable (EPF, FD)</option>
-            <option value="Volatile" ${asset.type==='Volatile'?'selected':''}>Volatile (Stocks, ETF)</option>
-            <option value="Cash" ${asset.type==='Cash'?'selected':''}>Cash (Savings)</option>
+          <select onchange="setA(${a.id},'type',this.value)">
+            <option value="Stable" ${a.type==='Stable'?'selected':''}>Stable (EPF, FD)</option>
+            <option value="Volatile" ${a.type==='Volatile'?'selected':''}>Volatile (Stocks, ETF)</option>
+            <option value="Cash" ${a.type==='Cash'?'selected':''}>Cash (Savings)</option>
           </select>
         </div>
-        <div class="asset-actions">
-          <button class="btn-delete" onclick="removeAsset(${asset.id})">✕ Remove</button>
+        <div class="adel">
+          <button class="delbtn" onclick="delAsset(${a.id})">✕ Remove</button>
         </div>
-      </div>
-    `;
-    container.appendChild(div);
+      </div>`;
+    c.appendChild(el);
   });
 }
 
-function togglePanel(id) {
-  const body = document.getElementById(`body-${id}`);
-  const toggle = document.getElementById(`toggle-${id}`);
-  const panel = document.getElementById(`panel-${id}`);
-  const isOpen = body.classList.contains('open');
-  body.classList.toggle('open', !isOpen);
-  toggle.classList.toggle('open', !isOpen);
-  panel.classList.toggle('expanded', !isOpen);
+function toggleA(id){
+  const p=document.getElementById('ap'+id);
+  if(p)p.classList.toggle('open');
 }
 
-function updateAsset(id, field, value) {
-  const asset = assets.find(a => a.id === id);
-  if (!asset) return;
-  asset[field] = value;
-  const badge = document.getElementById(`badge-${id}`);
-  if (badge && field === 'currentAmount') {
-    badge.textContent = value ? 'RM ' + fmt(parseFloat(value)) : 'Not set';
-  }
-  calculate();
+function annualPMT(a){
+  const c=+a.contrib||0;
+  return a.freq==='monthly'?c*12:a.freq==='quarterly'?c*4:c;
 }
 
-// ============================================================
-// CALCULATION ENGINE
-// ============================================================
-function getAnnualContribution(asset) {
-  const c = parseFloat(asset.contribution) || 0;
-  if (asset.frequency === 'monthly') return c * 12;
-  if (asset.frequency === 'quarterly') return c * 4;
-  return c;
-}
-
-function getEffectiveRate(nominalRate) {
-  const r = (parseFloat(nominalRate) || 0) / 100;
-  if (inflationMode === 'real') {
-    const inf = (parseFloat(document.getElementById('inflationRate').value) || 3) / 100;
-    return (1 + r) / (1 + inf) - 1;
+function effRate(nominal){
+  const r=(+nominal||0)/100;
+  if(inflMode==='real'){
+    const inf=(+document.getElementById('inflationRate').value||3)/100;
+    return(1+r)/(1+inf)-1;
   }
   return r;
 }
 
-function calcAssetAtYear(asset, fromAge, toAge, scenarioOverrides = {}) {
-  let P = parseFloat(asset.currentAmount) || 0;
-  const override = scenarioOverrides[asset.id] || {};
-
-  // Scenario: stock crash (one-time)
-  if (override.crash) P *= (1 - override.crash);
-  // Scenario: shift savings → ETF
-  if (override.addBalance) P += override.addBalance;
-
-  const nominalRate = override.returnRate !== undefined ? override.returnRate : (parseFloat(asset.returnRate) || 0);
-  const r = getEffectiveRate(nominalRate);
-  const years = toAge - fromAge;
-
-  let values = [];
-  let current = P;
-
-  for (let y = 0; y <= years; y++) {
-    const age = fromAge + y;
-    // Check if contributing this year
-    const assetStart = parseFloat(asset.startAge) || fromAge;
-    const assetEnd = override.endAge !== undefined ? override.endAge : (parseFloat(asset.endAge) || 999);
-    const contributing = age >= assetStart && age < assetEnd;
-
-    let annualPMT = contributing ? getAnnualContribution(asset) : 0;
-    if (override.contributionMultiplier && contributing) annualPMT *= override.contributionMultiplier;
-
-    if (y === 0) { values.push(current); continue; }
-    current = current * (1 + r) + annualPMT;
-    values.push(Math.max(0, current));
+function projectAsset(a,fromAge,toAge,ov={}){
+  let P=+a.amount||0;
+  if(ov.crash)P*=(1-ov.crash);
+  if(ov.addBal)P+=ov.addBal;
+  const nomR=ov.ret!==undefined?ov.ret:(+a.ret||0);
+  const r=effRate(nomR);
+  const endC=ov.endAge!==undefined?ov.endAge:(+a.endAge||999);
+  const startC=+a.startAge||fromAge;
+  const yrs=toAge-fromAge;
+  const vals=[];
+  let cur=P;
+  for(let y=0;y<=yrs;y++){
+    if(y>0){
+      const age=fromAge+y;
+      const contributing=age>=startC&&age<endC;
+      const pmt=contributing?(ov.contribMult?annualPMT(a)*ov.contribMult:annualPMT(a)):0;
+      cur=cur*(1+r)+pmt;
+    }
+    vals.push(Math.max(0,cur));
   }
-  return values;
+  return vals;
 }
 
-function calculate(scenarioOverrides = null) {
-  const currentAge = parseInt(document.getElementById('currentAge').value) || 0;
-  const targetAge = parseInt(document.getElementById('targetAge').value) || 80;
-  const monthlyExpense = parseFloat(document.getElementById('monthlyExpense').value) || 0;
-  const withdrawalRate = (parseFloat(document.getElementById('withdrawalRate').value) || 4) / 100;
+function calculate(ov=null){
+  const cAge=+document.getElementById('currentAge').value||0;
+  const tAge=+document.getElementById('targetAge').value||80;
+  const mExp=+document.getElementById('monthlyExpense').value||0;
+  const wRate=(+document.getElementById('withdrawalRate').value||4)/100;
 
-  const hasData = currentAge > 0 && assets.some(a => parseFloat(a.currentAmount) > 0 || parseFloat(a.contribution) > 0);
+  const hasData=cAge>0&&assets.some(a=>+a.amount>0||+a.contrib>0);
 
-  document.getElementById('onboarding').style.display = hasData ? 'none' : 'block';
-
-  if (!hasData) {
-    ['kpiRow','inflationRow','chartCard','tableCard','scenarioCard'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.style.display = 'none';
-    });
-    return;
-  }
-
-  ['kpiRow','inflationRow','chartCard','tableCard','scenarioCard'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.style.display = id === 'kpiRow' ? 'grid' : 'block';
+  document.getElementById('onboard').style.display=hasData?'none':'block';
+  ['kpiRow','infoRow','chartCard','tblCard','scCard'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.style.display=hasData?(id==='kpiRow'?'grid':'block'):'none';
   });
+  if(!hasData)return null;
 
-  const maxAge = Math.max(targetAge + 10, 80);
-  const years = maxAge - currentAge;
-  const fiNumber = (monthlyExpense * 12) / withdrawalRate;
+  const maxAge=Math.max(tAge+15,85);
+  const yrs=maxAge-cAge;
+  const fiNum=mExp>0?(mExp*12)/wRate:0;
 
-  // Calc per-asset year-by-year
-  const assetProjections = assets.map(a => ({
-    asset: a,
-    values: calcAssetAtYear(a, currentAge, maxAge, scenarioOverrides || {}),
-  }));
+  const projs=assets.map(a=>({a,vals:projectAsset(a,cAge,maxAge,ov?.(a.id)||{})}));
+  const total=Array.from({length:yrs+1},(_,y)=>projs.reduce((s,p)=>s+(p.vals[y]||0),0));
 
-  // Total portfolio per year
-  const totalByYear = Array.from({ length: years + 1 }, (_, y) =>
-    assetProjections.reduce((sum, ap) => sum + (ap.values[y] || 0), 0)
-  );
-
-  // Retirement age detection
-  let retireAge = null;
-  if (fiNumber > 0) {
-    for (let y = 0; y <= years; y++) {
-      if (totalByYear[y] >= fiNumber) {
-        retireAge = currentAge + y;
-        break;
-      }
+  let retAge=null;
+  if(fiNum>0){
+    for(let y=0;y<=yrs;y++){
+      if(total[y]>=fiNum){retAge=cAge+y;break;}
     }
   }
 
-  // Projected at target retire age index
-  const retireIdx = targetAge - currentAge;
-  const portfolioAtRetire = totalByYear[Math.min(retireIdx, totalByYear.length - 1)];
-  const currentTotal = totalByYear[0];
+  const retIdx=Math.min(tAge-cAge,yrs);
+  const curTotal=total[0];
 
-  // UPDATE KPIs
-  const kpiRetire = document.getElementById('kpiRetireAgeVal');
-  const kpiYears = document.getElementById('kpiYearsLeft');
-  if (retireAge) {
-    kpiRetire.textContent = `Age ${retireAge}`;
-    kpiYears.textContent = retireAge <= currentAge ? '🎉 You can retire now!' : `${retireAge - currentAge} years from now`;
-  } else {
-    kpiRetire.textContent = fiNumber > 0 ? 'Not reached' : 'Set expenses';
-    kpiYears.textContent = 'Try increasing contributions';
-  }
+  document.getElementById('kRetire').textContent=retAge?'Age '+retAge:(fiNum>0?'Not reached':'Set expenses');
+  document.getElementById('kYears').textContent=retAge?(retAge<=cAge?'🎉 You can retire now!':`${retAge-cAge} years from now`):'Try increasing contributions';
 
-  const kpiFI = document.getElementById('kpiFI');
-  kpiFI.textContent = fiNumber > 0 ? 'RM ' + fmt(fiNumber) : '–';
+  const kfi=document.getElementById('kFI');
+  if(kfi)kfi.textContent=fiNum>0?'RM '+fmt(fiNum):'–';
+  const kc=document.getElementById('kCurrent');
+  if(kc)kc.textContent='RM '+fmt(curTotal);
+  const kp=document.getElementById('kPct');
+  if(kp)kp.textContent=fiNum>0?`${Math.min(100,(curTotal/fiNum*100)).toFixed(1)}% of FI target`:'across all assets';
 
-  const kpiCurr = document.getElementById('kpiCurrent');
-  kpiCurr.textContent = 'RM ' + fmt(currentTotal);
+  if(hidden)blurVals(true);
 
-  const pct = fiNumber > 0 ? Math.min(100, (currentTotal / fiNumber * 100)).toFixed(1) : 0;
-  document.getElementById('kpiProgress').textContent = `${pct}% of FI target`;
+  const labels=Array.from({length:yrs+1},(_,i)=>cAge+i);
+  chartData={labels,total,projs,fiNum,retAge,cAge,retIdx};
+  drawChart();
+  drawTable(projs,retIdx);
+  drawScenarios();
 
-  if (hideValues) applyBlur();
-
-  // CHART
-  const labels = Array.from({ length: years + 1 }, (_, i) => currentAge + i);
-  renderChart(labels, totalByYear, assetProjections, fiNumber, retireAge, currentAge);
-
-  // TABLE
-  renderTable(assetProjections, retireIdx);
-
-  // SCENARIOS
-  renderScenarios();
-
-  return { totalByYear, retireAge, fiNumber, currentAge, maxAge, years };
+  return{total,retAge,fiNum,cAge,maxAge,yrs,projs};
 }
 
-// ============================================================
-// CHART
-// ============================================================
-function renderChart(labels, totalByYear, assetProjections, fiNumber, retireAge, currentAge) {
-  const ctx = document.getElementById('mainChart').getContext('2d');
-  if (mainChartInstance) mainChartInstance.destroy();
+function drawChart(){
+  if(!chartData)return;
+  const{labels,total,projs,fiNum,retAge}=chartData;
+  const wrap=document.getElementById('canvasWrap');
+  const canvas=document.getElementById('myChart');
+  const W=wrap.clientWidth||600;
+  const H=280;
+  const dpr=window.devicePixelRatio||1;
+  canvas.width=W*dpr;
+  canvas.height=H*dpr;
+  canvas.style.width=W+'px';
+  canvas.style.height=H+'px';
+  const ctx=canvas.getContext('2d');
+  ctx.scale(dpr,dpr);
 
-  let datasets = [];
+  const pad={top:16,right:16,bottom:36,left:65};
+  const cW=W-pad.left-pad.right;
+  const cH=H-pad.top-pad.bottom;
 
-  if (chartMode === 'combined') {
-    datasets.push({
-      label: 'Total Portfolio',
-      data: totalByYear,
-      borderColor: '#e8b84b',
-      backgroundColor: 'rgba(232,184,75,0.08)',
-      borderWidth: 2.5,
-      fill: true,
-      tension: 0.4,
-      pointRadius: 0,
-      pointHoverRadius: 5,
-    });
-  } else {
-    assetProjections.forEach(ap => {
-      datasets.push({
-        label: ap.asset.name,
-        data: ap.values,
-        borderColor: ap.asset.color,
-        backgroundColor: ap.asset.color + '18',
-        borderWidth: 2,
-        fill: true,
-        tension: 0.4,
-        pointRadius: 0,
-        pointHoverRadius: 4,
-      });
-    });
+  ctx.clearRect(0,0,W,H);
+
+  const series=chartMode==='combined'
+    ?[{label:'Total Portfolio',data:total,color:'#e8b84b'}]
+    :projs.map(p=>({label:p.a.name,data:p.vals,color:p.a.color}));
+
+  let maxV=0;
+  series.forEach(s=>s.data.forEach(v=>{if(v>maxV)maxV=v;}));
+  if(fiNum>maxV)maxV=fiNum;
+  maxV*=1.1;
+  if(maxV===0)maxV=1;
+
+  const xS=i=>pad.left+(i/(labels.length-1||1))*cW;
+  const yS=v=>pad.top+cH-(Math.max(0,v)/maxV)*cH;
+
+  // Grid
+  for(let i=0;i<=5;i++){
+    const y=pad.top+(cH/5)*i;
+    ctx.strokeStyle='rgba(255,255,255,0.05)';
+    ctx.lineWidth=1;
+    ctx.setLineDash([]);
+    ctx.beginPath();ctx.moveTo(pad.left,y);ctx.lineTo(pad.left+cW,y);ctx.stroke();
+    const val=maxV-(maxV/5)*i;
+    ctx.fillStyle='#5a7390';
+    ctx.font=`10px DM Sans,system-ui,sans-serif`;
+    ctx.textAlign='right';
+    ctx.fillText('RM '+shortFmt(val),pad.left-5,y+4);
   }
 
-  // FI Line
-  if (fiNumber > 0) {
-    datasets.push({
-      label: 'FI Target',
-      data: Array(labels.length).fill(fiNumber),
-      borderColor: '#3ecf8e',
-      borderWidth: 1.5,
-      borderDash: [6, 4],
-      pointRadius: 0,
-      fill: false,
-    });
-  }
-
-  mainChartInstance = new Chart(ctx, {
-    type: 'line',
-    data: { labels, datasets },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      interaction: { mode: 'index', intersect: false },
-      plugins: {
-        legend: {
-          display: chartMode === 'breakdown' || datasets.length > 2,
-          labels: { color: '#8fa3bc', font: { family: 'DM Sans', size: 11 }, boxWidth: 10, padding: 12 }
-        },
-        tooltip: {
-          backgroundColor: '#1a2840',
-          borderColor: 'rgba(255,255,255,0.08)',
-          borderWidth: 1,
-          titleColor: '#e8edf3',
-          bodyColor: '#8fa3bc',
-          padding: 12,
-          callbacks: {
-            title: ctx => `Age ${ctx[0].label}`,
-            label: ctx => ` ${ctx.dataset.label}: RM ${fmt(ctx.raw)}`,
-          }
-        }
-      },
-      scales: {
-        x: {
-          grid: { color: 'rgba(255,255,255,0.04)' },
-          ticks: { color: '#5a7390', font: { family: 'DM Sans', size: 11 }, maxTicksLimit: 10 },
-        },
-        y: {
-          grid: { color: 'rgba(255,255,255,0.04)' },
-          ticks: {
-            color: '#5a7390', font: { family: 'DM Sans', size: 11 },
-            callback: v => 'RM ' + shortFmt(v),
-          },
-        }
-      }
+  // X labels
+  const step=Math.max(1,Math.floor(labels.length/7));
+  ctx.fillStyle='#5a7390';
+  ctx.textAlign='center';
+  ctx.font=`10px DM Sans,system-ui,sans-serif`;
+  labels.forEach((lbl,i)=>{
+    if(i%step===0||i===labels.length-1){
+      ctx.fillText(lbl,xS(i),H-pad.bottom+14);
     }
   });
+
+  // FI line
+  if(fiNum>0&&fiNum<=maxV){
+    const fy=yS(fiNum);
+    ctx.strokeStyle='#3ecf8e';
+    ctx.lineWidth=1.5;
+    ctx.setLineDash([5,4]);
+    ctx.beginPath();ctx.moveTo(pad.left,fy);ctx.lineTo(pad.left+cW,fy);ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#3ecf8e';
+    ctx.textAlign='right';
+    ctx.font=`9px DM Sans,system-ui,sans-serif`;
+    ctx.fillText('FI Target',pad.left+cW,fy-3);
+  }
+
+  // Retire line
+  if(retAge){
+    const ri=retAge-labels[0];
+    if(ri>=0&&ri<labels.length){
+      const rx=xS(ri);
+      ctx.strokeStyle='rgba(232,184,75,0.35)';
+      ctx.lineWidth=1;
+      ctx.setLineDash([4,4]);
+      ctx.beginPath();ctx.moveTo(rx,pad.top);ctx.lineTo(rx,pad.top+cH);ctx.stroke();
+      ctx.setLineDash([]);
+    }
+  }
+
+  // Series
+  series.forEach(s=>{
+    if(!s.data||s.data.length<2)return;
+    // Fill
+    ctx.beginPath();
+    s.data.forEach((v,i)=>{
+      const x=xS(i),y=yS(v);
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    });
+    ctx.lineTo(xS(s.data.length-1),pad.top+cH);
+    ctx.lineTo(pad.left,pad.top+cH);
+    ctx.closePath();
+    ctx.fillStyle=s.color+(chartMode==='combined'?'22':'10');
+    ctx.fill();
+    // Line
+    ctx.beginPath();
+    s.data.forEach((v,i)=>{
+      const x=xS(i),y=yS(v);
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    });
+    ctx.strokeStyle=s.color;
+    ctx.lineWidth=chartMode==='combined'?2.5:1.8;
+    ctx.lineJoin='round';
+    ctx.setLineDash([]);
+    ctx.stroke();
+  });
+
+  // Legend
+  const leg=document.getElementById('chartLegend');
+  leg.innerHTML='';
+  series.forEach(s=>{
+    const item=document.createElement('div');
+    item.className='leg-item';
+    item.innerHTML=`<div class="leg-line" style="background:${s.color}"></div>${esc(s.label)}`;
+    leg.appendChild(item);
+  });
+  if(fiNum>0){
+    const item=document.createElement('div');
+    item.className='leg-item';
+    item.innerHTML=`<div class="leg-line" style="background:#3ecf8e"></div>FI Target`;
+    leg.appendChild(item);
+  }
 }
 
-// ============================================================
-// TABLE
-// ============================================================
-function renderTable(assetProjections, retireIdx) {
-  const tbody = document.getElementById('assetTableBody');
-  tbody.innerHTML = '';
-  assetProjections.forEach(ap => {
-    const projected = ap.values[Math.min(retireIdx, ap.values.length - 1)] || 0;
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td><div class="td-name"><div class="td-dot" style="background:${ap.asset.color}"></div>${ap.asset.name}</div></td>
-      <td class="${hideValues ? 'td-blur' : ''}">RM ${fmt(parseFloat(ap.asset.currentAmount) || 0)}</td>
-      <td class="td-projected ${hideValues ? 'td-blur' : ''}">RM ${fmt(projected)}</td>
-      <td>${ap.asset.returnRate || 0}%</td>
-      <td>${ap.asset.type}</td>
-    `;
+window.addEventListener('resize',()=>{if(chartData)drawChart();});
+
+function drawTable(projs,retIdx){
+  const tbody=document.getElementById('tblBody');
+  tbody.innerHTML='';
+  projs.forEach(p=>{
+    const proj=p.vals[Math.min(retIdx,p.vals.length-1)]||0;
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td><div class="tname"><div class="tdot" style="background:${p.a.color}"></div>${esc(p.a.name)}</div></td>
+      <td class="${hidden?'vblur':''}">RM ${fmt(+p.a.amount||0)}</td>
+      <td class="tproj ${hidden?'vblur':''}">RM ${fmt(proj)}</td>
+      <td>${p.a.ret||0}%</td>
+      <td>${p.a.type}</td>`;
     tbody.appendChild(tr);
   });
 }
 
-// ============================================================
-// SCENARIOS
-// ============================================================
-function renderScenarios() {
-  const list = document.getElementById('scenarioList');
-  list.innerHTML = '';
-  SCENARIOS.forEach(s => {
-    const chip = document.createElement('button');
-    chip.className = 'scenario-chip' + (activeScenario === s.id ? ' active' : '');
-    chip.textContent = s.label;
-    chip.title = s.desc;
-    chip.onclick = () => applyScenario(s.id);
-    list.appendChild(chip);
+function drawScenarios(){
+  const c=document.getElementById('scChips');
+  c.innerHTML='';
+  SCENARIOS.forEach(s=>{
+    const b=document.createElement('button');
+    b.className='chip'+(activeScen===s.id?' on':'');
+    b.textContent=s.label;
+    b.title=s.desc;
+    b.onclick=()=>runScenario(s.id);
+    c.appendChild(b);
   });
 }
 
-function applyScenario(id) {
-  if (activeScenario === id) { clearScenario(); return; }
-  activeScenario = id;
-  document.getElementById('clearScenBtn').style.display = 'inline-flex';
-
-  const overrides = buildScenarioOverrides(id);
-  const base = calculate();
-  const scen = calcScenario(overrides);
-
-  const result = document.getElementById('scenarioResult');
-  result.classList.add('show');
-
-  document.getElementById('scBase').textContent = base.retireAge ? `Age ${base.retireAge}` : 'Not reached';
-  document.getElementById('scBaseAge').textContent = `FI: RM ${fmt(base.fiNumber)}`;
-
-  if (scen.retireAge) {
-    const diff = scen.retireAge - (base.retireAge || 99);
-    document.getElementById('scScenario').textContent = `Age ${scen.retireAge}`;
-    const diffEl = document.getElementById('scDiff');
-    if (diff < 0) { diffEl.textContent = `🎉 ${Math.abs(diff)} years earlier!`; diffEl.style.color = 'var(--accent2)'; }
-    else if (diff > 0) { diffEl.textContent = `⚠ ${diff} years later`; diffEl.style.color = 'var(--danger)'; }
-    else { diffEl.textContent = `Same retirement age`; diffEl.style.color = 'var(--text3)'; }
-  } else {
-    document.getElementById('scScenario').textContent = 'Not reached';
-    document.getElementById('scDiff').textContent = ''; 
+function buildOv(id){
+  const ov={};
+  if(id==='etf_boost'){
+    const a=assets.find(x=>x.name.toLowerCase().includes('etf'));
+    if(a)ov[a.id]={contribMult:1.5};
   }
-
-  renderScenarios();
+  if(id==='stock_crash'){
+    const a=assets.find(x=>x.name.toLowerCase().includes('stock'));
+    if(a)ov[a.id]={crash:0.2};
+  }
+  if(id==='stock_low'){
+    const a=assets.find(x=>x.name.toLowerCase().includes('stock'));
+    if(a)ov[a.id]={ret:4};
+  }
+  if(id==='epf_stop55'){
+    const a=assets.find(x=>x.name.toLowerCase().includes('epf'));
+    if(a)ov[a.id]={endAge:55};
+  }
+  if(id==='shift_sav'){
+    const sav=assets.find(x=>x.name.toLowerCase().includes('sav'));
+    const etf=assets.find(x=>x.name.toLowerCase().includes('etf'));
+    if(sav&&etf){ov[sav.id]={crash:1};ov[etf.id]={addBal:+sav.amount||0};}
+  }
+  return ov;
 }
 
-function buildScenarioOverrides(id) {
-  const overrides = {};
-  if (id === 'etf_boost') {
-    const etf = assets.find(a => a.name.toLowerCase().includes('etf'));
-    if (etf) overrides[etf.id] = { contributionMultiplier: 1.5 };
-  }
-  if (id === 'stock_crash') {
-    const stk = assets.find(a => a.name.toLowerCase().includes('stock'));
-    if (stk) overrides[stk.id] = { crash: 0.2 };
-  }
-  if (id === 'stock_low') {
-    const stk = assets.find(a => a.name.toLowerCase().includes('stock'));
-    if (stk) overrides[stk.id] = { returnRate: 4 };
-  }
-  if (id === 'early_epf') {
-    const epf = assets.find(a => a.name.toLowerCase().includes('epf'));
-    if (epf) overrides[epf.id] = { endAge: 55 };
-  }
-  if (id === 'shift_savings') {
-    const sav = assets.find(a => a.name.toLowerCase().includes('sav'));
-    const etf = assets.find(a => a.name.toLowerCase().includes('etf'));
-    if (sav && etf) {
-      const savBal = parseFloat(sav.currentAmount) || 0;
-      overrides[sav.id] = { crash: 1 }; // zero out savings
-      overrides[etf.id] = { addBalance: savBal };
-    }
-  }
-  return overrides;
-}
-
-function calcScenario(overrides) {
-  const currentAge = parseInt(document.getElementById('currentAge').value) || 0;
-  const targetAge = parseInt(document.getElementById('targetAge').value) || 80;
-  const monthlyExpense = parseFloat(document.getElementById('monthlyExpense').value) || 0;
-  const withdrawalRate = (parseFloat(document.getElementById('withdrawalRate').value) || 4) / 100;
-  const fiNumber = (monthlyExpense * 12) / withdrawalRate;
-  const maxAge = Math.max(targetAge + 10, 80);
-  const years = maxAge - currentAge;
-
-  const assetProjections = assets.map(a => ({
-    asset: a,
-    values: calcAssetAtYear(a, currentAge, maxAge, overrides),
-  }));
-  const totalByYear = Array.from({ length: years + 1 }, (_, y) =>
-    assetProjections.reduce((sum, ap) => sum + (ap.values[y] || 0), 0)
+function calcWithOv(ov){
+  const cAge=+document.getElementById('currentAge').value||0;
+  const tAge=+document.getElementById('targetAge').value||80;
+  const mExp=+document.getElementById('monthlyExpense').value||0;
+  const wRate=(+document.getElementById('withdrawalRate').value||4)/100;
+  const fiNum=mExp>0?(mExp*12)/wRate:0;
+  const maxAge=Math.max(tAge+15,85);
+  const yrs=maxAge-cAge;
+  const total=Array.from({length:yrs+1},(_,y)=>
+    assets.reduce((s,a)=>s+(projectAsset(a,cAge,maxAge,ov[a.id]||{})[y]||0),0)
   );
-
-  let retireAge = null;
-  if (fiNumber > 0) {
-    for (let y = 0; y <= years; y++) {
-      if (totalByYear[y] >= fiNumber) { retireAge = currentAge + y; break; }
-    }
-  }
-  return { retireAge, fiNumber, totalByYear };
+  let retAge=null;
+  if(fiNum>0)for(let y=0;y<=yrs;y++)if(total[y]>=fiNum){retAge=cAge+y;break;}
+  return{retAge,fiNum};
 }
 
-function clearScenario() {
-  activeScenario = null;
-  document.getElementById('clearScenBtn').style.display = 'none';
-  document.getElementById('scenarioResult').classList.remove('show');
-  renderScenarios();
+function runScenario(id){
+  if(activeScen===id){clearScenario();return;}
+  activeScen=id;
+  document.getElementById('scClearBtn').style.display='inline-flex';
+  const base=calculate();
+  const ov=buildOv(id);
+  const scen=calcWithOv(ov);
+  document.getElementById('scResult').classList.add('show');
+  document.getElementById('scBase').textContent=base&&base.retAge?'Age '+base.retAge:'Not reached';
+  document.getElementById('scBaseSub').textContent=base&&base.fiNum>0?'FI: RM '+fmt(base.fiNum):'';
+  document.getElementById('scScen').textContent=scen.retAge?'Age '+scen.retAge:'Not reached';
+  const diff=scen.retAge&&base&&base.retAge?scen.retAge-base.retAge:null;
+  const diffEl=document.getElementById('scDiff');
+  if(diff===null){diffEl.textContent='';}
+  else if(diff<0){diffEl.textContent=`🎉 ${Math.abs(diff)} yrs earlier!`;diffEl.style.color='var(--accent2)';}
+  else if(diff>0){diffEl.textContent=`⚠ ${diff} yrs later`;diffEl.style.color='var(--danger)';}
+  else{diffEl.textContent='Same retirement age';diffEl.style.color='var(--text3)';}
+  drawScenarios();
+}
+
+function clearScenario(){
+  activeScen=null;
+  document.getElementById('scClearBtn').style.display='none';
+  document.getElementById('scResult').classList.remove('show');
+  drawScenarios();calculate();
+}
+
+function setInflation(m){
+  inflMode=m;
+  document.getElementById('btnNom').classList.toggle('on',m==='nominal');
+  document.getElementById('btnReal').classList.toggle('on',m==='real');
   calculate();
 }
 
-// ============================================================
-// INFLATION & CHART MODE TOGGLES
-// ============================================================
-function setInflationMode(mode) {
-  inflationMode = mode;
-  document.getElementById('btnNominal').classList.toggle('active', mode === 'nominal');
-  document.getElementById('btnReal').classList.toggle('active', mode === 'real');
-  calculate();
+function setChartMode(m){
+  chartMode=m;
+  document.getElementById('btnCombined').classList.toggle('on',m==='combined');
+  document.getElementById('btnBreakdown').classList.toggle('on',m==='breakdown');
+  drawChart();
 }
 
-function setChartMode(mode) {
-  chartMode = mode;
-  document.getElementById('btnCombined').classList.toggle('active', mode === 'combined');
-  document.getElementById('btnBreakdown').classList.toggle('active', mode === 'breakdown');
-  calculate();
+function toggleHide(){
+  hidden=!hidden;
+  document.getElementById('btnHide').classList.toggle('on',hidden);
+  blurVals(hidden);
 }
 
-// ============================================================
-// PRIVACY
-// ============================================================
-function toggleHide() {
-  hideValues = !hideValues;
-  document.getElementById('btnHide').classList.toggle('active', hideValues);
-  applyBlur();
+function blurVals(on){
+  document.querySelectorAll('.kpi-val').forEach(el=>el.classList.toggle('blur',on));
+  document.querySelectorAll('.tproj').forEach(el=>el.classList.toggle('vblur',on));
+  document.querySelectorAll('#tblBody td:nth-child(2)').forEach(el=>el.classList.toggle('vblur',on));
 }
 
-function applyBlur() {
-  const cls = hideValues ? 'blurred' : '';
-  document.querySelectorAll('.kpi-value').forEach(el => el.classList.toggle('blurred', hideValues));
-  document.querySelectorAll('.td-blur, .kpi-value').forEach(el => {
-    if (hideValues) el.classList.add('blurred');
-    else el.classList.remove('blurred');
-  });
-  document.querySelectorAll('.td-projected').forEach(el => el.classList.toggle('td-blur', hideValues));
-}
-
-// ============================================================
-// RESET
-// ============================================================
-function confirmReset() { document.getElementById('resetModal').classList.add('show'); }
-function closeModal() { document.getElementById('resetModal').classList.remove('show'); }
-function doReset() {
+function confirmReset(){document.getElementById('resetModal').classList.add('show');}
+function closeModal(){document.getElementById('resetModal').classList.remove('show');}
+function doReset(){
   closeModal();
-  document.getElementById('currentAge').value = '';
-  document.getElementById('targetAge').value = '';
-  document.getElementById('monthlyExpense').value = '';
-  document.getElementById('withdrawalRate').value = '4';
-  document.getElementById('inflationRate').value = '3';
-  assets = [];
-  assetIdCounter = 0;
-  DEFAULT_ASSETS.forEach(a => addAsset(a));
-  activeScenario = null;
-  hideValues = false;
-  document.getElementById('btnHide').classList.remove('active');
+  ['currentAge','targetAge','monthlyExpense'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('withdrawalRate').value='4';
+  document.getElementById('inflationRate').value='3';
+  assets=[];aid=0;activeScen=null;hidden=false;
+  document.getElementById('btnHide').classList.remove('on');
+  DEFAULTS.forEach(d=>addAsset(d));
   calculate();
 }
 
-// ============================================================
-// FORMATTERS
-// ============================================================
-function fmt(n) {
-  if (!isFinite(n)) return '0';
-  if (n >= 1e6) return (n / 1e6).toFixed(2) + 'M';
-  if (n >= 1e3) return (n / 1e3).toFixed(1) + 'k';
+function fmt(n){
+  if(!isFinite(n)||n===0)return'0';
+  if(n>=1e9)return(n/1e9).toFixed(2)+'B';
+  if(n>=1e6)return(n/1e6).toFixed(2)+'M';
+  if(n>=1e3)return(n/1e3).toFixed(1)+'k';
   return Math.round(n).toLocaleString();
 }
-function shortFmt(n) {
-  if (n >= 1e6) return (n / 1e6).toFixed(1) + 'M';
-  if (n >= 1e3) return (n / 1e3).toFixed(0) + 'k';
+function shortFmt(n){
+  if(n>=1e9)return(n/1e9).toFixed(1)+'B';
+  if(n>=1e6)return(n/1e6).toFixed(1)+'M';
+  if(n>=1e3)return(n/1e3).toFixed(0)+'k';
   return Math.round(n);
 }
-
-function loadState() {
-  // No prefilled data — privacy first
-}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 </script>
 </body>
 </html>
