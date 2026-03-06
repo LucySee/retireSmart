@@ -2,6 +2,7 @@
 
 A free, privacy-first multi-asset retirement simulator. No accounts, no cloud storage, no ads. All data stays in your browser.
 
+Give it a try at https://lucysee.github.io/retireSmart/ 
 ## Features
 
 - **Multi-asset panels** – EPF, Fixed Deposit, Savings, Stocks, ETF (fully editable)
