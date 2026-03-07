@@ -1,895 +1,2197 @@
 <!DOCTYPE html>
+<!-- v2.1 -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>FI Planner</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0d0f1a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="FI Planner">
+<meta name="description" content="Malaysian Retirement & Financial Independence Simulator">
+<title>FI Planner – Retirement Simulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:#0d0f14; --surface:#161920; --surface2:#1e2230; --border:#2a2f3d;
-  --accent:#4ade80; --accent2:#22d3ee; --accent3:#f59e0b; --accent4:#f472b6;
-  --text:#e8eaf0; --text2:#8b91a8; --text3:#555b70; --danger:#f87171;
-  --r:12px; --rs:8px;
+  --bg: #0d0f1a;
+  --surface: #141720;
+  --surface2: #1c2030;
+  --surface3: #222640;
+  --border: #252a40;
+  --border2: #2e3450;
+  --accent: #00e5a0;
+  --accent2: #00bfff;
+  --accent-dim: #0a2e20;
+  --accent-text: #001a0e;
+  --warn: #ffb800;
+  --danger: #ff5a5a;
+  --passive: #a78bfa;
+  --passive-dim: #1e1530;
+  --text: #eceef8;
+  --text-sub: #8b91b5;
+  --text-muted: #555d80;
+  --c1: #00e5a0; --c2: #00bfff; --c3: #ff7c5c;
+  --c4: #a78bfa; --c5: #ffd166; --c6: #f472b6;
+  --radius: 16px; --radius-sm: 10px; --radius-xs: 7px;
+  --font: 'Sora', sans-serif; --mono: 'JetBrains Mono', monospace;
+  --shadow: 0 8px 32px rgba(0,0,0,0.4);
 }
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;}
-
-/* ── SETUP OVERLAY ── */
-.overlay{position:fixed;inset:0;background:var(--bg);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;}
-.overlay.hidden{display:none;}
-.setup-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:40px 36px;width:100%;max-width:440px;box-shadow:0 32px 80px #00000099;}
-.setup-logo{display:flex;align-items:center;gap:12px;margin-bottom:28px;}
-.setup-logo-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:22px;}
-.setup-logo-name{font-size:19px;font-weight:700;letter-spacing:-.3px;}
-.setup-logo-sub{font-size:11px;color:var(--text2);}
-.dots{display:flex;gap:5px;margin-bottom:24px;}
-.dot{height:4px;border-radius:2px;background:var(--border);transition:all .3s;width:16px;}
-.dot.active{background:var(--accent);width:26px;}
-.dot.done{background:var(--accent2);width:16px;}
-.setup-h{font-size:21px;font-weight:700;letter-spacing:-.3px;margin-bottom:6px;}
-.setup-sub{font-size:13px;color:var(--text2);margin-bottom:24px;line-height:1.55;}
-.sf{margin-bottom:16px;}
-.sl{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px;display:block;}
-.si{width:100%;padding:11px 13px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;transition:border-color .2s;-webkit-appearance:none;}
-.si:focus{outline:none;border-color:var(--accent2);box-shadow:0 0 0 3px #22d3ee12;}
-.sh{font-size:11px;color:var(--text3);margin-top:4px;}
-.sr{display:flex;gap:10px;}
-.sr .sf{flex:1;}
-.setup-btn{width:100%;padding:13px;border-radius:var(--rs);background:var(--accent);color:#0d1a10;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;border:none;cursor:pointer;margin-top:4px;transition:background .15s;}
-.setup-btn:hover{background:#86efac;}
-.back-link{display:block;text-align:center;margin-top:12px;background:none;border:none;color:var(--text3);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;}
-.back-link:hover{color:var(--text2);}
-
-/* ── MAIN SHELL ── */
-.shell{display:flex;min-height:100vh;}
-
-/* ── TOP NAV ── */
-.topnav{
-  position:sticky;top:0;z-index:100;
-  background:var(--surface);border-bottom:1px solid var(--border);
-  padding:0 24px;height:56px;
-  display:flex;align-items:center;justify-content:space-between;
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font); background: var(--bg); color: var(--text);
+  min-height: 100vh; overflow-x: hidden; font-size: 15px; line-height: 1.5;
 }
-.nav-logo{display:flex;align-items:center;gap:9px;}
-.nav-logo-icon{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:14px;}
-.nav-logo-name{font-size:15px;font-weight:700;letter-spacing:-.3px;}
-.nav-right{display:flex;align-items:center;gap:8px;}
-.nav-profile-btn{display:flex;align-items:center;gap:8px;padding:5px 11px 5px 7px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;cursor:pointer;transition:border-color .15s;}
-.nav-profile-btn:hover{border-color:var(--text3);}
-.nav-avatar{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--accent2),var(--accent));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#0d1a10;}
-.nav-profile-label{font-size:12px;font-weight:500;color:var(--text2);}
+::placeholder { color: var(--text-muted); }
+input[type=number] { -moz-appearance: textfield; }
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
 
-/* ── PAGE LAYOUT ── */
-.page{flex:1;overflow-x:hidden;}
-.content{padding:22px 24px;max-width:1100px;margin:0 auto;}
-
-/* ── RETIRE BANNER ── */
-.retire-banner{
-  background:linear-gradient(135deg,#4ade8010,#22d3ee0c);
-  border:1px solid #4ade8025;border-radius:var(--r);
-  padding:18px 22px;display:flex;align-items:center;gap:20px;
-  margin-bottom:18px;flex-wrap:wrap;
+/* ── ONBOARDING ── */
+#onboarding {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 100vh; padding: 24px;
+  background: radial-gradient(ellipse 80% 60% at 50% -10%, #0a2e20 0%, var(--bg) 65%);
 }
-.retire-num{font-family:'DM Mono',monospace;font-size:52px;font-weight:500;color:var(--accent);line-height:1;letter-spacing:-2px;}
-.retire-info{flex:1;}
-.retire-info h2{font-size:17px;font-weight:700;margin-bottom:3px;}
-.retire-info p{font-size:12px;color:var(--text2);}
-.prog-wrap{margin-top:10px;}
-.prog-label{display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:5px;}
-.prog-bar{height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
-.prog-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:width .5s;}
+.ob-wrap { width: 100%; max-width: 420px; }
+.ob-card {
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 24px; padding: 36px 28px;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,229,160,0.05);
+  animation: slideUp 0.5s cubic-bezier(0.22,1,0.36,1);
+}
+@keyframes slideUp {
+  from { opacity:0; transform:translateY(30px); }
+  to { opacity:1; transform:translateY(0); }
+}
+.ob-logo { display:flex; align-items:center; gap:14px; margin-bottom:28px; }
+.ob-icon {
+  width:52px; height:52px; border-radius:14px; flex-shrink:0;
+  background: linear-gradient(135deg, #00e5a0, #00bfff);
+  display:flex; align-items:center; justify-content:center; font-size:24px;
+}
+.ob-logo h1 { font-size:21px; font-weight:800; letter-spacing:-0.02em; }
+.ob-logo p { font-size:12px; color:var(--text-sub); margin-top:2px; }
+.ob-progress { display:flex; gap:6px; margin-bottom:32px; }
+.ob-dot { height:4px; flex:1; border-radius:2px; background:var(--border2); transition:background 0.3s; }
+.ob-dot.on { background:var(--accent); }
+.ob-title { font-size:22px; font-weight:700; margin-bottom:6px; letter-spacing:-0.02em; }
+.ob-sub { font-size:13px; color:var(--text-sub); margin-bottom:28px; line-height:1.55; }
+.field { margin-bottom:18px; }
+.field label { display:block; font-size:12px; font-weight:600; margin-bottom:7px; color:var(--text-sub); text-transform:uppercase; letter-spacing:0.06em; }
+.field input, .field select {
+  width:100%; background:var(--bg); border:1.5px solid var(--border2);
+  border-radius:var(--radius-sm); padding:13px 15px; font-size:16px;
+  color:var(--text); font-family:var(--font); transition:border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance:none; appearance:none;
+}
+.field input:focus, .field select:focus {
+  outline:none; border-color:var(--accent);
+  box-shadow: 0 0 0 3px rgba(0,229,160,0.12);
+}
+.field .hint { font-size:11px; color:var(--text-muted); margin-top:5px; }
+.btn-prime {
+  width:100%; padding:15px; background:var(--accent); color:var(--accent-text);
+  border:none; border-radius:var(--radius-sm); font-size:16px; font-weight:700;
+  cursor:pointer; font-family:var(--font); letter-spacing:0.01em;
+  transition:opacity 0.2s, transform 0.1s, box-shadow 0.2s;
+  box-shadow: 0 4px 24px rgba(0,229,160,0.3);
+}
+.btn-prime:active { transform:scale(0.98); }
+.btn-prime:hover { box-shadow: 0 6px 30px rgba(0,229,160,0.45); }
+
+/* ── APP SHELL ── */
+#app { display:none; flex-direction:column; min-height:100vh; }
+
+.icon-btn {
+  width:34px; height:34px; border-radius:8px; border:1px solid var(--border2);
+  background:var(--surface); display:flex; align-items:center; justify-content:center;
+  cursor:pointer; font-size:15px; transition:background 0.15s; color:var(--text-sub);
+}
+.icon-btn:hover { background:var(--surface2); }
+.icon-btn.on { background:var(--accent-dim); color:var(--accent); border-color:var(--accent); }
+
+
+/* Content area */
+.pane { display:none; }
+.pane.active { display:block; }
+.content { padding:12px 16px 100px; max-width:860px; margin:0 auto; }
+
+/* ── CARDS ── */
+.card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); padding:20px; margin-bottom:14px;
+}
+.card-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+.card-title { font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:var(--text-sub); }
 
 /* ── STAT CARDS ── */
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:12px;margin-bottom:18px;}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;position:relative;overflow:hidden;}
-.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
-.sc-green::before{background:var(--accent);}
-.sc-cyan::before{background:var(--accent2);}
-.sc-amber::before{background:var(--accent3);}
-.sc-pink::before{background:var(--accent4);}
-.stat-label{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.9px;font-weight:700;}
-.stat-val{font-family:'DM Mono',monospace;font-size:22px;font-weight:500;margin-top:5px;letter-spacing:-.5px;}
-.sv-green{color:var(--accent);}
-.sv-cyan{color:var(--accent2);}
-.sv-amber{color:var(--accent3);}
-.stat-sub{font-size:11px;color:var(--text3);margin-top:3px;}
-
-/* ── CHART CARD ── */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:18px;}
-.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
-.card-title{font-size:13px;font-weight:600;}
-.chart-wrap{position:relative;height:240px;}
-.chart-tabs{display:flex;gap:4px;}
-.ct{padding:4px 11px;border-radius:20px;font-size:12px;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text2);transition:all .15s;font-family:'DM Sans',sans-serif;}
-.ct.active{background:var(--accent2);color:#0d1a1e;border-color:var(--accent2);font-weight:600;}
-
-/* ── ASSETS ACCORDION ── */
-.assets-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:18px;overflow:hidden;}
-.assets-panel-header{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px 18px;cursor:pointer;user-select:none;
-  transition:background .15s;
+.stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px; }
+.stat-card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); padding:18px 16px;
+  position:relative; overflow:hidden;
 }
-.assets-panel-header:hover{background:var(--surface2);}
-.aph-left{display:flex;align-items:center;gap:10px;}
-.aph-title{font-size:13px;font-weight:600;}
-.aph-meta{font-size:11px;color:var(--text2);}
-.aph-chevron{font-size:12px;color:var(--text3);transition:transform .25s;}
-.aph-chevron.open{transform:rotate(180deg);}
-.assets-body{display:none;border-top:1px solid var(--border);}
-.assets-body.open{display:block;}
-.assets-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;padding:16px;}
-.asset-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);overflow:hidden;}
-.asset-card-head{padding:10px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
-.asset-name-inp{background:transparent;border:none;font-size:16px;font-weight:600;color:var(--text);font-family:'DM Sans',sans-serif;width:130px;}
-.asset-name-inp:focus{outline:none;border-bottom:1px solid var(--accent2);}
-.asset-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px 12px;}
-.afl{font-size:11px;color:var(--text2);margin-bottom:4px;display:flex;align-items:center;gap:4px;}
-.afl .badge{font-size:9px;background:var(--border);color:var(--text3);padding:1px 5px;border-radius:10px;}
-input[type=number],input[type=text],select{width:100%;padding:7px 9px;background:var(--bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;-webkit-appearance:none;}
-@media(max-width:640px){input[type=number],input[type=text],select{font-size:16px;}}
-input[type=number]:focus,input[type=text]:focus,select:focus{outline:none;border-color:var(--accent2);}
-select option{background:var(--surface2);}
-.asset-card-foot{padding:7px 12px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;}
-.assets-panel-footer{
-  border-top:1px solid var(--border);padding:12px 16px;
-  display:flex;align-items:center;justify-content:space-between;gap:10px;
-  background:var(--surface2);
+.stat-card.accent { border-color:rgba(0,229,160,0.3); background: linear-gradient(135deg, var(--surface) 60%, var(--accent-dim)); }
+.stat-card.passive-card { border-color:rgba(167,139,250,0.3); background: linear-gradient(135deg, var(--surface) 60%, var(--passive-dim)); }
+.stat-card.span2 { grid-column:1/-1; }
+.stat-label { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.07em; color:var(--text-sub); margin-bottom:8px; }
+.stat-val {
+  font-family:var(--mono); font-size:22px; font-weight:500;
+  letter-spacing:-0.03em; color:var(--text); line-height:1;
 }
-.add-asset-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border-radius:var(--rs);background:transparent;border:1px solid var(--border);color:var(--text2);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;}
-.add-asset-btn:hover{border-color:var(--text2);color:var(--text);}
-.ok-btn{padding:9px 28px;border-radius:var(--rs);background:var(--accent);color:#0d1a10;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;border:none;cursor:pointer;transition:background .15s;}
-.ok-btn:hover{background:#86efac;}
-
-/* ── SCENARIO ROW ── */
-.scenario-row{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;margin-bottom:18px;}
-.scenario-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
-.scenario-label{font-size:13px;font-weight:600;white-space:nowrap;}
-.scenario-select{
-  flex:1;min-width:200px;max-width:340px;
-  padding:9px 12px;background:var(--surface2);border:1px solid var(--border);
-  border-radius:var(--rs);color:var(--text);font-family:'DM Sans',sans-serif;
-  font-size:13px;cursor:pointer;-webkit-appearance:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b91a8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:right 10px center;padding-right:30px;
+.stat-val.big { font-size:28px; }
+.stat-val.accent { color:var(--accent); }
+.stat-val.passive { color:var(--passive); }
+.stat-sub { font-size:11px; color:var(--text-muted); margin-top:5px; }
+.stat-badge {
+  display:inline-flex; align-items:center; gap:4px;
+  background:var(--accent-dim); color:var(--accent);
+  border-radius:6px; padding:3px 8px; font-size:11px; font-weight:700;
+  margin-top:6px;
 }
-.scenario-select:focus{outline:none;border-color:var(--accent2);}
-.scenario-result{margin-top:14px;display:none;}
-.scenario-result.show{display:block;}
-.scen-compare{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
-.scen-stat{flex:1;min-width:110px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:12px;}
-.scen-stat-label{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.6px;font-weight:700;}
-.scen-stat-val{font-family:'DM Mono',monospace;font-size:16px;font-weight:500;margin-top:4px;}
-.sv-base{color:var(--accent2);}
-.sv-scen{color:var(--accent3);}
-.scen-chart-wrap{position:relative;height:200px;}
+.stat-badge.passive { background:var(--passive-dim); color:var(--passive); }
 
-/* ── TABLE ── */
-.table-wrap{overflow-x:auto;}
-table{width:100%;border-collapse:collapse;}
-th{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--text3);text-align:left;padding:9px 12px;border-bottom:1px solid var(--border);}
-td{padding:10px 12px;font-size:13px;border-bottom:1px solid #2a2f3d44;}
-td.mono{font-family:'DM Mono',monospace;font-size:12px;}
-tr:last-child td{border-bottom:none;}
-tr:hover td{background:#1e223040;}
-.growth-pill{display:inline-flex;align-items:center;gap:2px;padding:2px 7px;border-radius:20px;font-size:11px;}
-.pill-up{background:#4ade8015;color:var(--accent);}
-.pill-down{background:#f8717115;color:var(--danger);}
-.type-badge{font-size:10px;padding:2px 7px;border-radius:20px;font-weight:600;text-transform:uppercase;}
-.tb-stable{background:#4ade8015;color:var(--accent);}
-.tb-volatile{background:#f59e0b15;color:var(--accent3);}
-.tb-cash{background:#22d3ee15;color:var(--accent2);}
-
-/* ── EMPTY STATE ── */
-.dash-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:55vh;text-align:center;padding:40px 20px;}
-.empty-icon{width:72px;height:72px;border-radius:18px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 18px;}
-.empty-title{font-size:19px;font-weight:700;margin-bottom:7px;letter-spacing:-.3px;}
-.empty-sub{font-size:13px;color:var(--text2);line-height:1.6;max-width:320px;margin-bottom:22px;}
-.empty-steps{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:4px 18px;text-align:left;max-width:340px;width:100%;margin-bottom:22px;}
-.estep{display:flex;align-items:flex-start;gap:11px;padding:13px 0;}
-.estep:not(:last-child){border-bottom:1px solid var(--border);}
-.enum{width:22px;height:22px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin-top:1px;}
-.e-done{background:#4ade8018;color:var(--accent);}
-.e-todo{background:var(--surface2);color:var(--text3);border:1px solid var(--border);}
-.etext{font-size:12px;line-height:1.45;}
-.etext strong{color:var(--text);display:block;margin-bottom:2px;}
-.etext span{color:var(--text2);}
-.open-assets-btn{padding:11px 26px;border-radius:var(--rs);background:var(--accent);color:#0d1a10;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;border:none;cursor:pointer;transition:background .15s;}
-.open-assets-btn:hover{background:#86efac;}
-
-/* ── PROFILE MODAL ── */
-.modal-bg{position:fixed;inset:0;background:#00000088;z-index:150;display:flex;align-items:center;justify-content:center;padding:20px;}
-.modal-bg.hidden{display:none;}
-.modal{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:26px;width:100%;max-width:420px;box-shadow:0 24px 60px #00000070;max-height:90vh;overflow-y:auto;}
-.modal-title{font-size:16px;font-weight:700;margin-bottom:3px;}
-.modal-sub{font-size:12px;color:var(--text2);margin-bottom:20px;}
-.mf{margin-bottom:12px;}
-.ml{font-size:12px;color:var(--text2);margin-bottom:5px;font-weight:500;}
-.modal-section{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin:16px 0 10px;padding-top:14px;border-top:1px solid var(--border);}
-.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;}
-.tlabel{font-size:13px;color:var(--text2);}
-.toggle{width:36px;height:20px;border-radius:10px;background:var(--border);cursor:pointer;position:relative;transition:background .2s;border:none;flex-shrink:0;}
-.toggle.on{background:var(--accent);}
-.toggle::after{content:'';position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:white;transition:left .2s;}
-.toggle.on::after{left:19px;}
-.modal-actions{display:flex;gap:8px;margin-top:18px;}
-.btn{padding:8px 14px;border-radius:var(--rs);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s;display:inline-flex;align-items:center;gap:5px;}
-.btn-primary{background:var(--accent);color:#0d1a10;}
-.btn-primary:hover{background:#86efac;}
-.btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border);}
-.btn-secondary:hover{border-color:var(--text2);}
-.btn-danger{background:transparent;color:var(--danger);border:1px solid #f8717128;}
-.btn-danger:hover{background:#f8717112;}
-.btn-full{width:100%;justify-content:center;}
-.btn-sm{padding:5px 9px;font-size:11px;}
-
-/* ── NOTIFY ── */
-.notif{position:fixed;bottom:18px;right:18px;background:var(--surface2);border:1px solid var(--accent);color:var(--text);padding:9px 15px;border-radius:var(--rs);font-size:12px;z-index:999;opacity:0;transition:opacity .25s;pointer-events:none;}
-.notif.show{opacity:1;}
-
-/* ── RESPONSIVE ── */
-@media(max-width:640px){
-  .content{padding:14px;}
-  .stat-grid{grid-template-columns:1fr 1fr;}
-  .assets-grid{grid-template-columns:1fr;}
-  .retire-num{font-size:38px;}
-  .topnav{padding:0 14px;}
+/* ── CHART ── */
+.chart-wrap { position:relative; width:100%; height:220px; margin-top:8px; }
+canvas { width:100% !important; height:220px !important; display:block; }
+.chart-legend { display:flex; flex-wrap:wrap; gap:10px; margin-top:12px; }
+.legend-item { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--text-sub); }
+.legend-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.chart-toggle { display:flex; gap:6px; }
+.ctoggle {
+  padding:5px 11px; border-radius:6px; font-size:12px; font-weight:600;
+  border:1px solid var(--border2); background:transparent; color:var(--text-muted);
+  cursor:pointer; font-family:var(--font); transition:all 0.2s;
 }
-@media(max-width:400px){.stat-grid{grid-template-columns:1fr;}}
-::-webkit-scrollbar{width:4px;height:4px;}
-::-webkit-scrollbar-track{background:var(--bg);}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+.ctoggle.on { background:var(--surface2); color:var(--text); border-color:var(--border2); }
+
+/* ── ASSET PANELS ── */
+.asset-panel {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); margin-bottom:12px; overflow:hidden;
+  transition:box-shadow 0.2s;
+}
+.asset-panel:hover { box-shadow: 0 4px 24px rgba(0,0,0,0.3); }
+.asset-panel.passive-panel { border-color:rgba(167,139,250,0.25); }
+.panel-head {
+  display:flex; align-items:center; padding:14px 16px; cursor:pointer; gap:10px;
+  user-select:none;
+}
+.panel-color { width:4px; height:36px; border-radius:2px; flex-shrink:0; }
+.panel-info { flex:1; min-width:0; }
+.panel-name { font-size:14px; font-weight:700; }
+.panel-meta { font-size:11px; color:var(--text-muted); margin-top:2px; }
+.panel-chevron { color:var(--text-muted); transition:transform 0.25s; font-size:14px; }
+.panel-head.open .panel-chevron { transform:rotate(180deg); }
+.panel-badge { font-size:10px; font-weight:700; padding:2px 7px; border-radius:4px; margin-left:6px; }
+.badge-passive { background:var(--passive-dim); color:var(--passive); }
+.badge-income { background:#1a2e1a; color:#4ade80; }
+.panel-body { padding:0 16px 16px; border-top:1px solid var(--border); }
+.panel-body.hidden { display:none; }
+.panel-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px; }
+.panel-grid .full { grid-column:1/-1; }
+.input-wrap { position:relative; }
+.input-prefix {
+  position:absolute; left:12px; top:50%; transform:translateY(-50%);
+  font-size:13px; color:var(--text-muted); font-family:var(--mono); pointer-events:none;
+}
+.input-suffix {
+  position:absolute; right:12px; top:50%; transform:translateY(-50%);
+  font-size:13px; color:var(--text-muted); font-family:var(--mono); pointer-events:none;
+}
+.pinput {
+  width:100%; background:var(--bg); border:1.5px solid var(--border2);
+  border-radius:var(--radius-xs); padding:10px 12px; font-size:16px;
+  color:var(--text); font-family:var(--mono); transition:border-color 0.2s;
+  -webkit-appearance:none;
+}
+.pinput.with-prefix { padding-left:28px; }
+.pinput.with-suffix { padding-right:32px; }
+.pinput:focus { outline:none; border-color:var(--accent); }
+.panel-body .passive-panel .pinput:focus { border-color:var(--passive); }
+.plabel { font-size:11px; color:var(--text-sub); margin-bottom:5px; font-weight:600; letter-spacing:0.04em; }
+.pselect {
+  width:100%; background:var(--bg); border:1.5px solid var(--border2);
+  border-radius:var(--radius-xs); padding:10px 12px; font-size:16px;
+  color:var(--text); font-family:var(--font); -webkit-appearance:none; appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23555d80' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position: right 12px center;
+  padding-right:32px;
+}
+.pselect:focus { outline:none; border-color:var(--accent); }
+
+.toggle-switch { display:flex; align-items:center; gap:8px; cursor:pointer; }
+.toggle-track {
+  width:40px; height:22px; background:var(--border2); border-radius:11px;
+  position:relative; transition:background 0.2s; flex-shrink:0;
+}
+.toggle-thumb {
+  width:16px; height:16px; background:#fff; border-radius:50%;
+  position:absolute; top:3px; left:3px; transition:left 0.2s;
+  box-shadow:0 1px 4px rgba(0,0,0,0.4);
+}
+input:checked + .toggle-track { background:var(--accent); }
+input:checked + .toggle-track .toggle-thumb { left:21px; }
+.toggle-label { font-size:12px; color:var(--text-sub); font-weight:500; }
+input[type=checkbox].hidden-cb { display:none; }
+.panel-actions { display:flex; gap:8px; margin-top:14px; padding-top:14px; border-top:1px solid var(--border); }
+.btn-sm {
+  padding:7px 14px; border-radius:6px; font-size:12px; font-weight:700;
+  cursor:pointer; font-family:var(--font); border:1px solid var(--border2);
+  background:var(--surface2); color:var(--text-sub); transition:all 0.2s;
+}
+.btn-sm:hover { color:var(--text); border-color:var(--border); }
+.btn-sm.danger { color:var(--danger); border-color:rgba(255,90,90,0.2); }
+.btn-sm.danger:hover { background:rgba(255,90,90,0.1); }
+
+/* Add buttons */
+.add-row { display:flex; gap:10px; margin-bottom:14px; }
+.btn-add {
+  flex:1; padding:12px; border:1.5px dashed var(--border2); border-radius:var(--radius-sm);
+  background:transparent; color:var(--text-sub); font-size:13px; font-weight:600;
+  cursor:pointer; font-family:var(--font); transition:all 0.2s; text-align:center;
+}
+.btn-add:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-dim); }
+.btn-add.passive { }
+.btn-add.passive:hover { border-color:var(--passive); color:var(--passive); background:var(--passive-dim); }
+
+/* ── PASSIVE INCOME ── */
+.passive-header {
+  display:flex; align-items:center; gap:8px; padding:14px 16px 10px;
+  font-size:12px; font-weight:700; text-transform:uppercase;
+  letter-spacing:0.08em; color:var(--passive);
+}
+.section-divider {
+  border:none; border-top:1px solid var(--border); margin:8px 0 14px;
+}
+.passive-total-card {
+  background:linear-gradient(135deg, var(--surface) 50%, var(--passive-dim));
+  border:1px solid rgba(167,139,250,0.25); border-radius:var(--radius);
+  padding:16px; margin-bottom:12px;
+}
+
+/* ── SETTINGS / GLOBAL ── */
+.settings-section { margin-bottom:20px; }
+.settings-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-muted); margin-bottom:10px; }
+.settings-row {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:13px 16px; background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius-sm); margin-bottom:6px;
+}
+.settings-row-label { font-size:13px; font-weight:500; }
+.settings-row-sub { font-size:11px; color:var(--text-muted); margin-top:2px; }
+.settings-row-val { font-size:14px; font-weight:700; font-family:var(--mono); color:var(--text-sub); }
+.settings-input-row {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius-sm); padding:13px 16px; margin-bottom:6px;
+}
+.settings-input-row label { font-size:12px; color:var(--text-sub); font-weight:600; margin-bottom:6px; display:block; }
+
+/* Scenario */
+.scenario-card {
+  background:var(--surface2); border:1px solid var(--border2);
+  border-radius:var(--radius-sm); padding:14px 16px; margin-bottom:8px; cursor:pointer;
+  transition:all 0.2s; border-left:3px solid transparent;
+}
+.scenario-card:hover { border-color:var(--accent); }
+.scenario-card.active-sc { border-left-color:var(--accent); background:var(--accent-dim); }
+.sc-name { font-size:13px; font-weight:700; margin-bottom:3px; }
+.sc-desc { font-size:11px; color:var(--text-muted); }
+
+/* Summary table */
+.summary-table { width:100%; border-collapse:collapse; font-size:12px; table-layout:fixed; }
+.summary-table th { padding:8px 10px; text-align:left; color:var(--text-muted); font-weight:600; text-transform:uppercase; letter-spacing:0.05em; font-size:10px; border-bottom:1px solid var(--border); }
+.summary-table th:nth-child(2), .summary-table th:nth-child(3) { text-align:right; }
+.summary-table td { padding:10px 10px; border-bottom:1px solid var(--border); vertical-align:middle; }
+.summary-table tr:last-child td { border-bottom:none; }
+.summary-table th:nth-child(1), .summary-table td:nth-child(1) { width:44%; }
+.summary-table th:nth-child(2), .summary-table td:nth-child(2) { width:28%; text-align:right; }
+.summary-table th:nth-child(3), .summary-table td:nth-child(3) { width:28%; text-align:right; }
+.td-name { font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.td-name-inner { display:inline-flex; align-items:center; gap:6px; max-width:100%; }
+.td-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; display:inline-block; }
+.td-mono { font-family:var(--mono); color:var(--text-sub); }
+.td-accent { font-family:var(--mono); color:var(--accent); font-weight:700; }
+.td-passive { font-family:var(--mono); color:var(--passive); font-weight:700; }
+
+/* Toast */
+.toast {
+  position:fixed; bottom:80px; left:50%; transform:translateX(-50%) translateY(20px);
+  background:var(--surface2); border:1px solid var(--border2); border-radius:10px;
+  padding:10px 18px; font-size:13px; font-weight:600; z-index:999;
+  opacity:0; transition:all 0.3s; pointer-events:none; white-space:nowrap;
+}
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+/* Bottom nav */
+.bottom-nav {
+  position:fixed; bottom:0; left:0; right:0; z-index:100;
+  background:rgba(13,15,26,0.95); backdrop-filter:blur(16px);
+  border-top:1px solid var(--border);
+  display:flex; padding:8px 0; padding-bottom: max(8px, env(safe-area-inset-bottom));
+}
+.bnav-item {
+  flex:1; display:flex; flex-direction:column; align-items:center; gap:3px;
+  padding:4px 8px; cursor:pointer; transition:color 0.2s; color:var(--text-muted);
+  border:none; background:none; font-family:var(--font);
+}
+.bnav-item.active { color:var(--accent); }
+.bnav-icon { font-size:20px; }
+.bnav-label { font-size:10px; font-weight:600; letter-spacing:0.03em; }
+
+/* Blurred values */
+.blurred { filter:blur(6px); user-select:none; transition:filter 0.3s; }
+
+/* Responsive */
+@media(min-width:600px) {
+  .stats-grid { grid-template-columns:1fr 1fr 1fr; }
+  .panel-grid { grid-template-columns:1fr 1fr 1fr; }
+}
+@media(min-width:600px) {
+  .stats-grid .span2 { grid-column:span 1; }
+}
+
+/* Animations */
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+.fade-in { animation:fadeIn 0.35s ease both; }
 </style>
 </head>
 <body>
 
-<!-- ══ SETUP OVERLAY ══════════════════════════════════════════ -->
-<div class="overlay" id="setupOverlay">
-  <div class="setup-card">
-    <div class="setup-logo">
-      <div class="setup-logo-icon">📈</div>
-      <div>
-        <div class="setup-logo-name">FI Planner</div>
-        <div class="setup-logo-sub">Retirement Simulator</div>
-      </div>
-    </div>
-    <div class="dots">
-      <div class="dot active" id="d1"></div>
-      <div class="dot" id="d2"></div>
-    </div>
-
-    <div id="step1">
-      <div class="setup-h">Set up your profile</div>
-      <div class="setup-sub">Two quick fields to get started. You can always edit later.</div>
-      <div class="sf">
-        <label class="sl">Your current age</label>
-        <input class="si" type="number" id="s_age" min="18" max="80" placeholder="e.g. 30">
-      </div>
-      <div class="sf">
-        <label class="sl">Monthly expenses at retirement (RM)</label>
-        <input class="si" type="number" id="s_exp" min="0" placeholder="e.g. 5,000">
-        <div class="sh">How much you plan to spend per month when retired</div>
-      </div>
-      <button class="setup-btn" onclick="s1next()">Continue →</button>
-    </div>
-
-    <div id="step2" style="display:none">
-      <div class="setup-h">Fine-tune defaults</div>
-      <div class="setup-sub">These work for most people — adjust if needed.</div>
-      <div class="sr">
-        <div class="sf">
-          <label class="sl">Withdrawal rate (%)</label>
-          <input class="si" type="number" id="s_wr" value="4" min="1" max="10" step="0.1">
-          <div class="sh">Safe standard: 4%</div>
-        </div>
-        <div class="sf">
-          <label class="sl">Inflation rate (%)</label>
-          <input class="si" type="number" id="s_inf" value="3" min="0" max="15" step="0.1">
-          <div class="sh">Malaysia avg: ~3%</div>
+<!-- ── ONBOARDING ── -->
+<div id="onboarding">
+  <div class="ob-wrap">
+    <div class="ob-card" id="ob-card">
+      <div class="ob-logo">
+        <div class="ob-icon">📈</div>
+        <div>
+          <h1>FI Planner</h1>
+          <p>Retirement Simulator · Malaysia</p>
         </div>
       </div>
-      <button class="setup-btn" onclick="s2save()">Save &amp; Start →</button>
-      <button class="back-link" onclick="s1back()">← Back</button>
+      <div class="ob-progress">
+        <div class="ob-dot on" id="ob-d1"></div>
+        <div class="ob-dot" id="ob-d2"></div>
+        <div class="ob-dot" id="ob-d3"></div>
+      </div>
+      <!-- Step 1 -->
+      <div id="ob-step1">
+        <div class="ob-title">Set up your profile</div>
+        <div class="ob-sub">Two quick questions. You can always change these later.</div>
+        <div class="field">
+          <label>Your current age</label>
+          <input type="number" id="ob-age" placeholder="e.g. 30" min="18" max="80">
+        </div>
+        <div class="field">
+          <label>Monthly expenses at retirement (RM)</label>
+          <input type="number" id="ob-expense" placeholder="e.g. 5,000" min="500">
+          <div class="hint">How much you plan to spend per month when retired</div>
+        </div>
+        <button class="btn-prime" onclick="obNext()">Continue →</button>
+      </div>
+      <!-- Step 2 -->
+      <div id="ob-step2" style="display:none">
+        <div class="ob-title">Passive income sources</div>
+        <div class="ob-sub">Do you have or expect passive income in retirement? (rental, dividends, side biz…)</div>
+        <div class="field">
+          <label>Monthly passive income (RM) <span style="color:var(--text-muted);font-weight:400">– optional</span></label>
+          <input type="number" id="ob-passive" placeholder="e.g. 2,000" min="0">
+          <div class="hint">This reduces how much your portfolio needs to cover</div>
+        </div>
+        <div class="field">
+          <label>Target retirement age <span style="color:var(--text-muted);font-weight:400">– optional</span></label>
+          <input type="number" id="ob-target-age" placeholder="e.g. 55" min="30" max="80">
+        </div>
+        <div class="field">
+          <label>Withdrawal rate (%)</label>
+          <input type="number" id="ob-wr" placeholder="4" min="1" max="10" value="4">
+          <div class="hint">The "4% rule" means you withdraw 4% of your portfolio yearly</div>
+        </div>
+        <button class="btn-prime" onclick="obStep3()">Continue →</button>
+      </div>
+      <!-- Step 3 -->
+      <div id="ob-step3" style="display:none">
+        <div class="ob-title">Add your assets</div>
+        <div class="ob-sub">Enter what you currently have. Skip any that don't apply.</div>
+        <div id="ob-assets-list" style="display:flex;flex-direction:column;gap:10px;margin:16px 0;">
+          <!-- filled by JS -->
+        </div>
+        <button class="btn-prime" onclick="obFinish()">Start Planning →</button>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- ══ PROFILE MODAL ══════════════════════════════════════════ -->
-<div class="modal-bg hidden" id="profileModal">
-  <div class="modal">
-    <div class="modal-title">Profile &amp; Settings</div>
-    <div class="modal-sub">Edit your retirement profile and app preferences.</div>
+<!-- ── MAIN APP ── -->
+<div id="app">
+  <!-- Topbar -->
 
-    <div class="modal-section">Retirement Profile</div>
-    <div class="mf"><div class="ml">Current Age</div><input type="number" id="m_age" min="18" max="80"></div>
-    <div class="mf"><div class="ml">Monthly Retirement Expenses (RM)</div><input type="number" id="m_exp" min="0"></div>
-    <div class="mf"><div class="ml">Withdrawal Rate (%)</div><input type="number" id="m_wr" min="1" max="10" step="0.1"></div>
-    <div class="mf"><div class="ml">Inflation Rate (%)</div><input type="number" id="m_inf" min="0" max="15" step="0.1"></div>
 
-    <div class="modal-section">View &amp; Display</div>
-    <div class="toggle-row">
-      <span class="tlabel">Inflation Adjusted View</span>
-      <button class="toggle" id="m_inflToggle" onclick="toggleM_infl()"></button>
-    </div>
-    <div class="toggle-row">
-      <span class="tlabel">Hide All Values (Privacy)</span>
-      <button class="toggle" id="m_hideToggle" onclick="toggleM_hide()"></button>
-    </div>
 
-    <div class="modal-section">Data</div>
-    <div style="display:flex;gap:8px;">
-      <button class="btn btn-secondary" style="flex:1;justify-content:center;" onclick="exportData()">⬇ Export JSON</button>
-      <button class="btn btn-danger" style="flex:1;justify-content:center;" onclick="resetAll()">🔄 Reset All</button>
-    </div>
+  <!-- ── DASHBOARD PANE ── -->
+  <div class="pane active" id="pane-dashboard">
+    <div class="content">
+      <!-- Two Retirement Milestone Cards -->
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
 
-    <div class="modal-actions">
-      <button class="btn btn-secondary btn-full" onclick="closeProfile()">Cancel</button>
-      <button class="btn btn-primary btn-full" onclick="saveProfile()">Save Changes</button>
+        <!-- Milestone 1: Financial Independence (combined) -->
+        <div style="background:var(--surface2);border:1.5px solid rgba(0,229,160,0.4);border-radius:14px;padding:14px 16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:18px;">🏆</span>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:var(--text);">Financial Independence</div>
+                <div style="font-size:10px;color:var(--text-muted);margin-top:1px;" id="mile-fi-sub">Portfolio covers all expenses</div>
+              </div>
+            </div>
+            <div style="text-align:right;flex-shrink:0;">
+              <div class="stat-val vals" style="font-size:34px;font-weight:800;color:var(--accent);line-height:1;" id="mile-fi-age">–</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:2px;" id="mile-fi-yrs">–</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding-top:10px;border-top:1px solid rgba(0,229,160,0.15);">
+            <div>
+              <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">FI Target</div>
+              <div class="stat-val vals" style="font-size:13px;color:var(--accent);" id="mile-fi-target">–</div>
+            </div>
+            <div>
+              <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Monthly Income</div>
+              <div class="stat-val vals" style="font-size:13px;color:var(--accent);" id="mile-fi-income">–</div>
+            </div>
+            <div>
+              <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Port at 90</div>
+              <div class="stat-val vals" style="font-size:13px;color:var(--accent);" id="mile-fi-port90">–</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;margin-top:8px;">
+            <div style="flex:1;background:rgba(0,229,160,0.06);border-radius:6px;padding:5px 8px;">
+              <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;">EPF</div>
+              <div class="stat-val vals" style="font-size:11px;color:var(--accent);" id="mile-fi-epf">–</div>
+            </div>
+            <div style="flex:1;background:rgba(0,229,160,0.06);border-radius:6px;padding:5px 8px;">
+              <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;">Non-EPF</div>
+              <div class="stat-val vals" style="font-size:11px;color:var(--accent);" id="mile-fi-nonepf">–</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Milestone 2: Age 55 -->
+        <div style="flex:1.3;min-height:0;background:var(--surface2);border:1.5px solid rgba(167,139,250,0.4);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;justify-content:space-between;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:18px;">🏦</span>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:var(--text);">At Age 55</div>
+                <div style="font-size:10px;color:var(--text-muted);margin-top:1px;">EPF unlocks · full snapshot</div>
+              </div>
+            </div>
+            <div style="text-align:right;flex-shrink:0;">
+              <div class="stat-val vals" style="font-size:30px;font-weight:800;color:var(--passive);line-height:1;">55</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:2px;" id="mile-epf-sub">–</div>
+            </div>
+          </div>
+          <div style="padding-top:10px;border-top:1px solid rgba(167,139,250,0.15);">
+            <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Total Portfolio at 55</div>
+            <div class="stat-val vals" style="font-size:15px;color:var(--passive);margin-bottom:6px;" id="mile-epf-target">–</div>
+            <div style="display:flex;gap:6px;margin-bottom:8px;">
+              <div style="flex:1;background:rgba(167,139,250,0.08);border-radius:6px;padding:5px 8px;">
+                <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;">EPF</div>
+                <div class="stat-val vals" style="font-size:11px;color:var(--passive);" id="mile-epf-epf55">–</div>
+              </div>
+              <div style="flex:1;background:rgba(167,139,250,0.08);border-radius:6px;padding:5px 8px;">
+                <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;">Non-EPF</div>
+                <div class="stat-val vals" style="font-size:11px;color:var(--passive);" id="mile-epf-nonepf55">–</div>
+              </div>
+            </div>
+            <!-- Two paths: each shows monthly income + port at 90 -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+              <!-- Path A: 4% Withdrawal -->
+              <div style="background:rgba(167,139,250,0.06);border-radius:8px;padding:8px 10px;">
+                <div style="font-size:9px;font-weight:700;color:var(--passive);margin-bottom:6px;letter-spacing:0.03em;">📊 4% Withdrawal</div>
+                <div style="font-size:8px;color:var(--text-muted);">Monthly Income</div>
+                <div class="stat-val vals" style="font-size:13px;color:var(--passive);font-weight:700;margin-bottom:5px;" id="mile-epf-income">–</div>
+                <div style="height:1px;background:rgba(167,139,250,0.15);margin-bottom:5px;"></div>
+                <div style="font-size:8px;color:var(--text-muted);">Port at 90</div>
+                <div class="stat-val vals" style="font-size:12px;color:var(--passive);font-weight:600;" id="mile-epf-port90-wr">–</div>
+              </div>
+              <!-- Path B: Dividend Only -->
+              <div style="background:rgba(167,139,250,0.06);border-radius:8px;padding:8px 10px;">
+                <div style="font-size:9px;font-weight:700;color:#c084fc;margin-bottom:6px;letter-spacing:0.03em;">💜 Dividend Only</div>
+                <div style="font-size:8px;color:var(--text-muted);">Monthly Income</div>
+                <div class="stat-val vals" style="font-size:13px;color:#c084fc;font-weight:700;margin-bottom:5px;" id="mile-epf-dividend">–</div>
+                <div style="height:1px;background:rgba(167,139,250,0.15);margin-bottom:5px;"></div>
+                <div style="font-size:8px;color:var(--text-muted);">Port at 90</div>
+                <div class="stat-val vals" style="font-size:12px;color:#c084fc;font-weight:600;" id="mile-epf-port90-div">–</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Portfolio Breakdown -->
+      <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:12px;padding:10px 14px;margin-bottom:14px;">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted);margin-bottom:8px;">Portfolio Today</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+          <div>
+            <div style="font-size:9px;color:var(--text-muted);">Total</div>
+            <div class="stat-val vals" style="font-size:13px;color:var(--text);" id="pb-total">–</div>
+          </div>
+          <div>
+            <div style="font-size:9px;color:var(--text-muted);">EPF</div>
+            <div class="stat-val vals" style="font-size:13px;color:var(--accent);" id="port-epf">–</div>
+          </div>
+          <div>
+            <div style="font-size:9px;color:var(--text-muted);">Non-EPF</div>
+            <div class="stat-val vals" style="font-size:13px;color:#fbbf24;" id="port-nonepf">–</div>
+          </div>
+        </div>
+      </div>
+      <span id="stat-passive-retire-age" style="display:none"></span>
+      <span id="stat-passive-retire-sub" style="display:none"></span>
+      <span id="stat-passive-fi-target" style="display:none"></span>
+      <span id="stat-passive-blended-yield" style="display:none"></span>
+      <span id="stat-passive-retire-income" style="display:none"></span>
+      <span id="stat-age90-passive" style="display:none"></span>
+      <span id="stat-retire-age" style="display:none"></span>
+      <span id="stat-retire-years" style="display:none"></span>
+      <span id="stat-fi-target" style="display:none"></span>
+      <span id="stat-wr-rate-show" style="display:none">4</span>
+      <span id="stat-wr-monthly-income" style="display:none"></span>
+      <span id="stat-age90-after-wr" style="display:none"></span>
+      <span id="stat-age90-wr-label" style="display:none"></span>
+
+      <div class="stats-grid" id="stats-grid" style="display:none;">
+        <div class="stat-card">
+          <div class="stat-label">Portfolio Today</div>
+          <div class="stat-val vals" id="stat-portfolio-now">–</div>
+          <div class="stat-sub">Current total assets</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Monthly Income Now</div>
+          <div class="stat-val passive vals" id="stat-passive-total">RM 0</div>
+          <div class="stat-sub" id="stat-passive-sub">From assets + passive sources</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Adjusted FI Target</div>
+          <div class="stat-val vals" id="stat-fi-adjusted">–</div>
+          <div class="stat-sub">After passive income offset</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Income Coverage</div>
+          <div class="stat-val vals" id="stat-income-coverage">0%</div>
+          <div class="stat-sub" id="stat-passive-badge">of monthly expenses</div>
+        </div>
+      </div>
+
+      <!-- Chart -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Portfolio & Income Projection</span>
+          <div class="chart-toggle">
+            <button class="ctoggle on" id="ct-combined" onclick="setChartMode('combined')">Portfolio</button>
+            <button class="ctoggle" id="ct-income" onclick="setChartMode('income')">Income</button>
+            <button class="ctoggle" id="ct-stacked" onclick="setChartMode('stacked')">Breakdown</button>
+          </div>
+        </div>
+        <div id="chart-mode-desc" style="font-size:11px;color:var(--text-muted);margin-bottom:8px;padding:0 2px;">
+          Total portfolio value vs your FI target and the age you can retire
+        </div>
+        <div class="chart-wrap"><canvas id="main-chart"></canvas></div>
+        <div class="chart-legend" id="chart-legend"></div>
+      </div>
+
+      <!-- Inflation toggle -->
+      <div class="card" style="padding:14px 16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div>
+            <div style="font-size:13px;font-weight:600;">Inflation Adjustment</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Real returns after <span id="infl-rate-show">3</span>% inflation</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" class="hidden-cb" id="infl-toggle" onchange="recalc()">
+            <div class="toggle-track"><div class="toggle-thumb"></div></div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Summary table -->
+      <div class="card">
+        <div class="card-header"><span class="card-title">Asset Summary</span></div>
+        <table class="summary-table" id="summary-table">
+          <thead>
+            <tr>
+              <th>Asset</th>
+              <th>Current</th>
+              <th>@ Retirement</th>
+            </tr>
+          </thead>
+          <tbody id="summary-body"></tbody>
+        </table>
+        <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:11px;color:var(--text-muted);line-height:1.7;">
+          <b style="color:var(--text-sub);">Income Yield</b> = the % of asset value paid out as income per year (dividends, interest).<br>
+          This income is counted toward your <span style="color:var(--passive);">Passive Income Path</span> retirement age.
+        </div>
+      </div><!-- end summary card -->
     </div>
   </div>
-</div>
-
-<!-- ══ APP ════════════════════════════════════════════════════ -->
-<div class="shell">
-  <div class="page">
-
-    <!-- TOP NAV -->
-    <div class="topnav">
-      <div class="nav-logo">
-        <div class="nav-logo-icon">📈</div>
-        <div class="nav-logo-name">FI Planner</div>
+  <div class="pane" id="pane-assets">
+    <div class="content">
+      <div id="asset-panels"></div>
+      <div class="add-row">
+        <button class="btn-add" onclick="addAsset()">＋ Add Asset</button>
       </div>
-      <div class="nav-right">
-        <div class="nav-profile-btn" onclick="openProfile()">
-          <div class="nav-avatar" id="navAvatar">—</div>
-          <div class="nav-profile-label" id="navLabel">Profile</div>
+    </div>
+  </div>
+
+  <!-- ── PASSIVE INCOME PANE ── -->
+  <div class="pane" id="pane-passive">
+    <div class="content">
+      <div class="passive-total-card">
+        <div class="stat-label">💜 Total Monthly Income</div>
+        <div class="stat-val passive big vals" id="passive-total-big">RM 0</div>
+        <div class="stat-sub" id="passive-total-sub">Reduces your FI target significantly</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;padding-top:14px;border-top:1px solid rgba(167,139,250,0.15);">
+          <div>
+            <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">From Assets</div>
+            <div class="stat-val passive vals" style="font-size:16px;" id="passive-from-assets">RM 0</div>
+            <div style="font-size:10px;color:var(--text-muted);margin-top:3px;">Dividends, yields, interest</div>
+          </div>
+          <div>
+            <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Standalone Sources</div>
+            <div class="stat-val passive vals" style="font-size:16px;" id="passive-from-standalone">RM 0</div>
+            <div style="font-size:10px;color:var(--text-muted);margin-top:3px;">Rental, biz, royalties</div>
+          </div>
+        </div>
+        <div style="margin-top:12px;font-size:11px;color:var(--text-sub);">
+          More income = smaller portfolio needed = earlier retirement on the <span style="color:var(--passive);">Passive Path</span>.
+        </div>
+      </div>
+      <div id="passive-panels"></div>
+      <div class="add-row">
+        <button class="btn-add passive" onclick="addPassive()">＋ Add Passive Income Source</button>
+      </div>
+      <div class="card" style="margin-top:4px;">
+        <div class="card-title" style="margin-bottom:12px;">How the Passive Income Path Works</div>
+        <div style="font-size:12px;color:var(--text-sub);line-height:1.75;">
+          <div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border);">
+            <b style="color:var(--text);">Automatically calculated from your assets</b><br>
+            No extra input needed. The app projects each asset forward year by year using its return rate. At each future age it checks:<br>
+            <div style="font-family:var(--mono);color:var(--accent);font-size:11px;margin:6px 0;padding:6px 10px;background:var(--bg);border-radius:6px;">Portfolio Value × Return Rate ÷ 12 ≥ Monthly Expense?</div>
+            The first year this is true = your <b style="color:var(--passive);">Passive Retirement Age</b>.<br>
+            At that point, you live off the returns without ever selling.
+          </div>
+          <div>
+            <b style="color:var(--text);">Add standalone sources below to reach it sooner</b><br>
+            <div style="margin-top:6px;">📌 <b>Rental income</b> – net rent after loan/expenses</div>
+            <div style="margin-top:4px;">📌 <b>Business income</b> – ongoing side business profits</div>
+            <div style="margin-top:4px;">📌 <b>Royalties / Digital</b> – books, courses, content</div>
+            <div style="margin-top:4px;">📌 <b>Other dividends</b> – from stocks/REITs not in your asset list</div>
+          </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- MAIN CONTENT -->
+  <!-- ── SCENARIOS PANE ── -->
+  <div class="pane" id="pane-scenario">
     <div class="content">
 
-      <!-- EMPTY STATE -->
-      <div id="dashEmpty" class="dash-empty">
-        <div class="empty-icon">📊</div>
-        <div class="empty-title">Dashboard is ready</div>
-        <div class="empty-sub">Add your asset values below to see your retirement forecast appear instantly.</div>
-        <div class="empty-steps">
-          <div class="estep">
-            <div class="enum e-done">✓</div>
-            <div class="etext"><strong>Profile saved</strong><span>Your age and retirement goal are set</span></div>
-          </div>
-          <div class="estep">
-            <div class="enum e-todo">2</div>
-            <div class="etext"><strong>Fill in your assets</strong><span>Expand the Assets panel below and enter your EPF, savings, stocks and other holdings</span></div>
-          </div>
-          <div class="estep">
-            <div class="enum e-todo">3</div>
-            <div class="etext"><strong>Forecast appears here</strong><span>Retirement age, FI number and portfolio chart show up automatically</span></div>
-          </div>
+      <!-- Dropdown selector -->
+      <div class="card" style="margin-bottom:14px;">
+        <div class="card-title" style="margin-bottom:10px;">What-If Scenarios</div>
+        <div style="font-size:12px;color:var(--text-sub);margin-bottom:14px;line-height:1.6;">
+          Pick a scenario to instantly see how it shifts both retirement ages.
         </div>
-        <button class="open-assets-btn" onclick="openAssetsPanel()">Open Assets ↓</button>
+        <select id="scenario-select" class="pselect" style="width:100%;font-size:14px;padding:12px 14px;border-radius:10px;" onchange="applyScenario(this.value)">
+          <option value="">— Select a scenario —</option>
+        </select>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:8px;" id="scenario-desc-line"></div>
       </div>
 
-      <!-- DASHBOARD DATA -->
-      <div id="dashData" style="display:none">
+      <!-- Instant result — shown immediately on selection -->
+      <div class="card" id="scenario-result" style="display:none;">
+        <div class="card-title" style="margin-bottom:4px;">Impact on Your Retirement</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-bottom:14px;" id="scenario-desc-line2"></div>
 
-        <!-- RETIRE BANNER -->
-        <div class="retire-banner">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px;">
+          <div class="stat-card" style="text-align:center;">
+            <div class="stat-label">Base FI Age</div>
+            <div class="stat-val accent vals" id="sc-base-age" style="font-size:22px;">–</div>
+            <div class="stat-sub" id="sc-base-income" style="margin-top:2px;"></div>
+          </div>
+          <div class="stat-card" style="text-align:center;">
+            <div class="stat-label">Scenario FI Age</div>
+            <div class="stat-val vals" id="sc-new-age" style="font-size:22px;">–</div>
+            <div class="stat-sub" id="sc-new-income" style="margin-top:2px;"></div>
+          </div>
+          <div class="stat-card" style="text-align:center;">
+            <div class="stat-label">Change</div>
+            <div class="stat-val vals" id="sc-diff" style="font-size:18px;">–</div>
+            <div class="stat-sub" id="sc-diff-sub" style="margin-top:4px;"></div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+          <div style="background:var(--surface);border-radius:8px;padding:8px 10px;">
+            <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Base Port at 90</div>
+            <div class="stat-val vals" style="font-size:13px;color:var(--accent);" id="sc-base-port90">–</div>
+          </div>
+          <div style="background:var(--surface);border-radius:8px;padding:8px 10px;">
+            <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Scenario Port at 90</div>
+            <div class="stat-val vals" style="font-size:13px;color:var(--accent);" id="sc-new-port90">–</div>
+          </div>
+        </div>
+
+        <button class="btn-sm" style="margin-top:4px;width:100%;" onclick="clearScenario()">✕ Clear Scenario</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── SETTINGS PANE ── -->
+  <div class="pane" id="pane-settings">
+    <div class="content">
+      <div class="settings-section">
+        <div class="settings-title">Profile</div>
+        <div class="settings-input-row">
+          <label>Current Age</label>
+          <div class="input-wrap">
+            <input class="pinput" type="number" id="s-age" min="18" max="80" onchange="saveSettings()">
+          </div>
+        </div>
+        <div class="settings-input-row">
+          <label>Monthly Retirement Expense (RM)</label>
+          <div class="input-wrap">
+            <input class="pinput with-prefix" type="number" id="s-expense" min="500" onchange="saveSettings()">
+            <span class="input-prefix">RM</span>
+          </div>
+        </div>
+        <div class="settings-input-row">
+          <label>Target Retirement Age (optional)</label>
+          <div class="input-wrap">
+            <input class="pinput" type="number" id="s-target-age" min="30" max="80" onchange="saveSettings()">
+          </div>
+        </div>
+      </div>
+      <div class="settings-section">
+        <div class="settings-title">Calculation</div>
+        <div class="settings-input-row">
+          <label>Withdrawal Rate (%)</label>
+          <div class="input-wrap">
+            <input class="pinput with-suffix" type="number" id="s-wr" min="1" max="10" step="0.5" onchange="saveSettings()">
+            <span class="input-suffix">%</span>
+          </div>
+        </div>
+        <div class="settings-input-row">
+          <label>Inflation Rate (%)</label>
+          <div class="input-wrap">
+            <input class="pinput with-suffix" type="number" id="s-infl" min="0" max="15" step="0.5" onchange="saveSettings()">
+            <span class="input-suffix">%</span>
+          </div>
+        </div>
+        <div class="settings-input-row">
+          <label>Projection Until Age</label>
+          <div class="input-wrap">
+            <input class="pinput" type="number" id="s-project-age" min="60" max="100" onchange="saveSettings()">
+          </div>
+        </div>
+      </div>
+      <div class="settings-section">
+        <div class="settings-title">Privacy</div>
+        <div class="settings-row">
           <div>
-            <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin-bottom:3px;">Retirement Age</div>
-            <div class="retire-num" id="retireNum">—</div>
+            <div class="settings-row-label">Hide Values</div>
+            <div class="settings-row-sub">Blur all monetary amounts</div>
           </div>
-          <div class="retire-info">
-            <h2 id="retireTitle">Calculating…</h2>
-            <p id="retireSub"></p>
-            <div class="prog-wrap" id="progWrap" style="display:none">
-              <div class="prog-label"><span>Progress to FI</span><span id="progPct">0%</span></div>
-              <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- STATS -->
-        <div class="stat-grid">
-          <div class="stat-card sc-cyan">
-            <div class="stat-label">FI Target</div>
-            <div class="stat-val sv-cyan" id="sFI">—</div>
-            <div class="stat-sub">Annual expense ÷ withdrawal rate</div>
-          </div>
-          <div class="stat-card sc-green">
-            <div class="stat-label">Portfolio Today</div>
-            <div class="stat-val sv-green" id="sCur">—</div>
-            <div class="stat-sub">All assets combined</div>
-          </div>
-          <div class="stat-card sc-amber">
-            <div class="stat-label">Portfolio @ Retirement</div>
-            <div class="stat-val sv-amber" id="sAtRet">—</div>
-            <div class="stat-sub" id="sAtRetSub">Projected value</div>
-          </div>
-          <div class="stat-card sc-pink">
-            <div class="stat-label">Years to FI</div>
-            <div class="stat-val" style="color:var(--accent4)" id="sYrs">—</div>
-            <div class="stat-sub" id="sYrsSub">From today</div>
-          </div>
-        </div>
-
-        <!-- CHART -->
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title">Portfolio Projection</div>
-            <div class="chart-tabs">
-              <button class="ct active" id="ctAll" onclick="setChart('combined')">Combined</button>
-              <button class="ct" id="ctBreak" onclick="setChart('breakdown')">By Asset</button>
-            </div>
-          </div>
-          <div class="chart-wrap"><canvas id="mainChart"></canvas></div>
-        </div>
-
-        <!-- SCENARIO -->
-        <div class="scenario-row">
-          <div class="scenario-top">
-            <div class="scenario-label">📊 Scenario</div>
-            <select class="scenario-select" id="scenSelect" onchange="onScenChange()">
-              <option value="">— No scenario selected —</option>
-              <option value="boost_etf">🚀 Boost ETF Contribution (2×)</option>
-              <option value="low_stocks">📉 Stock Market Slowdown (4% return)</option>
-              <option value="stop_epf">✋ Stop EPF Contributions at 55</option>
-              <option value="stock_crash">💥 One-time 20% Stock Crash</option>
-              <option value="shift_savings">🔄 Shift Savings → ETF</option>
-              <option value="expense_cut">🏖 Reduce Retirement Expenses by 20%</option>
-            </select>
-            <button class="btn btn-secondary btn-sm" onclick="clearScenario()" id="scenClearBtn" style="display:none">✕ Clear</button>
-          </div>
-          <div class="scenario-result" id="scenResult">
-            <div class="scen-compare">
-              <div class="scen-stat"><div class="scen-stat-label">Base Retire Age</div><div class="scen-stat-val sv-base" id="cBase">—</div></div>
-              <div class="scen-stat"><div class="scen-stat-label">Scenario Retire Age</div><div class="scen-stat-val sv-scen" id="cScen">—</div></div>
-              <div class="scen-stat"><div class="scen-stat-label">Difference</div><div class="scen-stat-val" id="cDiff">—</div></div>
-            </div>
-            <div class="scen-chart-wrap"><canvas id="scenChart"></canvas></div>
-          </div>
-        </div>
-
-        <!-- ASSET SUMMARY TABLE -->
-        <div class="card">
-          <div class="card-header"><div class="card-title">Asset Summary</div></div>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>Asset</th><th>Type</th><th>Current</th><th>Return</th><th>@ Retirement</th><th>Growth</th></tr></thead>
-              <tbody id="summaryBody"></tbody>
-            </table>
-          </div>
-        </div>
-
-      </div><!-- /dashData -->
-
-      <!-- ASSETS ACCORDION (always visible at bottom) -->
-      <div class="assets-panel" id="assetsPanel">
-        <div class="assets-panel-header" onclick="toggleAssets()">
-          <div class="aph-left">
-            <span style="font-size:16px">💼</span>
-            <div>
-              <div class="aph-title">My Assets</div>
-              <div class="aph-meta" id="assetsMeta">Tap to expand and edit your assets</div>
-            </div>
-          </div>
-          <div class="aph-chevron" id="apChevron">▾</div>
-        </div>
-        <div class="assets-body" id="assetsBody">
-          <div class="assets-grid" id="assetsGrid"></div>
-          <div class="assets-panel-footer">
-            <button class="add-asset-btn" onclick="addAsset()">+ Add Asset</button>
-            <button class="ok-btn" onclick="closeAssetsPanel()">Done ✓</button>
-          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" class="hidden-cb" id="s-hide" onchange="toggleHideFromSettings()">
+            <div class="toggle-track"><div class="toggle-thumb"></div></div>
+          </label>
         </div>
       </div>
+      <div class="settings-section">
+        <div class="settings-title">Data</div>
+        <div style="display:flex;gap:10px;">
+          <button class="btn-sm" style="flex:1;padding:12px;" onclick="exportData()">📤 Export JSON</button>
+          <button class="btn-sm" style="flex:1;padding:12px;" onclick="document.getElementById('import-file').click()">📥 Import JSON</button>
+        </div>
+        <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
+        <div id="reset-confirm" style="display:none;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:10px;padding:12px;margin-top:8px;text-align:center;">
+          <div style="font-size:13px;font-weight:600;color:#ef4444;margin-bottom:8px;">Delete all data? This cannot be undone.</div>
+          <div style="display:flex;gap:8px;">
+            <button onclick="document.getElementById('reset-confirm').style.display='none'" style="flex:1;padding:10px;border-radius:8px;border:1px solid var(--border2);background:var(--surface2);color:var(--text);font-family:var(--font);font-size:13px;cursor:pointer;">Cancel</button>
+            <button onclick="localStorage.removeItem('fi_planner_v3');location.reload();" style="flex:1;padding:10px;border-radius:8px;border:none;background:#ef4444;color:#fff;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;">Yes, Reset</button>
+          </div>
+        </div>
+        <button class="btn-sm danger" style="width:100%;padding:12px;margin-top:8px;" onclick="document.getElementById('reset-confirm').style.display='block'">🗑 Reset All Data</button>
+      </div>
+      <div style="text-align:center;font-size:11px;color:var(--text-muted);margin-top:24px;line-height:1.6;">
+        FI Planner · No cloud storage · All data local only<br>
+        Built for Malaysian investors 🇲🇾
+      </div>
+    </div>
+  </div>
 
-    </div><!-- /content -->
-  </div><!-- /page -->
-</div><!-- /shell -->
+  <!-- Bottom Nav (mobile) -->
+  <div class="bottom-nav">
+    <button class="bnav-item active" id="bn-dashboard" onclick="showTab('dashboard',null,this)">
+      <span class="bnav-icon">📊</span><span class="bnav-label">Dashboard</span>
+    </button>
+    <button class="bnav-item" id="bn-assets" onclick="showTab('assets',null,this)">
+      <span class="bnav-icon">💼</span><span class="bnav-label">Assets</span>
+    </button>
+    <button class="bnav-item" id="bn-passive" onclick="showTab('passive',null,this)">
+      <span class="bnav-icon">💜</span><span class="bnav-label">Passive</span>
+    </button>
+    <button class="bnav-item" id="bn-scenario" onclick="showTab('scenario',null,this)">
+      <span class="bnav-icon">🔀</span><span class="bnav-label">Scenarios</span>
+    </button>
+    <button class="bnav-item" id="bn-settings" onclick="showTab('settings',null,this)">
+      <span class="bnav-icon">⚙️</span><span class="bnav-label">Settings</span>
+    </button>
+  </div>
+</div>
 
-<div class="notif" id="notif"></div>
+<div class="toast" id="toast"></div>
 
 <script>
-// ── STATE ──────────────────────────────────────────────────────
-let P = {age:0, exp:0, wr:4, inf:3};
-let assets = [];
-let inflAdj = false, hideVals = false;
-let chartMode = 'combined';
-let mainChart = null, scenChart = null;
-let activeScen = null;
-let calc = null;
-let saved = false;
-let nextId = 10;
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+const COLORS = ['#00e5a0','#00bfff','#ff7c5c','#a78bfa','#ffd166','#f472b6','#34d399','#fb923c'];
+const PASSIVE_COLOR = '#a78bfa';
 
-// temp modal toggles (before save)
-let m_inflAdj = false, m_hideVals = false;
-
-const COLORS = ['#4ade80','#22d3ee','#f59e0b','#f472b6','#a78bfa','#fb923c','#34d399','#60a5fa'];
-
-const DEF_ASSETS = [
-  {id:1,name:'EPF',          amount:'',rate:6.5,contrib:'',freq:'monthly',  startAge:'',endAge:'',type:'stable'},
-  {id:2,name:'Fixed Deposit',amount:'',rate:3.5,contrib:'',freq:'monthly',  startAge:'',endAge:'',type:'stable'},
-  {id:3,name:'Savings',      amount:'',rate:1.5,contrib:'',freq:'monthly',  startAge:'',endAge:'',type:'cash'},
-  {id:4,name:'Stocks',       amount:'',rate:8,  contrib:'',freq:'monthly',  startAge:'',endAge:'',type:'volatile'},
-  {id:5,name:'ETF',          amount:'',rate:7,  contrib:'',freq:'monthly',  startAge:'',endAge:'',type:'volatile'},
+// assetPassiveRate = % of asset value paid out as income per year (dividends, interest, etc.)
+// The rest of the return compounds in the asset value.
+// Example: ETF total return 7%, dividend yield 3% → assetPassiveRate:3, rate:4 (price appreciation)
+const defaultAssets = [
+  { id:'asset_epf',   name:'EPF',           current:0, rate:6,   contrib:0, freq:'monthly', startAge:0, endAge:0, color:COLORS[0], type:'stable',   assetPassiveRate:0, reinvestIncome:true  },
+  { id:'fd',    name:'Fixed Deposit', current:0, rate:3.5, contrib:0, freq:'monthly', startAge:0, endAge:0, color:COLORS[1], type:'stable',   assetPassiveRate:3.5,reinvestIncome:true  },
+  { id:'sav',   name:'Savings',       current:0, rate:2,   contrib:0, freq:'monthly', startAge:0, endAge:0, color:COLORS[2], type:'cash',     assetPassiveRate:0, reinvestIncome:true  },
+  { id:'stk',   name:'Stocks',        current:0, rate:8,   contrib:0, freq:'monthly', startAge:0, endAge:0, color:COLORS[3], type:'volatile', assetPassiveRate:3, reinvestIncome:true  },
+  { id:'etf',   name:'ETF',           current:0, rate:7,   contrib:0, freq:'monthly', startAge:0, endAge:0, color:COLORS[4], type:'volatile', assetPassiveRate:4, reinvestIncome:true  },
 ];
 
-const SCENS = {
-  boost_etf:   {apply: a => a.name==='ETF'    ? {...a,contrib:String((+a.contrib||0)*2)} : a},
-  low_stocks:  {apply: a => a.name==='Stocks' ? {...a,rate:4} : a},
-  stop_epf:    {apply: a => a.name==='EPF'    ? {...a,endAge:'55'} : a},
-  stock_crash: {apply: a => a.name==='Stocks' ? {...a,amount:String((+a.amount||0)*0.8)} : a},
-  shift_savings:{apply: a => {const s=assets.find(x=>x.name==='Savings');if(a.name==='Savings')return{...a,contrib:'0'};if(a.name==='ETF')return{...a,contrib:String((+a.contrib||0)+(+s?.contrib||0))};return a;}},
-  expense_cut: {special:'expense_cut'},
+const defaultPassive = [];
+
+let state = {
+  onboarded: false,
+  age: 30,
+  expense: 5000,
+  targetAge: 0,
+  withdrawalRate: 4,
+  inflation: 3,
+  projectUntilAge: 80,
+  assets: JSON.parse(JSON.stringify(defaultAssets)),
+  passive: [],
+  hideValues: false,
+  inflationAdjusted: false,
+  activeScenario: null,
 };
 
-// ── INIT ──────────────────────────────────────────────────────
-window.onload = () => {
-  assets = DEF_ASSETS.map(a=>({...a}));
-  renderAssets();
-};
-
-// ── SETUP ─────────────────────────────────────────────────────
-function s1next(){
-  const age=+document.getElementById('s_age').value;
-  const exp=+document.getElementById('s_exp').value;
-  if(!age||age<18){notify('Enter a valid age (18+)');return;}
-  if(!exp||exp<=0){notify('Enter your expected monthly expense');return;}
-  document.getElementById('step1').style.display='none';
-  document.getElementById('step2').style.display='block';
-  document.getElementById('d1').className='dot done';
-  document.getElementById('d2').className='dot active';
+function loadState() {
+  try {
+    const s = localStorage.getItem('fi_planner_v3');
+    if (s) {
+      const parsed = JSON.parse(s);
+      // Migrate old EPF asset id 'epf' → 'asset_epf' to avoid DOM id collision
+      if (parsed.assets) {
+        parsed.assets.forEach(a => { if (a.id === 'epf') a.id = 'asset_epf'; });
+      }
+      state = Object.assign(state, parsed);
+    }
+  } catch(e) {}
 }
-function s1back(){
-  document.getElementById('step2').style.display='none';
-  document.getElementById('step1').style.display='block';
-  document.getElementById('d2').className='dot';
-  document.getElementById('d1').className='dot active';
-}
-function s2save(){
-  P.age=+document.getElementById('s_age').value||0;
-  P.exp=+document.getElementById('s_exp').value||0;
-  P.wr =+document.getElementById('s_wr').value ||4;
-  P.inf=+document.getElementById('s_inf').value||3;
-  saved=true;
-  document.getElementById('setupOverlay').classList.add('hidden');
-  updateNavChip();
-  recalc();
-  notify('✓ Profile saved — expand Assets below to fill in your holdings');
+function saveState() {
+  localStorage.setItem('fi_planner_v3', JSON.stringify(state));
 }
 
-// ── NAV CHIP ──────────────────────────────────────────────────
-function updateNavChip(){
-  document.getElementById('navAvatar').textContent=P.age||'—';
-  document.getElementById('navLabel').textContent=`Age ${P.age} · RM${short(P.exp)}/mo`;
+// ═══════════════════════════════════════════
+// ONBOARDING
+// ═══════════════════════════════════════════
+function obNext() {
+  const age = parseInt(document.getElementById('ob-age').value);
+  const exp = parseFloat(document.getElementById('ob-expense').value);
+  if (!age || age < 18 || age > 80) { toast('Enter a valid age (18–80)'); return; }
+  if (!exp || exp < 100) { toast('Enter monthly retirement expenses'); return; }
+  state.age = age;
+  state.expense = exp;
+  document.getElementById('ob-step1').style.display = 'none';
+  document.getElementById('ob-step2').style.display = 'block';
+  document.getElementById('ob-d2').classList.add('on');
+  document.getElementById('ob-wr').value = 4;
 }
-
-// ── PROFILE MODAL ─────────────────────────────────────────────
-function openProfile(){
-  document.getElementById('m_age').value=P.age;
-  document.getElementById('m_exp').value=P.exp;
-  document.getElementById('m_wr').value=P.wr;
-  document.getElementById('m_inf').value=P.inf;
-  m_inflAdj=inflAdj; m_hideVals=hideVals;
-  document.getElementById('m_inflToggle').classList.toggle('on',inflAdj);
-  document.getElementById('m_hideToggle').classList.toggle('on',hideVals);
-  document.getElementById('profileModal').classList.remove('hidden');
-}
-function closeProfile(){document.getElementById('profileModal').classList.add('hidden');}
-function saveProfile(){
-  const age=+document.getElementById('m_age').value;
-  const exp=+document.getElementById('m_exp').value;
-  if(!age||age<18){notify('Enter a valid age');return;}
-  if(!exp||exp<=0){notify('Enter monthly expense');return;}
-  P.age=age; P.exp=exp;
-  P.wr=+document.getElementById('m_wr').value||4;
-  P.inf=+document.getElementById('m_inf').value||3;
-  inflAdj=m_inflAdj; hideVals=m_hideVals;
-  closeProfile();
-  updateNavChip();
-  recalc();
-  applyHide();
-  notify('✓ Settings saved');
-}
-function toggleM_infl(){
-  m_inflAdj=!m_inflAdj;
-  document.getElementById('m_inflToggle').classList.toggle('on',m_inflAdj);
-}
-function toggleM_hide(){
-  m_hideVals=!m_hideVals;
-  document.getElementById('m_hideToggle').classList.toggle('on',m_hideVals);
-}
-
-// ── CALC ENGINE ───────────────────────────────────────────────
-function effRate(r){
-  const nr=r/100;
-  if(!inflAdj)return nr;
-  return (1+nr)/(1+P.inf/100)-1;
-}
-function annualPMT(a){
-  const c=+a.contrib||0;
-  return a.freq==='monthly'?c*12:a.freq==='quarterly'?c*4:c;
-}
-function calcAsset(a,age,yrs){
-  let v=+a.amount||0;
-  const r=effRate(+a.rate||0);
-  const pmt=annualPMT(a);
-  const sa=+a.startAge||age;
-  const ea=+a.endAge||9999;
-  const out=[];
-  for(let t=0;t<=yrs;t++){
-    const cur=age+t;
-    if(cur<sa){out.push(v);continue;}
-    const p=cur<=ea?pmt:0;
-    v=r===0?v+p:v*(1+r)+p;
-    out.push(Math.max(0,v));
+function obStep3() {
+  const passive = parseFloat(document.getElementById('ob-passive').value) || 0;
+  const tgtAge = parseInt(document.getElementById('ob-target-age').value) || 0;
+  const wr = parseFloat(document.getElementById('ob-wr').value) || 4;
+  state.withdrawalRate = wr;
+  state.targetAge = tgtAge;
+  if (passive > 0) {
+    state.passive.push({ id:'p_'+Date.now(), name:'Passive Income', amount:passive, type:'other', startAge:state.age, endAge:0, growthRate:0, color:PASSIVE_COLOR });
   }
-  return out;
-}
-function hasData(){return assets.some(a=>(+a.amount||0)>0||(+a.contrib||0)>0);}
-
-function recalc(){
-  if(!saved)return;
-  const age=P.age, yrs=Math.max(1,80-age);
-  const fi=P.wr>0?(P.exp*12)/(P.wr/100):0;
-  const aY=assets.map(a=>calcAsset(a,age,yrs));
-  const tot=[];
-  for(let t=0;t<=yrs;t++){let s=0;aY.forEach(ay=>s+=ay[t]||0);tot.push(s);}
-  let retAge=null;
-  if(fi>0)for(let t=0;t<=yrs;t++)if(tot[t]>=fi){retAge=age+t;break;}
-  const cur=tot[0]||0;
-  const rIdx=retAge?Math.min(retAge-age,yrs):yrs;
-  const atRet=tot[rIdx]||0;
-  calc={age,yrs,tot,aY,fi,retAge,cur,atRet};
-
-  const show=hasData();
-  document.getElementById('dashEmpty').style.display=show?'none':'flex';
-  document.getElementById('dashData').style.display=show?'block':'none';
-  if(show){renderDash();renderChart();renderTable();}
-  if(activeScen)runScen(activeScen);
-  updateAssetsMeta();
-}
-
-// ── DASHBOARD ─────────────────────────────────────────────────
-function short(n){if(!n||isNaN(n))return'0';if(n>=1e6)return(n/1e6).toFixed(2)+'M';if(n>=1e3)return(n/1e3).toFixed(1)+'K';return(+n).toFixed(0);}
-function fmt(n){
-  if(hideVals)return'●●●●●';
-  if(!n||isNaN(n))return'—';
-  if(n>=1e9)return'RM '+(n/1e9).toFixed(2)+'B';
-  if(n>=1e6)return'RM '+(n/1e6).toFixed(2)+'M';
-  if(n>=1e3)return'RM '+(n/1e3).toFixed(1)+'K';
-  return'RM '+n.toFixed(0);
-}
-function renderDash(){
-  const r=calc;
-  document.getElementById('sFI').textContent=fmt(r.fi);
-  document.getElementById('sCur').textContent=fmt(r.cur);
-  document.getElementById('sAtRet').textContent=fmt(r.atRet);
-  const yl=r.retAge?r.retAge-r.age:null;
-  document.getElementById('sYrs').textContent=yl!==null?yl+' yrs':'—';
-  document.getElementById('sYrsSub').textContent=r.retAge?'Retire at age '+r.retAge:'Not reached in range';
-  if(r.retAge){
-    document.getElementById('retireNum').textContent=r.retAge;
-    document.getElementById('retireTitle').textContent=`You can retire at ${r.retAge}! 🎉`;
-    document.getElementById('retireSub').textContent=`${r.retAge-r.age} years from now`;
-  }else{
-    document.getElementById('retireNum').textContent='?';
-    document.getElementById('retireTitle').textContent='FI not reached in projection';
-    document.getElementById('retireSub').textContent='Increase contributions or return rates';
-  }
-  const pw=document.getElementById('progWrap');
-  if(r.fi>0&&r.cur>0){
-    const pct=Math.min(100,Math.round(r.cur/r.fi*100));
-    document.getElementById('progFill').style.width=pct+'%';
-    document.getElementById('progPct').textContent=pct+'% of FI target';
-    pw.style.display='block';
-  }else pw.style.display='none';
-  applyHide();
-}
-function applyHide(){
-  document.querySelectorAll('.stat-val').forEach(e=>e.style.filter=hideVals?'blur(6px)':'');
-  document.querySelectorAll('td.mono').forEach(e=>e.style.filter=hideVals?'blur(5px)':'');
-}
-
-// ── CHART ─────────────────────────────────────────────────────
-function lbls(){return Array.from({length:calc.yrs+1},(_,i)=>calc.age+i);}
-function setChart(m){
-  chartMode=m;
-  document.getElementById('ctAll').classList.toggle('active',m==='combined');
-  document.getElementById('ctBreak').classList.toggle('active',m==='breakdown');
-  renderChart();
-}
-function renderChart(){
-  if(mainChart){mainChart.destroy();mainChart=null;}
-  if(!calc)return;
-  const r=calc, lbl=lbls();
-  const fiLine={label:'FI Target',data:Array(r.yrs+1).fill(r.fi),borderColor:'#f87171',borderDash:[6,4],borderWidth:1.5,pointRadius:0,fill:false,tension:0};
-  let ds=[];
-  if(chartMode==='combined'){
-    ds=[{label:'Total Portfolio',data:r.tot,borderColor:'#4ade80',backgroundColor:'rgba(74,222,128,0.07)',borderWidth:2,pointRadius:0,fill:true,tension:0.3},fiLine];
-  }else{
-    assets.forEach((a,i)=>ds.push({label:a.name,data:r.aY[i],borderColor:COLORS[i%COLORS.length],backgroundColor:COLORS[i%COLORS.length]+'15',borderWidth:2,pointRadius:0,fill:true,tension:0.3}));
-    ds.push(fiLine);
-  }
-  mainChart=new Chart(document.getElementById('mainChart').getContext('2d'),{
-    type:'line',data:{labels:lbl,datasets:ds},
-    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
-      plugins:{legend:{labels:{color:'#8b91a8',font:{family:'DM Sans',size:11},usePointStyle:true,pointStyleWidth:7}},
-        tooltip:{backgroundColor:'#1e2230',borderColor:'#2a2f3d',borderWidth:1,titleColor:'#e8eaf0',bodyColor:'#8b91a8',callbacks:{label:c=>` ${c.dataset.label}: ${fmt(c.parsed.y)}`}}},
-      scales:{x:{ticks:{color:'#555b70',font:{size:10}},grid:{color:'#2a2f3d55'}},y:{ticks:{color:'#555b70',font:{size:10},callback:v=>fmt(v)},grid:{color:'#2a2f3d55'}}}}
-  });
-}
-
-// ── TABLE ─────────────────────────────────────────────────────
-function renderTable(){
-  if(!calc)return;
-  const rIdx=calc.retAge?Math.min(calc.retAge-calc.age,calc.yrs):calc.yrs;
-  document.getElementById('summaryBody').innerHTML=assets.map((a,i)=>{
-    const cur=+a.amount||0, proj=(calc.aY[i]||[])[rIdx]||0;
-    const g=cur>0?(proj-cur)/cur*100:0;
-    const pill=g>=0?`<span class="growth-pill pill-up">↑ ${g.toFixed(0)}%</span>`:`<span class="growth-pill pill-down">↓ ${Math.abs(g).toFixed(0)}%</span>`;
-    return`<tr><td><strong>${a.name}</strong></td><td><span class="type-badge tb-${a.type}">${a.type}</span></td><td class="mono">${fmt(cur)}</td><td class="mono">${a.rate}%</td><td class="mono">${fmt(proj)}</td><td>${pill}</td></tr>`;
-  }).join('');
-}
-
-// ── ASSETS ACCORDION ──────────────────────────────────────────
-function toggleAssets(){
-  const body=document.getElementById('assetsBody');
-  const chev=document.getElementById('apChevron');
-  const open=body.classList.contains('open');
-  body.classList.toggle('open',!open);
-  chev.classList.toggle('open',!open);
-}
-function openAssetsPanel(){
-  const body=document.getElementById('assetsBody');
-  const chev=document.getElementById('apChevron');
-  body.classList.add('open'); chev.classList.add('open');
-  document.getElementById('assetsPanel').scrollIntoView({behavior:'smooth',block:'nearest'});
-}
-function closeAssetsPanel(){
-  document.getElementById('assetsBody').classList.remove('open');
-  document.getElementById('apChevron').classList.remove('open');
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-function updateAssetsMeta(){
-  const count=assets.filter(a=>(+a.amount||0)>0||(+a.contrib||0)>0).length;
-  document.getElementById('assetsMeta').textContent=
-    count>0?`${count} of ${assets.length} assets have data — tap to edit`:`${assets.length} assets — tap to expand and fill in amounts`;
-}
-function renderAssets(){
-  const grid=document.getElementById('assetsGrid');
-  if(!assets.length){grid.innerHTML='<div style="padding:20px;color:var(--text2);text-align:center;grid-column:1/-1">No assets. Click Add Asset.</div>';return;}
-  grid.innerHTML=assets.map(a=>`
-  <div class="asset-card" id="ac-${a.id}">
-    <div class="asset-card-head">
-      <input class="asset-name-inp" type="text" value="${a.name}" placeholder="Asset Name" onchange="ua(${a.id},'name',this.value)">
-      <select style="width:80px;padding:4px 6px;font-size:11px;" onchange="ua(${a.id},'type',this.value)">
-        <option value="stable"   ${a.type==='stable'  ?'selected':''}>Stable</option>
-        <option value="volatile" ${a.type==='volatile'?'selected':''}>Volatile</option>
-        <option value="cash"     ${a.type==='cash'    ?'selected':''}>Cash</option>
-      </select>
-    </div>
-    <div class="asset-fields">
-      <div><div class="afl">Amount (RM)</div><input type="number" min="0" placeholder="0" value="${a.amount}" oninput="ua(${a.id},'amount',this.value)"></div>
-      <div><div class="afl">Return (%)</div><input type="number" min="0" max="50" step="0.1" value="${a.rate}" oninput="ua(${a.id},'rate',this.value)"></div>
-      <div><div class="afl">Contribution</div><input type="number" min="0" placeholder="0" value="${a.contrib}" oninput="ua(${a.id},'contrib',this.value)"></div>
-      <div><div class="afl">Frequency</div>
-        <select onchange="ua(${a.id},'freq',this.value)">
-          <option value="monthly"   ${a.freq==='monthly'  ?'selected':''}>Monthly</option>
-          <option value="quarterly" ${a.freq==='quarterly'?'selected':''}>Quarterly</option>
-          <option value="yearly"    ${a.freq==='yearly'   ?'selected':''}>Yearly</option>
-        </select>
+  document.getElementById('ob-step2').style.display = 'none';
+  document.getElementById('ob-step3').style.display = 'block';
+  document.getElementById('ob-d3').classList.add('on');
+  // Build asset input list
+  const list = document.getElementById('ob-assets-list');
+  list.innerHTML = state.assets.map((a,i) => `
+    <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:12px 14px;">
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px;">
+        <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${a.color};margin-right:6px;vertical-align:middle;"></span>
+        ${a.name}
       </div>
-      <div><div class="afl">Start Age <span class="badge">opt</span></div><input type="number" min="18" max="80" placeholder="Now" value="${a.startAge}" oninput="ua(${a.id},'startAge',this.value)"></div>
-      <div><div class="afl">End Age <span class="badge">opt</span></div><input type="number" min="18" max="100" placeholder="Ever" value="${a.endAge}" oninput="ua(${a.id},'endAge',this.value)"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+        <div class="field" style="margin:0;">
+          <label style="font-size:10px;">Current Balance (RM)</label>
+          <input type="number" id="ob-asset-cur-${i}" placeholder="0" min="0" style="font-size:16px;">
+        </div>
+        <div class="field" style="margin:0;">
+          <label style="font-size:10px;">Annual Return (%)</label>
+          <input type="number" id="ob-asset-rate-${i}" value="${a.rate}" min="0" max="30" step="0.1" style="font-size:16px;">
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div class="field" style="margin:0;">
+          <label style="font-size:10px;">Contribution (RM)</label>
+          <input type="number" id="ob-asset-con-${i}" placeholder="0" min="0" style="font-size:16px;">
+        </div>
+        <div class="field" style="margin:0;">
+          <label style="font-size:10px;">Frequency</label>
+          <select id="ob-asset-freq-${i}" style="font-size:16px;background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;color:var(--text);width:100%;">
+            <option value="monthly" ${a.freq==='monthly'?'selected':''}>Monthly</option>
+            <option value="quarterly" ${a.freq==='quarterly'?'selected':''}>Quarterly</option>
+            <option value="yearly" ${a.freq==='yearly'?'selected':''}>Yearly</option>
+          </select>
+        </div>
+      </div>
     </div>
-    <div class="asset-card-foot">
-      <button class="btn btn-danger btn-sm" onclick="delAsset(${a.id})">✕ Remove</button>
-    </div>
-  </div>`).join('');
+  `).join('');
 }
-function ua(id,field,val){const a=assets.find(x=>x.id===id);if(a){a[field]=val;recalc();updateAssetsMeta();}}
-function delAsset(id){assets=assets.filter(x=>x.id!==id);renderAssets();recalc();notify('Asset removed');}
-function addAsset(){
-  assets.push({id:nextId++,name:'New Asset',amount:'',rate:5,contrib:'',freq:'monthly',startAge:'',endAge:'',type:'stable'});
-  renderAssets();
-  setTimeout(()=>document.getElementById('assetsGrid').lastElementChild?.scrollIntoView({behavior:'smooth',block:'nearest'}),100);
+function obFinish() {
+  // Read asset values from step 3 if visible
+  if (document.getElementById('ob-step3').style.display !== 'none') {
+    state.assets.forEach((a, i) => {
+      const cur = parseFloat(document.getElementById('ob-asset-cur-'+i)?.value) || 0;
+      const con = parseFloat(document.getElementById('ob-asset-con-'+i)?.value) || 0;
+      const rate = parseFloat(document.getElementById('ob-asset-rate-'+i)?.value) || a.rate;
+      const freq = document.getElementById('ob-asset-freq-'+i)?.value || a.freq;
+      a.current = cur;
+      a.contrib = con;
+      a.rate = rate;
+      a.freq = freq;
+    });
+  }
+  state.onboarded = true;
+  saveState();
+  startApp();
 }
 
-// ── SCENARIOS ─────────────────────────────────────────────────
-function onScenChange(){
-  const id=document.getElementById('scenSelect').value;
-  document.getElementById('scenClearBtn').style.display=id?'inline-flex':'none';
-  if(!id){
-    document.getElementById('scenResult').classList.remove('show');
-    activeScen=null; return;
+// ═══════════════════════════════════════════
+// APP INIT
+// ═══════════════════════════════════════════
+function startApp() {
+  document.getElementById('onboarding').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  syncSettingsUI();
+  renderAssets();
+  renderPassive();
+  renderScenarios();
+  recalc();
+  // Force chart redraw once layout is painted
+  setTimeout(() => {
+    recalc();
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    document.getElementById('pane-dashboard')?.scrollTo({ top: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, 80);
+}
+
+function syncSettingsUI() {
+  document.getElementById('s-age').value = state.age;
+  document.getElementById('s-expense').value = state.expense;
+  document.getElementById('s-target-age').value = state.targetAge || '';
+  document.getElementById('s-wr').value = state.withdrawalRate;
+  document.getElementById('s-infl').value = state.inflation;
+  document.getElementById('s-project-age').value = state.projectUntilAge;
+  document.getElementById('s-hide').checked = state.hideValues;
+  document.getElementById('infl-rate-show').textContent = state.inflation;
+  document.getElementById('infl-toggle').checked = state.inflationAdjusted;
+}
+
+
+
+window.addEventListener('load', () => {
+  loadState();
+  if (state.onboarded) startApp();
+});
+
+// ═══════════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════════
+let currentTab = 'dashboard';
+function showTab(tab, tabBtn, bnavBtn) {
+  currentTab = tab;
+  document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
+  document.getElementById('pane-' + tab).classList.add('active');
+  document.querySelectorAll('.bnav-item').forEach(b => b.classList.remove('active'));
+  const bn = document.getElementById('bn-' + tab);
+  if (bn) bn.classList.add('active');
+  if (bnavBtn) bnavBtn.classList.add('active');
+  if (tab === 'dashboard') recalc();
+}
+
+// ═══════════════════════════════════════════
+// CALCULATION ENGINE
+// ═══════════════════════════════════════════
+function getEffectiveRate(nominalRate) {
+  if (!state.inflationAdjusted) return nominalRate / 100;
+  return (1 + nominalRate/100) / (1 + state.inflation/100) - 1;
+}
+
+// ── PHASE 1: ACCUMULATION ──
+// Asset always grows at its FULL total return rate during accumulation.
+// Dividends/yield are automatically reinvested (DRIP) — this is how wealth is built.
+// The yield % field tells us what fraction of future value will be paid as income at retirement.
+// EPF RULE: Savings locked until age 55. Excess above RM1.1M accessible before 55.
+function isEPFAsset(asset) {
+  return asset.name.toLowerCase().includes('epf') || asset.name.toLowerCase().includes('kwsp');
+}
+
+function calcAssetFV(asset, t) {
+  // Always use the full declared rate for accumulation — dividends are reinvested
+  const r = getEffectiveRate(asset.rate);
+  const P = asset.current;
+  let pmt = asset.contrib;
+  if (asset.freq === 'monthly') pmt *= 12;
+  else if (asset.freq === 'quarterly') pmt *= 4;
+
+  const startT = asset.startAge && asset.startAge > state.age ? asset.startAge - state.age : 0;
+  const endT   = asset.endAge  && asset.endAge  > state.age ? asset.endAge  - state.age : 9999;
+
+  if (t <= 0) return P;
+
+  // Compound the principal for the full duration
+  let base = r === 0 ? P : P * Math.pow(1 + r, t);
+
+  // Add contributions only within [startT, endT]
+  const cStart = Math.max(0, startT);
+  const cEnd   = Math.min(t, endT);
+  if (cEnd > cStart && pmt > 0) {
+    const tc = cEnd - cStart;
+    const fvC = r === 0 ? pmt * tc : pmt * ((Math.pow(1 + r, tc) - 1) / r);
+    // Grow that lump from cEnd → t
+    const tail = t - cEnd;
+    base += tail > 0 ? (r === 0 ? fvC : fvC * Math.pow(1 + r, tail)) : fvC;
   }
-  activeScen=id; runScen(id);
+  return Math.max(0, base);
 }
-function clearScenario(){
-  document.getElementById('scenSelect').value='';
-  document.getElementById('scenClearBtn').style.display='none';
-  document.getElementById('scenResult').classList.remove('show');
-  activeScen=null;
+
+// Returns the portion of EPF that is ACCESSIBLE at age (state.age + t)
+// Before 55: only excess above RM1.1M is accessible
+// At 55+: full balance accessible
+const EPF_LOCK_AGE = 55;
+const EPF_EXCESS_THRESHOLD = 1_200_000; // RM1.2M threshold
+
+function calcAccessibleFV(asset, t) {
+  const fv = calcAssetFV(asset, t);
+  if (!isEPFAsset(asset)) return fv;
+  const currentAge = state.age + t;
+  if (currentAge >= EPF_LOCK_AGE) return fv; // fully accessible at 55
+  // Before 55: only excess above RM1.1M accessible
+  return Math.max(0, fv - EPF_EXCESS_THRESHOLD);
 }
-function runScen(id){
-  if(!calc)return;
-  const scen=SCENS[id]; if(!scen)return;
-  const {age,yrs,fi:baseFI}=calc;
-  let exp=P.exp; const wr=P.wr/100;
-  let sa=scen.special==='expense_cut'?(exp=exp*0.8,assets):assets.map(a=>scen.apply({...a}));
-  const fi=wr>0?(exp*12)/wr:0;
-  const aY=sa.map(a=>calcAsset(a,age,yrs));
-  const tot=[];
-  for(let t=0;t<=yrs;t++){let s=0;aY.forEach(a=>s+=a[t]||0);tot.push(s);}
-  let sr=null;
-  for(let t=0;t<=yrs;t++)if(tot[t]>=fi){sr=age+t;break;}
-  const ba=calc.retAge, diff=sr&&ba?sr-ba:null;
-  document.getElementById('cBase').textContent=ba?ba+' yrs':'—';
-  document.getElementById('cScen').textContent=sr?sr+' yrs':'Not reached';
-  const de=document.getElementById('cDiff');
-  if(diff!==null){de.textContent=diff<0?Math.abs(diff)+' yrs earlier':diff===0?'No change':diff+' yrs later';de.style.color=diff<0?'var(--accent)':diff>0?'var(--danger)':'var(--text2)';}
-  else{de.textContent='—';de.style.color='var(--text2)';}
-  document.getElementById('scenResult').classList.add('show');
-  drawScenChart(Array.from({length:yrs+1},(_,i)=>age+i),calc.tot,tot,baseFI);
+
+// ════════════════════════════════════════════════════
+// INCOME YIELD — separate from total return rate
+//
+// Total return = price growth + income yield
+// At retirement, you ONLY receive income yield as cash.
+// Price growth stays in the portfolio as unrealised gain.
+//
+// Volatile (stocks/ETF): total return ~7-8%, but dividend yield ~3%
+// Stable (EPF/FD):       interest IS the income, so yield = rate
+// Cash (savings):        interest IS the income, so yield = rate
+//
+// Income yield is always < withdrawal rate so Passive Path
+// always needs MORE capital → always retires LATER than withdrawal path.
+// ════════════════════════════════════════════════════
+
+function getAssetIncomeYield(asset) {
+  // User explicitly set a custom yield — use it directly
+  if (asset.assetPassiveRate > 0) return asset.assetPassiveRate / 100;
+  // Volatile assets: only dividend portion counts, not price appreciation
+  if (asset.type === 'volatile') return 0.03;
+  // Stable/cash: all interest is paid out as income
+  return asset.rate / 100;
 }
-function drawScenChart(lbl,base,scen,fi){
-  if(scenChart){scenChart.destroy();scenChart=null;}
-  scenChart=new Chart(document.getElementById('scenChart').getContext('2d'),{
-    type:'line',
-    data:{labels:lbl,datasets:[
-      {label:'Base',data:base,borderColor:'#22d3ee',borderWidth:2,pointRadius:0,fill:false,tension:0.3},
-      {label:'Scenario',data:scen,borderColor:'#f59e0b',borderWidth:2,pointRadius:0,fill:false,tension:0.3,borderDash:[5,3]},
-      {label:'FI Target',data:Array(lbl.length).fill(fi),borderColor:'#f87171',borderDash:[6,4],borderWidth:1.5,pointRadius:0,fill:false,tension:0},
-    ]},
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{labels:{color:'#8b91a8',font:{family:'DM Sans',size:11},usePointStyle:true}},
-        tooltip:{backgroundColor:'#1e2230',borderColor:'#2a2f3d',borderWidth:1,titleColor:'#e8eaf0',bodyColor:'#8b91a8',callbacks:{label:c=>` ${c.dataset.label}: ${fmt(c.parsed.y)}`}}},
-      scales:{x:{ticks:{color:'#555b70',font:{size:10}},grid:{color:'#2a2f3d55'}},y:{ticks:{color:'#555b70',font:{size:10},callback:v=>fmt(v)},grid:{color:'#2a2f3d55'}}}}
+
+function calcAssetMonthlyIncomeAtT(asset, t) {
+  // EPF: dividends are reinvested and locked — cannot receive income before age 55
+  if (isEPFAsset(asset) && (state.age + t) < EPF_LOCK_AGE) return 0;
+  const fv    = calcAssetFV(asset, t);
+  let   yield_ = getAssetIncomeYield(asset);
+  if (state.inflationAdjusted) yield_ = yield_ / (1 + state.inflation / 100);
+  return (fv * yield_) / 12;
+}
+
+// ── Standalone passive sources (rental, business, etc.) ──
+function calcStandalonePassiveAtT(t) {
+  const age = state.age + t;
+  let total = 0;
+  for (const p of state.passive) {
+    const start = p.startAge || state.age;
+    const end   = p.endAge   || 999;
+    if (age >= start && age <= end) {
+      const pt = age - start;
+      total += p.amount * Math.pow(1 + (p.growthRate || 0) / 100, pt);
+    }
+  }
+  return total;
+}
+
+function calcYearlyData(assets, overrides) {
+  const effectiveAssets = assets.map(a => {
+    if (!overrides) return a;
+    const ov = overrides[a.id];
+    return ov ? Object.assign({}, a, ov) : a;
+  });
+  const years = state.projectUntilAge - state.age;
+  const data  = [];
+  for (let t = 0; t <= years; t++) {
+    const row = { age: state.age + t, year: t, assets: {}, total: 0, totalAccessible: 0, totalMonthlyIncome: 0 };
+    for (const a of effectiveAssets) {
+      const fv = calcAssetFV(a, t);
+      const accessible = calcAccessibleFV(a, t);
+      row.assets[a.id]         = fv;
+      row.total               += fv;
+      row.totalAccessible     += accessible;
+      row.totalMonthlyIncome  += calcAssetMonthlyIncomeAtT(a, t);
+    }
+    row.totalMonthlyIncome += calcStandalonePassiveAtT(t);
+    data.push(row);
+  }
+  return data;
+}
+
+// ── PATH B (EASIER): Withdrawal Rate ──
+// Portfolio × withdrawalRate ≥ Annual Expense → can retire.
+// e.g. RM 1.5M × 4% = RM 60,000/yr = RM 5,000/mo ✓
+// Retires SOONER — you draw down the principal over time.
+function getFIData() {
+  const wr  = state.withdrawalRate / 100;
+  const ann = state.expense * 12;
+  const sa  = calcStandalonePassiveAtT(0) * 12;
+  return { fiTarget: ann / wr, fiAdjusted: Math.max(0, ann - sa) / wr, annualExpense: ann };
+}
+
+function detectWithdrawalRetirementAge(yearlyData) {
+  const wr = state.withdrawalRate / 100;
+  for (const row of yearlyData) {
+    const sa  = calcStandalonePassiveAtT(row.year) * 12;
+    const net = Math.max(0, state.expense * 12 - sa);
+    if (row.totalAccessible * wr >= net) return row.age;
+  }
+  return null;
+}
+
+// ── PATH A: Passive Income Path ──
+// Retire when portfolio's natural income yield covers expenses — no selling needed.
+// Uses asset-specific yield (EPF interest, stock dividends, FD interest).
+// Typically needs MORE capital than Path B because yield < withdrawal rate.
+// Age 90: portfolio keeps growing since you never sell principal.
+function detectPassiveRetirementAge(yearlyData) {
+  for (const row of yearlyData) {
+    // totalMonthlyIncome already includes standalone passive sources (added in calcYearlyData)
+    if (row.totalMonthlyIncome >= state.expense) {
+      return { age: row.age, income: row.totalMonthlyIncome };
+    }
+  }
+  return null;
+}
+
+// Passive FI Target = Annual Expense ÷ blended income yield
+function calcPassiveFITarget(yearlyData, wrRetireAge) {
+  const sa  = calcStandalonePassiveAtT(0) * 12;
+  const net = Math.max(0, state.expense * 12 - sa);
+  const refRow = (wrRetireAge && yearlyData.find(r => r.age === wrRetireAge))
+    || yearlyData[yearlyData.length - 1];
+  let totalVal = 0, wYield = 0;
+  for (const a of state.assets) {
+    const v = refRow?.assets[a.id] || 0;
+    totalVal += v;
+    wYield   += v * getAssetIncomeYield(a);
+  }
+  const blendedYield = totalVal > 0 ? wYield / totalVal : 0.03;
+  return {
+    target: blendedYield > 0 ? net / blendedYield : Infinity,
+    blendedYield,
+  };
+}
+
+// Legacy alias
+function calcPassiveMonthly(atAge) { return calcStandalonePassiveAtT(atAge - state.age); }
+
+let chartInstance = null;
+let chartMode = 'combined';
+
+// ── Global: Age 90 simulation ──
+// Compounds portfolio at blended return, withdraws annual expense each year
+function sim90(retireAge, portfolio) {
+  const avgRate = state.assets.length > 0
+    ? state.assets.reduce((s, a) => s + (a.rate / 100) * (a.current || 1), 0) /
+      state.assets.reduce((s, a) => s + (a.current || 1), 0)
+    : 0.05;
+  const adjRate = state.inflationAdjusted ? avgRate / (1 + state.inflation / 100) : avgRate;
+  let bal = portfolio;
+  const annualWithdraw = state.expense * 12;
+  for (let y = 0; y < (90 - retireAge); y++) {
+    bal = bal * (1 + adjRate) - annualWithdraw;
+    if (bal <= 0) return 0;
+  }
+  return bal;
+}
+
+function recalc() {
+  const yearlyData = calcYearlyData(state.assets, null);
+  const { fiTarget, fiAdjusted, annualExpense } = getFIData();
+
+  // Detect both retirement ages first
+  const passiveRetire       = detectPassiveRetirementAge(yearlyData);
+  const withdrawalRetireAge = detectWithdrawalRetirementAge(yearlyData);
+
+  // Now compute passive FI target (needs withdrawalRetireAge as reference point)
+  const { target: passiveFITarget, blendedYield } = calcPassiveFITarget(yearlyData, withdrawalRetireAge);
+
+  const currentTotal = yearlyData[0]?.total || 0;
+  const incomeNow = yearlyData[0]?.totalMonthlyIncome || 0;
+
+  // Helper: check if EPF lock is the binding constraint
+  const hasEPF = state.assets.some(a => isEPFAsset(a));
+  const epfAsset = state.assets.find(a => isEPFAsset(a));
+  const epfFVAtRetire = (withdrawalRetireAge && epfAsset)
+    ? calcAssetFV(epfAsset, withdrawalRetireAge - state.age) : 0;
+  const epfIsLocked = hasEPF && withdrawalRetireAge && withdrawalRetireAge <= EPF_LOCK_AGE;
+  const epfBelowThreshold = hasEPF && withdrawalRetireAge && withdrawalRetireAge < EPF_LOCK_AGE && epfFVAtRetire < EPF_EXCESS_THRESHOLD;
+
+  // ── Helper: avg return rate ──
+  const avgRate = state.assets.length > 0
+    ? state.assets.reduce((s, a) => s + (a.rate / 100) * (a.current || 1), 0) /
+      state.assets.reduce((s, a) => s + (a.current || 1), 0)
+    : 0.05;
+  const adjRate = state.inflationAdjusted ? avgRate / (1 + state.inflation / 100) : avgRate;
+
+  // ── MILESTONE 1: Financial Independence (combined) ──
+  // Earliest age where: (total portfolio × WR / 12) + passive ≥ monthly expense
+  const wr = state.withdrawalRate / 100;
+
+  const fiRow = yearlyData.find(r => {
+    const income = (r.total * wr / 12) + calcStandalonePassiveAtT(r.year);
+    return income >= state.expense;
+  });
+
+  const fiMileAge = fiRow?.age || null;
+  const fiAgeEl   = document.getElementById('mile-fi-age');
+  const fiSubEl   = document.getElementById('mile-fi-sub');
+  const fiYrsEl   = document.getElementById('mile-fi-yrs');
+  const fiTargetEl = document.getElementById('mile-fi-target');
+  const fiIncomeEl = document.getElementById('mile-fi-income');
+  const fiPort90El = document.getElementById('mile-fi-port90');
+
+  if (fiMileAge) {
+    const yrs = fiMileAge - state.age;
+    const fiIncome = (fiRow.total * wr / 12) + calcStandalonePassiveAtT(fiRow.year);
+    const port90   = sim90(fiMileAge, fiRow.total);
+    const epfLocked = fiMileAge < EPF_LOCK_AGE;
+    let fiEPF = 0, fiNonEPF = 0;
+    for (const a of state.assets) {
+      const fv = calcAssetFV(a, fiRow.year);
+      if (isEPFAsset(a)) fiEPF += fv; else fiNonEPF += fv;
+    }
+    fiAgeEl.textContent  = fiMileAge;
+    fiAgeEl.style.color  = 'var(--accent)';
+    fiSubEl.textContent  = epfLocked ? `Age ${fiMileAge} · EPF still locked until 55` : `Age ${fiMileAge} · EPF fully accessible`;
+    fiYrsEl.textContent  = yrs <= 0 ? '🎉 Already there!' : `In ${yrs} yr${yrs===1?'':'s'}`;
+    fiTargetEl.textContent = fmtRM(fiAdjusted);
+    fiIncomeEl.textContent = fmtRM(fiIncome) + '/mo';
+    fiPort90El.textContent = port90 > 0 ? fmtRM(port90) : '⚠️ Depleted';
+    fiPort90El.style.color = port90 <= 0 ? '#ff5a5a' : '';
+    document.getElementById('mile-fi-epf').textContent = fmtRM(fiEPF);
+    document.getElementById('mile-fi-nonepf').textContent = fmtRM(fiNonEPF);
+  } else {
+    const lastRow  = yearlyData[yearlyData.length - 1];
+    const bestIncome = lastRow ? (lastRow.total * wr / 12) + calcStandalonePassiveAtT(lastRow.year) : 0;
+    const shortfall  = Math.max(0, state.expense - bestIncome);
+    fiAgeEl.textContent  = '–';
+    fiAgeEl.style.color  = 'var(--accent)';
+    fiSubEl.textContent  = `Keep investing — ${fmtRM(shortfall)}/mo shortfall at age 90`;
+    fiYrsEl.textContent  = 'Not yet achievable';
+    fiTargetEl.textContent = fmtRM(fiAdjusted);
+    fiIncomeEl.textContent = fmtRM(bestIncome) + '/mo';
+    fiPort90El.textContent = '–';
+    fiPort90El.style.color = '';
+    document.getElementById('mile-fi-epf').textContent = '–';
+    document.getElementById('mile-fi-nonepf').textContent = '–';
+  }
+  const age55Row = yearlyData.find(r => r.age === 55);
+  const epfSubEl    = document.getElementById('mile-epf-sub');
+  const epfTargetEl = document.getElementById('mile-epf-target');
+  const epfIncomeEl = document.getElementById('mile-epf-income');
+  const epfDividendEl = document.getElementById('mile-epf-dividend');
+
+  function render55(port55, monthlyDividend, yrsLabel, epfVal, nonEpfVal) {
+    const monthly4pct = (port55 * wr) / 12;
+    // Port at 90 — Path A: 4% withdrawal (selling assets each year)
+    const port90wr = sim90(55, port55);
+    // Port at 90 — Path B: dividend only (principal untouched, grows at adjRate minus yield)
+    const annualDividend = monthlyDividend * 12;
+    const yieldRate = port55 > 0 ? annualDividend / port55 : 0;
+    const growthRate = Math.max(0, adjRate - yieldRate);
+    const port90div = port55 * Math.pow(1 + growthRate, 35);
+
+    epfSubEl.textContent = yrsLabel;
+    epfTargetEl.textContent = fmtRM(port55);
+    document.getElementById('mile-epf-epf55').textContent = fmtRM(epfVal || 0);
+    document.getElementById('mile-epf-nonepf55').textContent = fmtRM(nonEpfVal || 0);
+    epfIncomeEl.textContent = fmtRM(monthly4pct) + '/mo';
+    epfDividendEl.textContent = fmtRM(monthlyDividend) + '/mo';
+
+    const wr90El = document.getElementById('mile-epf-port90-wr');
+    wr90El.textContent = port90wr > 0 ? fmtRM(port90wr) : '⚠️ Depleted';
+    wr90El.style.color = port90wr <= 0 ? '#ff5a5a' : '';
+
+    const div90El = document.getElementById('mile-epf-port90-div');
+    div90El.textContent = fmtRM(port90div);
+    div90El.style.color = '';
+  }
+
+  if (age55Row && state.age < 55) {
+    const yrs55 = 55 - state.age;
+    const t55 = age55Row.year;
+    let epf55 = 0, nonEpf55 = 0;
+    for (const a of state.assets) {
+      const fv = calcAssetFV(a, t55);
+      if (isEPFAsset(a)) epf55 += fv; else nonEpf55 += fv;
+    }
+    render55(age55Row.total, age55Row.totalMonthlyIncome || 0, `In ${yrs55} yr${yrs55===1?'':'s'}`, epf55, nonEpf55);
+  } else if (state.age >= 55) {
+    const portNow = yearlyData[0]?.total || 0;
+    let epfNow = 0, nonEpfNow = 0;
+    for (const a of state.assets) {
+      const fv = calcAssetFV(a, 0);
+      if (isEPFAsset(a)) epfNow += fv; else nonEpfNow += fv;
+    }
+    render55(portNow, yearlyData[0]?.totalMonthlyIncome || 0, 'Already unlocked', epfNow, nonEpfNow);
+  } else {
+    epfSubEl.textContent = '–'; epfTargetEl.textContent = '–';
+    document.getElementById('mile-epf-epf55').textContent = '–';
+    document.getElementById('mile-epf-nonepf55').textContent = '–';
+    epfIncomeEl.textContent = '–'; epfDividendEl.textContent = '–';
+    document.getElementById('mile-epf-port90-wr').textContent = '–';
+    document.getElementById('mile-epf-port90-div').textContent = '–';
+  }
+
+  // ── MILESTONE 2: Age 55 Snapshot ──
+  document.getElementById('stat-fi-target').textContent = fmtRM(fiAdjusted);
+  document.getElementById('stat-wr-rate-show').textContent = state.withdrawalRate;
+
+  // ── Other stats ──
+  const wrRetireRow = withdrawalRetireAge ? yearlyData.find(r => r.age === withdrawalRetireAge) : null;
+  const portfolioAtWRRetire = wrRetireRow?.totalAccessible || 0;
+  document.getElementById('stat-portfolio-now').textContent = fmtRM(currentTotal);
+
+  // Portfolio Today breakdown
+  let epfToday = 0, nonEpfToday = 0;
+  for (const a of state.assets) {
+    const fv = calcAssetFV(a, 0);
+    if (isEPFAsset(a)) epfToday += fv; else nonEpfToday += fv;
+  }
+  document.getElementById('pb-total').textContent = fmtRM(currentTotal);
+  document.getElementById('port-epf').textContent = fmtRM(epfToday);
+  document.getElementById('port-nonepf').textContent = fmtRM(nonEpfToday);
+  document.getElementById('stat-passive-total').textContent = fmtRM(incomeNow) + '/mo';
+  document.getElementById('stat-passive-sub').textContent = `From assets + passive sources today`;
+
+  const pct = state.expense > 0 ? Math.min(100, Math.round(incomeNow / state.expense * 100)) : 0;
+  document.getElementById('stat-income-coverage').textContent = pct + '%';
+  document.getElementById('stat-passive-badge').textContent = pct >= 100 ? '✅ Fully covered!' : `of RM ${state.expense.toLocaleString()}/mo expenses`;
+
+  // ── Inflation display ──
+  document.getElementById('infl-rate-show').textContent = state.inflation;
+
+  drawChart(yearlyData, fiMileAge, null, passiveFITarget, fiAdjusted);
+  updateSummaryTable(yearlyData, fiMileAge, null);
+  updatePassiveTotals();
+  applyHide();
+}
+
+function setChartMode(mode) {
+  chartMode = mode;
+  document.getElementById('ct-combined').classList.toggle('on', mode==='combined');
+  document.getElementById('ct-income').classList.toggle('on', mode==='income');
+  document.getElementById('ct-stacked').classList.toggle('on', mode==='stacked');
+  const desc = document.getElementById('chart-mode-desc');
+  if (mode === 'combined') desc.textContent = 'Total portfolio value vs FI target — shows when you hit the withdrawal-rate retirement age';
+  else if (mode === 'income') desc.textContent = 'Monthly income from all assets + passive sources — shows when income covers your expenses (passive income retirement age)';
+  else desc.textContent = 'Individual asset values stacked — see which assets dominate your portfolio over time';
+  recalc();
+}
+
+function drawChart(yearlyData, withdrawalRetireAge, passiveRetireAge, passiveFITarget, withdrawalFITarget) {
+  const labels = yearlyData.map(r => r.age);
+  const canvas = document.getElementById('main-chart');
+  const ctx = canvas.getContext('2d');
+  if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
+
+  let datasets = [];
+  const legendEl = document.getElementById('chart-legend');
+  legendEl.innerHTML = '';
+
+  if (chartMode === 'income') {
+    // Income view: monthly income vs expense target
+    datasets = [{
+      label: 'Monthly Income from Portfolio',
+      data: yearlyData.map(r => Math.round(r.totalMonthlyIncome)),
+      borderColor: '#a78bfa', backgroundColor: 'rgba(167,139,250,0.1)',
+      fill: true, tension: 0.4, borderWidth: 2.5, pointRadius: 0,
+    }, {
+      label: 'Monthly Expense Target',
+      data: yearlyData.map(() => state.expense),
+      borderColor: '#ffb800', backgroundColor: 'transparent',
+      fill: false, tension: 0, borderWidth: 1.5, borderDash: [5,5], pointRadius: 0,
+    }];
+    addLegend(legendEl, '#a78bfa', 'Monthly Income (Portfolio Returns)');
+    addLegend(legendEl, '#ffb800', `Expense Target (${fmtRM(state.expense)}/mo)`);
+    if (passiveRetireAge) addLegend(legendEl, '#a78bfa', `💜 Passive Retire @ Age ${passiveRetireAge}`);
+    chartInstance = new MiniChart(ctx, canvas, { labels, datasets, retireAge: passiveRetireAge, retireColor: '#a78bfa', yearlyData });
+
+  } else if (chartMode === 'combined') {
+    datasets = [{
+      label: 'Total Portfolio',
+      data: yearlyData.map(r => Math.round(r.total)),
+      borderColor: '#00e5a0', backgroundColor: 'rgba(0,229,160,0.08)',
+      fill: true, tension: 0.4, borderWidth: 2.5, pointRadius: 0,
+    }];
+    // Withdrawal FI target (green dashed) — lower bar, hit first
+    if (isFinite(withdrawalFITarget) && withdrawalFITarget > 0) {
+      datasets.push({
+        label: `FI Target (${state.withdrawalRate}% withdrawal)`,
+        data: yearlyData.map(() => Math.round(withdrawalFITarget)),
+        borderColor: '#00e5a0', backgroundColor: 'transparent',
+        fill: false, tension: 0, borderWidth: 1.5, borderDash: [5,5], pointRadius: 0,
+      });
+      addLegend(legendEl, '#00e5a0', `FI Target – Withdrawal (${fmtRM(withdrawalFITarget)})`);
+    }
+    // Passive FI target (purple dashed) — higher bar, hit later
+    if (isFinite(passiveFITarget) && passiveFITarget > 0) {
+      datasets.push({
+        label: 'FI Target (Passive Income)',
+        data: yearlyData.map(() => Math.round(passiveFITarget)),
+        borderColor: '#a78bfa', backgroundColor: 'transparent',
+        fill: false, tension: 0, borderWidth: 1.5, borderDash: [8,4], pointRadius: 0,
+      });
+      addLegend(legendEl, '#a78bfa', `FI Target – Passive (${fmtRM(passiveFITarget)})`);
+    }
+    addLegend(legendEl, '#00e5a0', 'Total Portfolio');
+    if (withdrawalRetireAge) addLegend(legendEl, '#ffb800', `📊 Withdrawal Retire @ ${withdrawalRetireAge}`);
+    if (passiveRetireAge)    addLegend(legendEl, '#a78bfa', `💜 Passive Retire @ ${passiveRetireAge}`);
+    // Draw with both retire ages marked — pass the later one so it shows on chart
+    chartInstance = new MiniChart(ctx, canvas, {
+      labels, datasets,
+      retireAge: withdrawalRetireAge, retireColor: '#ffb800',
+      retireAge2: passiveRetireAge, retireColor2: '#a78bfa',
+      yearlyData,
+    });
+
+  } else {
+    // Stacked breakdown
+    state.assets.forEach(a => {
+      datasets.push({
+        label: a.name,
+        data: yearlyData.map(r => Math.round(r.assets[a.id] || 0)),
+        borderColor: a.color, backgroundColor: a.color + '18',
+        fill: true, tension: 0.4, borderWidth: 2, pointRadius: 0,
+      });
+      addLegend(legendEl, a.color, a.name);
+    });
+    chartInstance = new MiniChart(ctx, canvas, { labels, datasets, retireAge: withdrawalRetireAge, retireColor: '#ffb800', retireAge2: passiveRetireAge, retireColor2: '#a78bfa', yearlyData });
+  }
+}
+
+function addLegend(el, color, label) {
+  el.innerHTML += `<div class="legend-item"><div class="legend-dot" style="background:${color}"></div>${label}</div>`;
+}
+
+// ─── Mini Canvas Chart (no external lib) ───
+function MiniChart(ctx, canvas, { labels, datasets, retireAge, retireColor, retireAge2, retireColor2, yearlyData }) {
+  retireColor  = retireColor  || '#ffb800';
+  retireColor2 = retireColor2 || '#a78bfa';
+
+  const dpr = window.devicePixelRatio || 1;
+  const W = canvas.offsetWidth  || canvas.parentElement?.offsetWidth  || 320;
+  const H = canvas.offsetHeight || 220;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  ctx.scale(dpr, dpr);
+  const pad = { top:16, right:16, bottom:32, left:64 };
+  const w = W - pad.left - pad.right;
+  const h = H - pad.top - pad.bottom;
+
+  const allVals = datasets.flatMap(d => d.data).filter(v => v > 0);
+  const maxV = Math.max(...allVals, 1);
+
+  function xPos(i) { return pad.left + (i / (labels.length-1)) * w; }
+  function yPos(v) { return pad.top + h - (v / maxV) * h; }
+
+  // Background
+  ctx.fillStyle = '#141720'; ctx.fillRect(0,0,W,H);
+
+  // Grid lines
+  const gridCount = 4;
+  ctx.setLineDash([]);
+  for (let i = 0; i <= gridCount; i++) {
+    const y = pad.top + (i / gridCount) * h;
+    const val = maxV * (1 - i/gridCount);
+    ctx.strokeStyle = '#252a40'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left+w, y); ctx.stroke();
+    ctx.fillStyle = '#555d80'; ctx.font = `10px JetBrains Mono, monospace`;
+    ctx.textAlign = 'right';
+    ctx.fillText(fmtRMShort(val), pad.left-6, y+4);
+  }
+
+  // X labels
+  const step = Math.ceil(labels.length / 6);
+  ctx.fillStyle = '#555d80'; ctx.font = '10px Sora, sans-serif'; ctx.textAlign = 'center';
+  labels.forEach((l,i) => { if (i % step === 0) ctx.fillText(l, xPos(i), H - 6); });
+
+  // Draw retire vertical lines
+  function drawRetireLine(age, color, label) {
+    if (!age) return;
+    const ri = labels.indexOf(age);
+    if (ri < 0) return;
+    ctx.setLineDash([4,4]); ctx.strokeStyle = color; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(xPos(ri), pad.top); ctx.lineTo(xPos(ri), pad.top+h); ctx.stroke();
+    ctx.fillStyle = color; ctx.font = 'bold 9px Sora, sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText(label, xPos(ri), pad.top + 11);
+  }
+  drawRetireLine(retireAge,  retireColor,  retireAge  ? '▸' + retireAge  : '');
+  drawRetireLine(retireAge2, retireColor2, retireAge2 ? '▸' + retireAge2 : '');
+
+  ctx.setLineDash([]);
+
+  // Datasets
+  datasets.forEach(ds => {
+    if (!ds.data || ds.data.length === 0) return;
+    const pts = ds.data.map((v,i) => ({ x: xPos(i), y: yPos(v) }));
+
+    if (ds.fill) {
+      ctx.beginPath();
+      ctx.moveTo(pts[0].x, pts[0].y);
+      for (let i = 1; i < pts.length; i++) {
+        const cp1x = pts[i-1].x + (pts[i].x - pts[i-1].x)*0.4, cp1y = pts[i-1].y;
+        const cp2x = pts[i-1].x + (pts[i].x - pts[i-1].x)*0.6, cp2y = pts[i].y;
+        ctx.bezierCurveTo(cp1x,cp1y,cp2x,cp2y,pts[i].x,pts[i].y);
+      }
+      ctx.lineTo(pts[pts.length-1].x, pad.top+h);
+      ctx.lineTo(pts[0].x, pad.top+h);
+      ctx.closePath();
+      ctx.fillStyle = ds.backgroundColor || 'transparent'; ctx.fill();
+    }
+
+    ctx.beginPath();
+    if (ds.borderDash) ctx.setLineDash(ds.borderDash); else ctx.setLineDash([]);
+    ctx.strokeStyle = ds.borderColor; ctx.lineWidth = ds.borderWidth || 2;
+    ctx.moveTo(pts[0].x, pts[0].y);
+    for (let i = 1; i < pts.length; i++) {
+      const cp1x = pts[i-1].x + (pts[i].x - pts[i-1].x)*0.4, cp1y = pts[i-1].y;
+      const cp2x = pts[i-1].x + (pts[i].x - pts[i-1].x)*0.6, cp2y = pts[i].y;
+      ctx.bezierCurveTo(cp1x,cp1y,cp2x,cp2y,pts[i].x,pts[i].y);
+    }
+    ctx.stroke();
+    ctx.setLineDash([]);
+  });
+
+  this.destroy = () => {};
+}
+
+function updateSummaryTable(yearlyData, wrRetireAge, passiveRetireAge) {
+  const body = document.getElementById('summary-body');
+  const retireRow = wrRetireAge ? yearlyData.find(r => r.age === wrRetireAge) : null;
+  let html = '';
+  state.assets.forEach(a => {
+    const proj = retireRow ? retireRow.assets[a.id] || 0 : 0;
+    html += `<tr>
+      <td class="td-name"><span class="td-name-inner"><span class="td-dot" style="background:${a.color}"></span>${a.name}</span></td>
+      <td class="td-mono vals">${fmtRM(a.current)}</td>
+      <td class="td-accent vals">${retireRow ? fmtRM(proj) : '–'}</td>
+    </tr>`;
+  });
+  if (state.passive.length > 0) {
+    state.passive.forEach(p => {
+      const incomeAtRetire = wrRetireAge ? (() => {
+        const start = p.startAge || state.age;
+        const end = p.endAge || 999;
+        if (wrRetireAge >= start && wrRetireAge <= end) {
+          const pt = wrRetireAge - start;
+          return p.amount * Math.pow(1 + (p.growthRate||0)/100, pt);
+        }
+        return 0;
+      })() : 0;
+      html += `<tr>
+        <td class="td-name"><span class="td-name-inner"><span class="td-dot" style="background:${PASSIVE_COLOR}"></span>${p.name}</span></td>
+        <td class="td-mono vals">${fmtRM(p.amount)}/mo</td>
+        <td class="td-passive vals">${wrRetireAge ? fmtRM(incomeAtRetire) + '/mo' : '–'}</td>
+      </tr>`;
+    });
+  }
+  if (!html) body.innerHTML = '<tr><td colspan="3" style="text-align:center;color:var(--text-muted);padding:20px;">Add assets to see summary</td></tr>';
+  else body.innerHTML = html;
+}
+
+// ═══════════════════════════════════════════
+// ASSET PANELS
+// ═══════════════════════════════════════════
+function renderAssets() {
+  const el = document.getElementById('asset-panels');
+  el.innerHTML = '';
+  state.assets.forEach((a, i) => {
+    el.appendChild(buildAssetPanel(a, i));
   });
 }
 
-// ── EXPORT / RESET ────────────────────────────────────────────
-function exportData(){
-  const d={profile:P,assets,results:calc?{fi:calc.fi,retireAge:calc.retAge,cur:calc.cur}:null};
-  const b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='fi-planner.json';a.click();
-  notify('Data exported');
-}
-function resetAll(){
-  if(!confirm('Reset everything? This cannot be undone.'))return;
-  assets=DEF_ASSETS.map(a=>({...a}));
-  P={age:0,exp:0,wr:4,inf:3};
-  saved=false;inflAdj=false;hideVals=false;activeScen=null;calc=null;
-  document.getElementById('profileModal').classList.add('hidden');
-  document.getElementById('dashEmpty').style.display='flex';
-  document.getElementById('dashData').style.display='none';
-  document.getElementById('step1').style.display='block';
-  document.getElementById('step2').style.display='none';
-  document.getElementById('d1').className='dot active';
-  document.getElementById('d2').className='dot';
-  document.getElementById('s_age').value='';
-  document.getElementById('s_exp').value='';
-  document.getElementById('scenSelect').value='';
-  document.getElementById('scenResult').classList.remove('show');
-  document.getElementById('scenClearBtn').style.display='none';
-  renderAssets();
-  document.getElementById('setupOverlay').classList.remove('hidden');
-  notify('All data reset');
+function buildAssetPanel(a, idx) {
+  const div = document.createElement('div');
+  div.className = 'asset-panel fade-in';
+  div.id = 'ap-' + a.id;
+  div.innerHTML = `
+    <div class="panel-head" onclick="togglePanel('${a.id}')">
+      <div class="panel-color" style="background:${a.color}"></div>
+      <div class="panel-info">
+        <div class="panel-name">${a.name}</div>
+        <div class="panel-meta">${a.current > 0 ? fmtRM(a.current) : 'No balance'} · ${a.rate}% return · ${a.contrib > 0 ? fmtRM(a.contrib)+'/'+a.freq.replace('ly','') : 'No contribution'}</div>
+      </div>
+      <span class="panel-chevron">▾</span>
+    </div>
+    <div class="panel-body hidden" id="pb-${a.id}">
+      <div class="panel-grid">
+        <div class="full">
+          <div class="plabel">Asset Name</div>
+          <input class="pinput" type="text" value="${a.name}" onchange="updateAsset('${a.id}','name',this.value)">
+        </div>
+        <div>
+          <div class="plabel">Current Balance (RM)</div>
+          <div class="input-wrap">
+            <input class="pinput with-prefix" type="number" value="${a.current||''}" placeholder="0" min="0"
+              onchange="updateAsset('${a.id}','current',+this.value)">
+            <span class="input-prefix">RM</span>
+          </div>
+        </div>
+        <div>
+          <div class="plabel">Annual Return (%)</div>
+          <div class="input-wrap">
+            <input class="pinput with-suffix" type="number" value="${a.rate}" placeholder="5" min="0" max="50" step="0.5"
+              onchange="updateAsset('${a.id}','rate',+this.value)">
+            <span class="input-suffix">%</span>
+          </div>
+        </div>
+        <div>
+          <div class="plabel">Contribution (RM)</div>
+          <div class="input-wrap">
+            <input class="pinput with-prefix" type="number" value="${a.contrib||''}" placeholder="0" min="0"
+              onchange="updateAsset('${a.id}','contrib',+this.value)">
+            <span class="input-prefix">RM</span>
+          </div>
+        </div>
+        <div>
+          <div class="plabel">Frequency</div>
+          <select class="pselect" onchange="updateAsset('${a.id}','freq',this.value)">
+            <option value="monthly" ${a.freq==='monthly'?'selected':''}>Monthly</option>
+            <option value="quarterly" ${a.freq==='quarterly'?'selected':''}>Quarterly</option>
+            <option value="yearly" ${a.freq==='yearly'?'selected':''}>Yearly</option>
+          </select>
+        </div>
+        <div>
+          <div class="plabel">Start Age (optional)</div>
+          <input class="pinput" type="number" value="${a.startAge||''}" placeholder="${state.age}" min="18" max="80"
+            onchange="updateAsset('${a.id}','startAge',+this.value)">
+        </div>
+        <div>
+          <div class="plabel">Stop Contributing Age</div>
+          <input class="pinput" type="number" value="${a.endAge||''}" placeholder="Lifetime" min="18" max="80"
+            onchange="updateAsset('${a.id}','endAge',+this.value)">
+        </div>
+        <div>
+          <div class="plabel">Asset Type</div>
+          <select class="pselect" onchange="updateAsset('${a.id}','type',this.value)">
+            <option value="stable" ${a.type==='stable'?'selected':''}>Stable (EPF, FD)</option>
+            <option value="volatile" ${a.type==='volatile'?'selected':''}>Volatile (Stocks, ETF)</option>
+            <option value="cash" ${a.type==='cash'?'selected':''}>Cash (Savings)</option>
+          </select>
+        </div>
+        <div class="full">
+          <details style="background:var(--passive-dim);border-radius:8px;border:1px solid rgba(167,139,250,0.2);">
+            <summary style="padding:10px 14px;cursor:pointer;font-size:11px;font-weight:700;color:var(--passive);text-transform:uppercase;letter-spacing:0.06em;list-style:none;display:flex;align-items:center;justify-content:space-between;">
+              <span>💜 Override Income Yield (optional)</span>
+              <span style="font-size:10px;color:var(--text-muted);font-weight:400;text-transform:none;letter-spacing:0;">Default: uses return rate</span>
+            </summary>
+            <div style="padding:0 14px 12px;">
+              <div style="font-size:11px;color:var(--text-muted);line-height:1.55;margin-bottom:10px;">
+                By default, the <b>Passive Income Path</b> uses this asset's return rate (${a.rate}%) as the income yield at retirement.
+                Override only if you know the specific dividend/interest yield differs from total return.
+              </div>
+              <div class="plabel">Custom Annual Income Yield (%)</div>
+              <div class="input-wrap">
+                <input class="pinput with-suffix" type="number" value="${a.assetPassiveRate||''}" placeholder="Leave blank to use return rate (${a.rate}%)" min="0" max="30" step="0.5"
+                  onchange="updateAsset('${a.id}','assetPassiveRate',this.value===''?0:+this.value)">
+                <span class="input-suffix">%</span>
+              </div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:5px;">
+                e.g. EPF: ~5% · FD: ~3.5% · REITs: ~5-7% · Dividend stocks: ~3-5% · ETF: ~3-4%
+              </div>
+            </div>
+          </details>
+        </div>
+        ${isEPFAsset(a) ? `
+        <div class="full">
+          <div style="background:rgba(255,184,0,0.08);border:1px solid rgba(255,184,0,0.25);border-radius:8px;padding:10px 14px;font-size:11px;color:var(--text-sub);line-height:1.65;">
+            <div style="font-weight:700;color:#ffb800;margin-bottom:5px;">⚠️ EPF Withdrawal Rules (KWSP)</div>
+            <b>Before age 55:</b> Locked — only excess above <b>RM1.1M</b> can be withdrawn (2026 threshold). Retirement detection uses only accessible portion.<br>
+            <b>At age 55:</b> Full balance in Akaun Persaraan + Akaun Sejahtera consolidates into <b>Akaun 55</b> — fully accessible.<br>
+            <b>After age 55:</b> New contributions go to <b>Akaun Emas</b>, withdrawable at 60.<br>
+            <b>EPF benchmarks:</b> Basic RM390k · Adequate RM650k · Enhanced RM1.3M<br>
+            <span style="color:var(--text-muted);">Retirement age here reflects when accessible EPF + other assets meet your FI number.</span>
+          </div>
+        </div>` : ''}
+      </div>
+      <div class="panel-actions">
+        <button class="btn-sm danger" onclick="deleteAsset('${a.id}')">🗑 Delete</button>
+        <button class="btn-sm" onclick="duplicateAsset('${a.id}')">⧉ Duplicate</button>
+      </div>
+    </div>`;
+  return div;
 }
 
-// ── NOTIFY ────────────────────────────────────────────────────
-let nt=null;
-function notify(msg){
-  const el=document.getElementById('notif');
-  el.textContent=msg;el.classList.add('show');
-  clearTimeout(nt);nt=setTimeout(()=>el.classList.remove('show'),2400);
+function togglePanel(id) {
+  const body = document.getElementById('pb-' + id);
+  const head = body?.previousElementSibling;
+  if (!body) return;
+  const hidden = body.classList.contains('hidden');
+  body.classList.toggle('hidden', !hidden);
+  head?.classList.toggle('open', hidden);
 }
+
+function updateAsset(id, field, val) {
+  const a = state.assets.find(x => x.id === id);
+  if (!a) return;
+  a[field] = val;
+  if (field === 'name') {
+    // update panel header without full re-render
+    const panel = document.getElementById('ap-' + id);
+    if (panel) panel.querySelector('.panel-name').textContent = val;
+  }
+  updatePanelMeta(id);
+  saveState(); recalc();
+}
+
+function updatePanelMeta(id) {
+  const a = state.assets.find(x => x.id === id);
+  if (!a) return;
+  const panel = document.getElementById('ap-' + id);
+  if (!panel) return;
+  panel.querySelector('.panel-meta').textContent =
+    `${a.current > 0 ? fmtRM(a.current) : 'No balance'} · ${a.rate}% return · ${a.contrib > 0 ? fmtRM(a.contrib)+'/'+a.freq.replace('ly','') : 'No contribution'}`;
+}
+
+function deleteAsset(id) {
+  state.assets = state.assets.filter(a => a.id !== id);
+  saveState(); renderAssets(); recalc();
+}
+
+function duplicateAsset(id) {
+  const a = state.assets.find(x => x.id === id);
+  if (!a) return;
+  const newA = Object.assign({}, a, { id: 'a_'+Date.now(), name: a.name + ' (copy)', color: COLORS[state.assets.length % COLORS.length] });
+  state.assets.push(newA);
+  saveState(); renderAssets(); recalc();
+}
+
+function addAsset() {
+  const newA = {
+    id: 'a_'+Date.now(), name: 'New Asset', current: 0, rate: 5,
+    contrib: 0, freq: 'monthly', startAge: 0, endAge: 0,
+    color: COLORS[state.assets.length % COLORS.length], type: 'stable',
+  };
+  state.assets.push(newA);
+  saveState(); renderAssets();
+  setTimeout(() => togglePanel(newA.id), 50);
+  recalc();
+}
+
+// ═══════════════════════════════════════════
+// PASSIVE INCOME PANELS
+// ═══════════════════════════════════════════
+function renderPassive() {
+  const el = document.getElementById('passive-panels');
+  el.innerHTML = '';
+  if (state.passive.length === 0) {
+    el.innerHTML = `<div style="text-align:center;padding:32px 20px;color:var(--text-muted);font-size:13px;">
+      <div style="font-size:32px;margin-bottom:10px;">💜</div>
+      No standalone passive sources yet.<br>Asset income yield is set in each asset panel!
+    </div>`;
+    updatePassiveTotals();
+    return;
+  }
+  state.passive.forEach(p => el.appendChild(buildPassivePanel(p)));
+  updatePassiveTotals();
+}
+
+function buildPassivePanel(p) {
+  const div = document.createElement('div');
+  div.className = 'asset-panel passive-panel fade-in';
+  div.id = 'pp-' + p.id;
+  div.innerHTML = `
+    <div class="panel-head" onclick="togglePassivePanel('${p.id}')">
+      <div class="panel-color" style="background:${PASSIVE_COLOR}"></div>
+      <div class="panel-info">
+        <div class="panel-name">${p.name} <span class="panel-badge badge-passive">Passive</span></div>
+        <div class="panel-meta">${fmtRM(p.amount)}/month · ${p.type}</div>
+      </div>
+      <span class="panel-chevron">▾</span>
+    </div>
+    <div class="panel-body hidden" id="ppb-${p.id}">
+      <div class="panel-grid">
+        <div class="full">
+          <div class="plabel">Source Name</div>
+          <input class="pinput" type="text" value="${p.name}" onchange="updatePassive('${p.id}','name',this.value)">
+        </div>
+        <div>
+          <div class="plabel">Monthly Amount (RM)</div>
+          <div class="input-wrap">
+            <input class="pinput with-prefix" type="number" value="${p.amount||''}" placeholder="0" min="0"
+              onchange="updatePassive('${p.id}','amount',+this.value)">
+            <span class="input-prefix">RM</span>
+          </div>
+        </div>
+        <div>
+          <div class="plabel">Annual Growth (%)</div>
+          <div class="input-wrap">
+            <input class="pinput with-suffix" type="number" value="${p.growthRate||0}" placeholder="0" min="0" max="30" step="0.5"
+              onchange="updatePassive('${p.id}','growthRate',+this.value)">
+            <span class="input-suffix">%</span>
+          </div>
+        </div>
+        <div>
+          <div class="plabel">Income Type</div>
+          <select class="pselect" onchange="updatePassive('${p.id}','type',this.value)">
+            <option value="rental" ${p.type==='rental'?'selected':''}>🏠 Rental</option>
+            <option value="dividend" ${p.type==='dividend'?'selected':''}>📈 Dividends</option>
+            <option value="business" ${p.type==='business'?'selected':''}>💼 Business</option>
+            <option value="royalty" ${p.type==='royalty'?'selected':''}>🎨 Royalties</option>
+            <option value="other" ${p.type==='other'?'selected':''}>💜 Other</option>
+          </select>
+        </div>
+        <div>
+          <div class="plabel">Start Age</div>
+          <input class="pinput" type="number" value="${p.startAge||state.age}" placeholder="${state.age}" min="18" max="80"
+            onchange="updatePassive('${p.id}','startAge',+this.value)">
+        </div>
+        <div>
+          <div class="plabel">End Age (0 = lifetime)</div>
+          <input class="pinput" type="number" value="${p.endAge||''}" placeholder="Lifetime" min="0" max="100"
+            onchange="updatePassive('${p.id}','endAge',+this.value)">
+        </div>
+      </div>
+      <div style="background:var(--passive-dim);border-radius:8px;padding:10px 12px;margin-top:12px;font-size:11px;color:var(--passive);line-height:1.6;">
+        This source reduces your FI target by <b>${fmtRM((p.amount||0)*12 / (state.withdrawalRate/100))}</b>.
+        Your portfolio needs to be that much smaller!
+      </div>
+      <div class="panel-actions">
+        <button class="btn-sm danger" onclick="deletePassive('${p.id}')">🗑 Delete</button>
+      </div>
+    </div>`;
+  return div;
+}
+
+function togglePassivePanel(id) {
+  const body = document.getElementById('ppb-' + id);
+  const head = body?.previousElementSibling;
+  if (!body) return;
+  const hidden = body.classList.contains('hidden');
+  body.classList.toggle('hidden', !hidden);
+  head?.classList.toggle('open', hidden);
+}
+
+function updatePassive(id, field, val) {
+  const p = state.passive.find(x => x.id === id);
+  if (!p) return;
+  p[field] = val;
+  saveState(); renderPassive(); recalc();
+}
+
+function deletePassive(id) {
+  state.passive = state.passive.filter(p => p.id !== id);
+  saveState(); renderPassive(); recalc();
+}
+
+function addPassive() {
+  const newP = {
+    id: 'p_'+Date.now(), name: 'Passive Income',
+    amount: 0, type: 'other', startAge: state.age,
+    endAge: 0, growthRate: 0, color: PASSIVE_COLOR,
+  };
+  state.passive.push(newP);
+  saveState(); renderPassive();
+  setTimeout(() => togglePassivePanel(newP.id), 50);
+  recalc();
+}
+
+function updatePassiveTotals() {
+  let assetIncome = 0, epfLockedYield = 0;
+  for (const a of state.assets) {
+    if (isEPFAsset(a) && state.age < EPF_LOCK_AGE) {
+      // EPF is locked — yield reinvested, not receivable yet
+      const fv = calcAssetFV(a, 0);
+      const yield_ = getAssetIncomeYield(a);
+      epfLockedYield += (fv * yield_) / 12;
+    } else {
+      assetIncome += calcAssetMonthlyIncomeAtT(a, 0);
+    }
+  }
+  const standaloneIncome = calcStandalonePassiveAtT(0);
+  const receivableTotal = assetIncome + standaloneIncome;
+  const grandTotal = receivableTotal + epfLockedYield;
+
+  document.getElementById('passive-total-big').textContent = fmtRM(receivableTotal) + '/mo';
+  document.getElementById('passive-from-assets').textContent = fmtRM(assetIncome) + '/mo';
+  document.getElementById('passive-from-standalone').textContent = fmtRM(standaloneIncome) + '/mo';
+
+  // Show EPF locked yield as a note if applicable
+  const subEl = document.getElementById('passive-total-sub');
+  let subText = '';
+  if (epfLockedYield > 0) {
+    subText += `+ ${fmtRM(epfLockedYield)}/mo EPF yield reinvesting (unlocks at 55) · `;
+  }
+  const fi = state.expense > 0 ? (state.expense * 12 - receivableTotal * 12) / (state.withdrawalRate / 100) : 0;
+  subText += receivableTotal > 0
+    ? `Reduces FI target to ${fmtRM(Math.max(0, fi))}`
+    : 'Add income yield on assets, or standalone sources below';
+  subEl.textContent = subText;
+}
+
+// ═══════════════════════════════════════════
+// SCENARIOS
+// ═══════════════════════════════════════════
+const SCENARIOS = [
+  { id:'boost-etf', name:'🚀 Boost ETF Contributions 2×', desc:'Double your ETF monthly contribution',
+    apply(assets){ const a=assets.find(x=>x.name==='ETF'); if(a) return {[a.id]:{contrib:a.contrib*2}}; return {}; }},
+  { id:'stock-crash', name:'💥 20% Stock Market Crash', desc:'All volatile assets drop 20% in value immediately',
+    apply(assets){ const ov={}; assets.filter(a=>a.type==='volatile').forEach(a=>{ov[a.id]={current:a.current*0.8}}); return ov; }},
+  { id:'low-return', name:'📉 Conservative Returns (−2%)', desc:'Reduce all return rates by 2%',
+    apply(assets){ const ov={}; assets.forEach(a=>{ov[a.id]={rate:Math.max(0,a.rate-2)}}); return ov; }},
+  { id:'early-retire-55', name:'🎯 Target Retirement at 55', desc:'Stop EPF contributions at 55 — simulate early retirement',
+    apply(assets){ const ov={}; const epf=assets.find(a=>a.name==='EPF'); if(epf) ov[epf.id]={endAge:55}; return ov; }},
+  { id:'boost-passive', name:'💜 Add RM1,000 Passive/Month', desc:'See impact of new RM 1,000/month passive income',
+    apply(assets){ return {}; }, passiveBoost: 1000 },
+  { id:'no-contrib', name:'⛔ Stop All Contributions', desc:'What if you stop contributing today?',
+    apply(assets){ const ov={}; assets.forEach(a=>{ov[a.id]={contrib:0}}); return ov; }},
+];
+
+let activeScenarioId = null;
+
+function renderScenarios() {
+  const sel = document.getElementById('scenario-select');
+  if (!sel) return;
+  sel.innerHTML = '<option value="">— Select a scenario —</option>';
+  SCENARIOS.forEach(sc => {
+    const opt = document.createElement('option');
+    opt.value = sc.id;
+    opt.textContent = sc.name;
+    if (activeScenarioId === sc.id) opt.selected = true;
+    sel.appendChild(opt);
+  });
+  if (!activeScenarioId) {
+    document.getElementById('scenario-desc-line').textContent = '';
+  }
+}
+
+function applyScenario(id) {
+  if (!id) { clearScenario(); return; }
+  activeScenarioId = id;
+  const sc = SCENARIOS.find(s => s.id === id);
+  if (!sc) return;
+
+  document.getElementById('scenario-desc-line').textContent = sc.desc;
+  document.getElementById('scenario-desc-line2').textContent = sc.desc;
+
+  const wr = state.withdrawalRate / 100;
+
+  // Helper: detect FI age using same logic as dashboard
+  function detectFIAge(yearlyData, passiveSources) {
+    const savedPassive = state.passive;
+    state.passive = passiveSources;
+    const row = yearlyData.find(r => {
+      const income = (r.total * wr / 12) + calcStandalonePassiveAtT(r.year);
+      return income >= state.expense;
+    });
+    state.passive = savedPassive;
+    return row || null;
+  }
+
+  // Base calculation
+  const baseData = calcYearlyData(state.assets, null);
+  const baseFIRow = detectFIAge(baseData, state.passive);
+  const baseFIAge = baseFIRow?.age || null;
+  const baseIncome = baseFIRow ? (baseFIRow.total * wr / 12) + calcStandalonePassiveAtT(baseFIRow.year) : 0;
+  const basePort90 = baseFIRow ? sim90(baseFIAge, baseFIRow.total) : null;
+
+  // Scenario calculation
+  const overrides = sc.apply(state.assets);
+  let scPassive = [...state.passive];
+  if (sc.passiveBoost) {
+    scPassive = [...scPassive, { id:'sc_boost', name:'Scenario Boost', amount: sc.passiveBoost, type:'other', startAge:state.age, endAge:0, growthRate:0 }];
+  }
+  const scData = calcYearlyData(state.assets, overrides);
+  const scFIRow = detectFIAge(scData, scPassive);
+  const scFIAge = scFIRow?.age || null;
+  const savedPassive2 = state.passive;
+  state.passive = scPassive;
+  const scIncome = scFIRow ? (scFIRow.total * wr / 12) + calcStandalonePassiveAtT(scFIRow.year) : 0;
+  state.passive = savedPassive2;
+  const scPort90 = scFIRow ? sim90(scFIAge, scFIRow.total) : null;
+
+  // Populate result
+  document.getElementById('sc-base-age').textContent = baseFIAge || '–';
+  document.getElementById('sc-base-income').textContent = baseFIAge ? fmtRM(baseIncome) + '/mo' : '';
+  document.getElementById('sc-new-age').textContent = scFIAge || '–';
+  document.getElementById('sc-new-income').textContent = scFIAge ? fmtRM(scIncome) + '/mo' : '';
+  document.getElementById('sc-base-port90').textContent = basePort90 !== null ? (basePort90 > 0 ? fmtRM(basePort90) : '⚠️ Depleted') : '–';
+  document.getElementById('sc-new-port90').textContent = scPort90 !== null ? (scPort90 > 0 ? fmtRM(scPort90) : '⚠️ Depleted') : '–';
+
+  const diffEl = document.getElementById('sc-diff');
+  const diffSub = document.getElementById('sc-diff-sub');
+  if (baseFIAge && scFIAge) {
+    const diff = baseFIAge - scFIAge;
+    if (diff > 0)      { diffEl.textContent = diff + ' yrs earlier'; diffEl.style.color = 'var(--accent)'; diffSub.textContent = '🎉 Retires faster'; }
+    else if (diff < 0) { diffEl.textContent = Math.abs(diff) + ' yrs later'; diffEl.style.color = '#ff5a5a'; diffSub.textContent = '⚠️ Delays retirement'; }
+    else               { diffEl.textContent = 'No change'; diffEl.style.color = 'var(--text-sub)'; diffSub.textContent = 'Same FI age'; }
+  } else if (!baseFIAge && scFIAge) {
+    diffEl.textContent = '🎉 Now possible!'; diffEl.style.color = 'var(--accent)'; diffSub.textContent = `FI at ${scFIAge}`;
+  } else {
+    diffEl.textContent = '–'; diffEl.style.color = ''; diffSub.textContent = 'Not yet achievable';
+  }
+
+  document.getElementById('scenario-result').style.display = 'block';
+}
+
+function clearScenario() {
+  activeScenarioId = null;
+  document.getElementById('scenario-result').style.display = 'none';
+  document.getElementById('scenario-desc-line').textContent = '';
+  const sel = document.getElementById('scenario-select');
+  if (sel) sel.value = '';
+}
+
+// ═══════════════════════════════════════════
+// SETTINGS
+// ═══════════════════════════════════════════
+function saveSettings() {
+  state.age = +document.getElementById('s-age').value || state.age;
+  state.expense = +document.getElementById('s-expense').value || state.expense;
+  state.targetAge = +document.getElementById('s-target-age').value || 0;
+  state.withdrawalRate = +document.getElementById('s-wr').value || 4;
+  state.inflation = +document.getElementById('s-infl').value ?? 3;
+  state.projectUntilAge = +document.getElementById('s-project-age').value || 80;
+  document.getElementById('infl-rate-show').textContent = state.inflation;
+  saveState(); recalc();
+}
+
+function toggleHide() {
+  state.hideValues = !state.hideValues;
+  document.getElementById('s-hide').checked = state.hideValues;
+  document.getElementById('hide-btn').classList.toggle('on', state.hideValues);
+  applyHide(); saveState();
+}
+function toggleHideFromSettings() {
+  state.hideValues = document.getElementById('s-hide').checked;
+  document.getElementById('hide-btn').classList.toggle('on', state.hideValues);
+  applyHide(); saveState();
+}
+function applyHide() {
+  document.querySelectorAll('.vals').forEach(el => {
+    el.classList.toggle('blurred', state.hideValues);
+  });
+}
+
+// ═══════════════════════════════════════════
+// IMPORT / EXPORT
+// ═══════════════════════════════════════════
+function exportData() {
+  const data = JSON.stringify(state, null, 2);
+  const blob = new Blob([data], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'fi-planner-backup.json'; a.click();
+  URL.revokeObjectURL(url);
+  toast('Data exported!');
+}
+function importData(evt) {
+  const file = evt.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const imported = JSON.parse(e.target.result);
+      state = Object.assign(state, imported);
+      saveState(); syncSettingsUI(); renderAssets(); renderPassive(); renderScenarios(); recalc();
+      toast('Data imported!');
+    } catch(err) { toast('Invalid file'); }
+  };
+  reader.readAsText(file);
+}
+function confirmReset() {
+  if (confirm('Reset all data? This cannot be undone.')) {
+    localStorage.removeItem('fi_planner_v3');
+    location.reload();
+  }
+}
+
+// ═══════════════════════════════════════════
+// INFLATION TOGGLE
+// ═══════════════════════════════════════════
+document.addEventListener('change', e => {
+  if (e.target.id === 'infl-toggle') {
+    state.inflationAdjusted = e.target.checked;
+    saveState(); recalc();
+  }
+});
+
+// ═══════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════
+function fmtRM(val) {
+  if (!val && val !== 0) return '–';
+  if (val >= 1e6) return 'RM ' + (val/1e6).toFixed(2) + 'M';
+  if (val >= 1e3) return 'RM ' + (val/1e3).toFixed(1) + 'K';
+  return 'RM ' + Math.round(val).toLocaleString();
+}
+// Alias used in template literals inside buildAssetPanel
+function fmtRMjs(val) { return fmtRM(val); }
+function fmtRMShort(val) {
+  if (val >= 1e6) return (val/1e6).toFixed(1)+'M';
+  if (val >= 1e3) return (val/1e3).toFixed(0)+'K';
+  return Math.round(val).toString();
+}
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2600);
+}
+
+// Redraw chart on resize
+window.addEventListener('resize', () => { if (state.onboarded) recalc(); });
 </script>
 </body>
 </html>

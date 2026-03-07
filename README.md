@@ -1,28 +1,28 @@
-# RetireSmart – Financial Independence Simulator
+# 🇲🇾 RetireSmart
 
-A free, privacy-first multi-asset retirement simulator. No accounts, no cloud storage, no ads. All data stays in your browser.
+A free, privacy-first Financial Independence planner for Malaysians. No account. No server. Just open and plan.
 
-Give it a try at https://lucysee.github.io/retireSmart/ 
-## Features
-
-- **Multi-asset panels** – EPF, Fixed Deposit, Savings, Stocks, ETF (fully editable)
-- **Per-asset settings** – different return rates, contribution frequencies (monthly/quarterly/yearly)
-- **Retirement age detection** – auto-detects the year your portfolio hits your FI number
-- **Portfolio projection chart** – combined or per-asset breakdown
-- **Inflation toggle** – nominal vs real (inflation-adjusted) view
-- **Scenario comparison** – test what-if scenarios vs your base plan
-- **Privacy mode** – hide all values with one click
-- **Quick reset** – wipe all data instantly
-
+**[→ Open App](https://lucysee.github.io/retireSmart)**
 
 ---
+
+## What it does
+
+- 📊 Multi-asset portfolio — EPF, FD, Savings, Stocks, ETF
+- 🏆 Tells you your FI age using the 4% withdrawal rule
+- 💜 Passive income tracker — rental, dividends, side income
+- 🔄 What-if scenarios — crash, boost contributions, stop saving
+- 📈 Portfolio projection chart to age 90
+- 🔐 Hide values mode — safe to use in public
+
+## Built for Malaysia
+
+EPF withdrawal rules, RM currency, 3% default inflation, 6% EPF return.
 
 ## Privacy
 
-- Zero data collection
-- No server, no database, no analytics
-- All numbers stay on the user's device
-- Safe to share the link — no one's data is pre-loaded
+Everything stays in your browser. No cloud, no account, no tracking.
 
 ---
 
+Built with vanilla HTML/CSS/JS — zero dependencies.
