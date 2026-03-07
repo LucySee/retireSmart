@@ -26,6 +26,3 @@ Give it a try at https://lucysee.github.io/retireSmart/
 
 ---
 
-## License
-
-Free to use and share.
