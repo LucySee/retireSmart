@@ -452,6 +452,23 @@ input[type=checkbox].hidden-cb { display:none; }
               <div style="font-size:10px;color:var(--text-muted);margin-top:2px;" id="mile-fi-yrs">–</div>
             </div>
           </div>
+
+          <!-- Retirement Score Badge -->
+          <div id="fi-score-bar" style="margin-bottom:10px;background:var(--bg);border-radius:10px;padding:10px 12px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+              <div style="font-size:10px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Retirement Score</div>
+              <div style="display:flex;align-items:center;gap:5px;">
+                <span id="fi-score-emoji" style="font-size:13px;">–</span>
+                <span id="fi-score-pct" style="font-family:var(--mono);font-size:15px;font-weight:700;">–</span>
+                <span id="fi-score-label" style="font-size:10px;color:var(--text-muted);"></span>
+              </div>
+            </div>
+            <div style="height:6px;border-radius:3px;background:rgba(255,255,255,0.06);overflow:hidden;">
+              <div id="fi-score-fill" style="height:100%;border-radius:3px;width:0%;transition:width 0.5s ease;"></div>
+            </div>
+            <div style="font-size:9px;color:var(--text-muted);margin-top:5px;" id="fi-score-detail">Projected ÷ FI Target</div>
+          </div>
+
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding-top:10px;border-top:1px solid rgba(0,229,160,0.15);">
             <div>
               <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">FI Target</div>
@@ -1337,6 +1354,30 @@ function recalc() {
     fiPort90El.style.color = '';
     document.getElementById('mile-fi-epf').textContent = '–';
     document.getElementById('mile-fi-nonepf').textContent = '–';
+  }
+
+  // ── Retirement Score ──
+  // Score = portfolio at user's target age (or age+20) ÷ FI target × 100
+  {
+    const refAge = state.targetAge > state.age ? state.targetAge : state.age + 20;
+    const refRow = yearlyData.find(r => r.age >= refAge) || yearlyData[yearlyData.length - 1];
+    const projected = refRow?.total || 0;
+    const target    = fiAdjusted || 1;
+    const score     = Math.min(100, Math.round((projected / target) * 100));
+
+    let emoji, label, color;
+    if (score >= 80)      { emoji = '🟢'; label = 'Safe';          color = '#00e5a0'; }
+    else if (score >= 50) { emoji = '🟡'; label = 'Moderate Risk'; color = '#ffb800'; }
+    else                  { emoji = '🔴'; label = 'High Risk';      color = '#ff5a5a'; }
+
+    document.getElementById('fi-score-emoji').textContent  = emoji;
+    document.getElementById('fi-score-pct').textContent    = score + '%';
+    document.getElementById('fi-score-pct').style.color    = color;
+    document.getElementById('fi-score-label').textContent  = label;
+    document.getElementById('fi-score-fill').style.width   = score + '%';
+    document.getElementById('fi-score-fill').style.background = color;
+    document.getElementById('fi-score-detail').textContent =
+      `${fmtRM(projected)} at age ${refAge} ÷ ${fmtRM(target)} target`;
   }
   const age55Row = yearlyData.find(r => r.age === 55);
   const epfSubEl    = document.getElementById('mile-epf-sub');
