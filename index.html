@@ -357,6 +357,12 @@ input[type=checkbox].hidden-cb { display:none; }
 /* Animations */
 @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
 .fade-in { animation:fadeIn 0.35s ease both; }
+.btn-skip {
+  width:100%; padding:12px; margin-top:8px; border-radius:12px;
+  background:transparent; border:1.5px solid var(--accent);
+  color:var(--accent); font-size:14px; font-weight:600;
+  cursor:pointer; font-family:var(--font);
+}
 </style>
 </head>
 <body>
@@ -377,10 +383,11 @@ input[type=checkbox].hidden-cb { display:none; }
         <div class="ob-dot" id="ob-d2"></div>
         <div class="ob-dot" id="ob-d3"></div>
       </div>
-      <!-- Step 1 -->
+
+      <!-- Step 1: Profile -->
       <div id="ob-step1">
         <div class="ob-title">Set up your profile</div>
-        <div class="ob-sub">Two quick questions. You can always change these later.</div>
+        <div class="ob-sub">Just the basics. You can change everything later.</div>
         <div class="field">
           <label>Your current age</label>
           <input type="number" id="ob-age" placeholder="e.g. 30" min="18" max="80">
@@ -390,37 +397,35 @@ input[type=checkbox].hidden-cb { display:none; }
           <input type="number" id="ob-expense" placeholder="e.g. 5,000" min="500">
           <div class="hint">How much you plan to spend per month when retired</div>
         </div>
-        <button class="btn-prime" onclick="obNext()">Continue →</button>
-      </div>
-      <!-- Step 2 -->
-      <div id="ob-step2" style="display:none">
-        <div class="ob-title">Passive income sources</div>
-        <div class="ob-sub">Do you have or expect passive income in retirement? (rental, dividends, side biz…)</div>
-        <div class="field">
-          <label>Monthly passive income (RM) <span style="color:var(--text-muted);font-weight:400">– optional</span></label>
-          <input type="number" id="ob-passive" placeholder="e.g. 2,000" min="0">
-          <div class="hint">This reduces how much your portfolio needs to cover</div>
-        </div>
         <div class="field">
           <label>Target retirement age <span style="color:var(--text-muted);font-weight:400">– optional</span></label>
           <input type="number" id="ob-target-age" placeholder="e.g. 55" min="30" max="80">
         </div>
-        <div class="field">
-          <label>Withdrawal rate (%)</label>
-          <input type="number" id="ob-wr" placeholder="4" min="1" max="10" value="4">
-          <div class="hint">The "4% rule" means you withdraw 4% of your portfolio yearly</div>
-        </div>
-        <button class="btn-prime" onclick="obStep3()">Continue →</button>
+        <button class="btn-prime" onclick="obNext()">Continue →</button>
       </div>
-      <!-- Step 3 -->
+
+      <!-- Step 2: Assets -->
+      <div id="ob-step2" style="display:none">
+        <div class="ob-title">Your assets</div>
+        <div class="ob-sub">Enter what you currently have. Leave blank if not applicable.</div>
+        <div id="ob-assets-list" style="display:flex;flex-direction:column;gap:10px;margin:16px 0;"></div>
+        <button class="btn-prime" onclick="obStep3()">Continue →</button>
+        <button class="btn-skip" onclick="obSkipAssets()">Skip, add later</button>
+      </div>
+
+      <!-- Step 3: Passive Income -->
       <div id="ob-step3" style="display:none">
-        <div class="ob-title">Add your assets</div>
-        <div class="ob-sub">Enter what you currently have. Skip any that don't apply.</div>
-        <div id="ob-assets-list" style="display:flex;flex-direction:column;gap:10px;margin:16px 0;">
-          <!-- filled by JS -->
+        <div class="ob-title">Passive income</div>
+        <div class="ob-sub">Rental, dividends, side business? This reduces your FI target.</div>
+        <div class="field">
+          <label>Monthly passive income (RM) <span style="color:var(--text-muted);font-weight:400">– optional</span></label>
+          <input type="number" id="ob-passive" placeholder="e.g. 2,000" min="0">
+          <div class="hint">Only include income you expect to continue in retirement</div>
         </div>
         <button class="btn-prime" onclick="obFinish()">Start Planning →</button>
+        <button class="btn-skip" onclick="obFinish()">Skip, add later</button>
       </div>
+
     </div>
   </div>
 </div>
@@ -937,31 +942,13 @@ function obNext() {
   if (!exp || exp < 100) { toast('Enter monthly retirement expenses'); return; }
   state.age = age;
   state.expense = exp;
-  document.getElementById('ob-step1').style.display = 'none';
-  document.getElementById('ob-step2').style.display = 'block';
-  document.getElementById('ob-d2').classList.add('on');
-  document.getElementById('ob-wr').value = 4;
-}
-function obStep3() {
-  const passive = parseFloat(document.getElementById('ob-passive').value) || 0;
-  const tgtAge = parseInt(document.getElementById('ob-target-age').value) || 0;
-  const wr = parseFloat(document.getElementById('ob-wr').value) || 4;
-  state.withdrawalRate = wr;
-  state.targetAge = tgtAge;
-  if (passive > 0) {
-    state.passive.push({ id:'p_'+Date.now(), name:'Passive Income', amount:passive, type:'other', startAge:state.age, endAge:0, growthRate:0, color:PASSIVE_COLOR });
-  }
-  document.getElementById('ob-step2').style.display = 'none';
-  document.getElementById('ob-step3').style.display = 'block';
-  document.getElementById('ob-d3').classList.add('on');
-  // Build asset input list
+  state.targetAge = parseInt(document.getElementById('ob-target-age').value) || 0;
+
+  // Build asset list for step 2
   const list = document.getElementById('ob-assets-list');
-  list.innerHTML = state.assets.map((a,i) => `
-    <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:12px 14px;">
-      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px;">
-        <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${a.color};margin-right:6px;vertical-align:middle;"></span>
-        ${a.name}
-      </div>
+  list.innerHTML = state.assets.map((a, i) => {
+    const isEPF = a.name.toLowerCase().includes('epf') || a.name.toLowerCase().includes('kwsp');
+    const fields = `
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
         <div class="field" style="margin:0;">
           <label style="font-size:10px;">Current Balance (RM)</label>
@@ -974,34 +961,87 @@ function obStep3() {
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
         <div class="field" style="margin:0;">
-          <label style="font-size:10px;">Contribution (RM)</label>
+          <label style="font-size:10px;">Monthly Contribution (RM)</label>
           <input type="number" id="ob-asset-con-${i}" placeholder="0" min="0" style="font-size:16px;">
         </div>
         <div class="field" style="margin:0;">
           <label style="font-size:10px;">Frequency</label>
           <select id="ob-asset-freq-${i}" style="font-size:16px;background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;color:var(--text);width:100%;">
-            <option value="monthly" ${a.freq==='monthly'?'selected':''}>Monthly</option>
-            <option value="quarterly" ${a.freq==='quarterly'?'selected':''}>Quarterly</option>
-            <option value="yearly" ${a.freq==='yearly'?'selected':''}>Yearly</option>
+            <option value="monthly">Monthly</option>
+            <option value="quarterly">Quarterly</option>
+            <option value="yearly">Yearly</option>
           </select>
         </div>
-      </div>
-    </div>
-  `).join('');
+      </div>`;
+
+    if (isEPF) {
+      // EPF: always expanded
+      return `
+        <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:12px 14px;">
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px;">
+            <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${a.color};margin-right:6px;vertical-align:middle;"></span>
+            ${a.name}
+          </div>
+          ${fields}
+        </div>`;
+    } else {
+      // Other assets: collapsible, tapping header expands inline
+      return `
+        <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:10px;overflow:hidden;">
+          <div onclick="obToggleAsset(${i})" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;cursor:pointer;user-select:none;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${a.color};flex-shrink:0;"></span>
+              <span style="font-size:13px;font-weight:700;color:var(--text);">${a.name}</span>
+            </div>
+            <span id="ob-chevron-${i}" style="color:var(--text-muted);font-size:13px;transition:transform 0.2s;">▾</span>
+          </div>
+          <div id="ob-asset-body-${i}" style="display:none;padding:0 14px 14px;">
+            ${fields}
+          </div>
+        </div>`;
+    }
+  }).join('');
+
+  document.getElementById('ob-step1').style.display = 'none';
+  document.getElementById('ob-step2').style.display = 'block';
+  document.getElementById('ob-d2').classList.add('on');
 }
+
+function obToggleAsset(i) {
+  const body = document.getElementById('ob-asset-body-' + i);
+  const chev = document.getElementById('ob-chevron-' + i);
+  const open = body.style.display === 'none';
+  body.style.display = open ? 'block' : 'none';
+  chev.style.transform = open ? 'rotate(180deg)' : '';
+}
+
+function obSaveAssets() {
+  state.assets.forEach((a, i) => {
+    const cur  = parseFloat(document.getElementById('ob-asset-cur-'+i)?.value) || 0;
+    const con  = parseFloat(document.getElementById('ob-asset-con-'+i)?.value) || 0;
+    const rate = parseFloat(document.getElementById('ob-asset-rate-'+i)?.value) || a.rate;
+    const freq = document.getElementById('ob-asset-freq-'+i)?.value || a.freq;
+    a.current = cur; a.contrib = con; a.rate = rate; a.freq = freq;
+  });
+}
+
+function obStep3() {
+  obSaveAssets();
+  document.getElementById('ob-step2').style.display = 'none';
+  document.getElementById('ob-step3').style.display = 'block';
+  document.getElementById('ob-d3').classList.add('on');
+}
+
+function obSkipAssets() {
+  document.getElementById('ob-step2').style.display = 'none';
+  document.getElementById('ob-step3').style.display = 'block';
+  document.getElementById('ob-d3').classList.add('on');
+}
+
 function obFinish() {
-  // Read asset values from step 3 if visible
-  if (document.getElementById('ob-step3').style.display !== 'none') {
-    state.assets.forEach((a, i) => {
-      const cur = parseFloat(document.getElementById('ob-asset-cur-'+i)?.value) || 0;
-      const con = parseFloat(document.getElementById('ob-asset-con-'+i)?.value) || 0;
-      const rate = parseFloat(document.getElementById('ob-asset-rate-'+i)?.value) || a.rate;
-      const freq = document.getElementById('ob-asset-freq-'+i)?.value || a.freq;
-      a.current = cur;
-      a.contrib = con;
-      a.rate = rate;
-      a.freq = freq;
-    });
+  const passive = parseFloat(document.getElementById('ob-passive')?.value) || 0;
+  if (passive > 0) {
+    state.passive.push({ id:'p_'+Date.now(), name:'Passive Income', amount:passive, type:'other', startAge:state.age, endAge:0, growthRate:0, color:PASSIVE_COLOR });
   }
   state.onboarded = true;
   saveState();
