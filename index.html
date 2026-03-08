@@ -12,7 +12,7 @@
 <title>FI Planner – Retirement Simulator</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #0d0f1a;
@@ -35,11 +35,11 @@
   --c1: #00e5a0; --c2: #00bfff; --c3: #ff7c5c;
   --c4: #a78bfa; --c5: #ffd166; --c6: #f472b6;
   --radius: 16px; --radius-sm: 10px; --radius-xs: 7px;
-  --font: 'Sora', sans-serif; --mono: 'JetBrains Mono', monospace;
+  --font: 'DM Sans', sans-serif; --mono: 'DM Mono', monospace;
   --shadow: 0 8px 32px rgba(0,0,0,0.4);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: auto; }
 body {
   font-family: var(--font); background: var(--bg); color: var(--text);
   min-height: 100vh; overflow-x: hidden; font-size: 15px; line-height: 1.5;
@@ -448,7 +448,7 @@ input[type=checkbox].hidden-cb { display:none; }
             <div style="display:flex;align-items:center;gap:8px;">
               <span style="font-size:18px;">🏆</span>
               <div>
-                <div style="font-size:13px;font-weight:700;color:var(--text);">Financial Independence</div>
+                <div style="font-size:17px;font-weight:800;color:var(--text);">Financial Independence</div>
                 <div style="font-size:10px;color:var(--text-muted);margin-top:1px;" id="mile-fi-sub">Portfolio covers all expenses</div>
               </div>
             </div>
@@ -506,7 +506,7 @@ input[type=checkbox].hidden-cb { display:none; }
             <div style="display:flex;align-items:center;gap:8px;">
               <span style="font-size:18px;">🏦</span>
               <div>
-                <div style="font-size:13px;font-weight:700;color:var(--text);">At Age 55</div>
+                <div style="font-size:17px;font-weight:800;color:var(--text);">At Age 55</div>
                 <div style="font-size:10px;color:var(--text-muted);margin-top:1px;">EPF unlocks · full snapshot</div>
               </div>
             </div>
@@ -722,6 +722,110 @@ input[type=checkbox].hidden-cb { display:none; }
   <div class="pane" id="pane-scenario">
     <div class="content">
 
+      <!-- Collapsible: Malaysian Retirement Reality -->
+      <div class="card" style="margin-bottom:14px;padding:0;overflow:hidden;">
+        <div onclick="toggleInfoPanel('info-my-reality')" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:18px;">🇲🇾</span>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--accent);">Malaysian Retirement Reality</div>
+              <div style="font-size:11px;color:var(--text-muted);">EPF benchmarks · Know where you stand</div>
+            </div>
+          </div>
+          <span id="info-my-reality-chevron" style="color:var(--text-muted);font-size:16px;transition:transform 0.25s;">▼</span>
+        </div>
+        <div id="info-my-reality" style="display:none;padding:0 16px 16px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+            <div style="background:var(--surface2);border-radius:8px;padding:10px;">
+              <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">EPF Basic</div>
+              <div style="font-size:15px;font-weight:700;color:var(--accent);font-family:var(--mono);">RM 390k</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">~RM 1,300/mo · bare essentials</div>
+            </div>
+            <div style="background:var(--surface2);border-radius:8px;padding:10px;">
+              <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">EPF Adequate</div>
+              <div style="font-size:15px;font-weight:700;color:#ffb800;font-family:var(--mono);">RM 650k</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">~RM 2,200/mo · modest lifestyle</div>
+            </div>
+            <div style="background:var(--surface2);border-radius:8px;padding:10px;">
+              <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">EPF Enhanced</div>
+              <div style="font-size:15px;font-weight:700;color:#a78bfa;font-family:var(--mono);">RM 1.3M</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">~RM 4,300/mo · comfortable living</div>
+            </div>
+            <div style="background:var(--surface2);border-radius:8px;padding:10px;">
+              <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Life Expectancy</div>
+              <div style="font-size:15px;font-weight:700;color:var(--text);font-family:var(--mono);">75–77</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">Plan well beyond that</div>
+            </div>
+          </div>
+          <div style="font-size:11px;color:var(--text-muted);line-height:1.6;padding:8px 10px;background:var(--surface2);border-radius:8px;margin-bottom:8px;">
+            📊 Based on 4% withdrawal rate over 25 years (age 55–80). Does not account for inflation.
+          </div>
+          <div style="font-size:11px;color:var(--text-muted);line-height:1.6;padding:8px 10px;background:var(--surface2);border-radius:8px;">
+            💡 <b style="color:var(--text);">68% of Malaysians</b> retire with less than RM 50k in EPF savings — far below the basic threshold. Starting early makes the biggest difference.
+          </div>
+        </div>
+      </div>
+
+      <!-- Collapsible: Why Start Now -->
+      <div class="card" style="margin-bottom:14px;padding:0;overflow:hidden;">
+        <div onclick="toggleInfoPanel('info-why-now')" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:18px;">⚡</span>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--text);">Why Start Now?</div>
+              <div style="font-size:11px;color:var(--text-muted);">Compound growth · Inflation · EPF limits</div>
+            </div>
+          </div>
+          <span id="info-why-now-chevron" style="color:var(--text-muted);font-size:16px;transition:transform 0.25s;">▼</span>
+        </div>
+        <div id="info-why-now" style="display:none;padding:0 16px 16px;">
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="background:var(--surface2);border-radius:8px;padding:10px 12px;display:flex;gap:10px;align-items:flex-start;">
+              <span style="font-size:16px;flex-shrink:0;">📈</span>
+              <div>
+                <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px;">Compound interest rewards the early starter</div>
+                <div style="font-size:11px;color:var(--text-muted);line-height:1.55;">RM 500/month at age 25 → ~RM 1.7M by 55 (at 7%). Starting at 35 gives only ~RM 760k. Same contribution, half the result.</div>
+              </div>
+            </div>
+            <div style="background:var(--surface2);border-radius:8px;padding:10px 12px;display:flex;gap:10px;align-items:flex-start;">
+              <span style="font-size:16px;flex-shrink:0;">🏠</span>
+              <div>
+                <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px;">Don't rely on EPF alone</div>
+                <div style="font-size:11px;color:var(--text-muted);line-height:1.55;">EPF covers basics, but inflation erodes purchasing power. A diversified portfolio (FD, stocks, ETF) builds real wealth.</div>
+              </div>
+            </div>
+            <div style="background:var(--surface2);border-radius:8px;padding:10px 12px;display:flex;gap:10px;align-items:flex-start;">
+              <span style="font-size:16px;flex-shrink:0;">💸</span>
+              <div>
+                <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px;">Inflation quietly shrinks your money</div>
+                <div style="font-size:11px;color:var(--text-muted);line-height:1.55;">At 3% inflation, RM 5,000 today = only RM 2,750 in purchasing power after 20 years.</div>
+              </div>
+            </div>
+            <div style="background:var(--surface2);border-radius:8px;padding:10px 12px;display:flex;gap:10px;align-items:flex-start;">
+              <span style="font-size:16px;flex-shrink:0;">🎯</span>
+              <div>
+                <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px;">The 4% rule as a guide</div>
+                <div style="font-size:11px;color:var(--text-muted);line-height:1.55;">To safely spend RM 5,000/month in retirement, you need RM 1.5M saved.</div>
+              </div>
+            </div>
+            <div style="background:var(--surface2);border-radius:8px;padding:10px 12px;display:flex;gap:10px;align-items:flex-start;">
+              <span style="font-size:16px;flex-shrink:0;">🏦</span>
+              <div>
+                <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px;">EPF is a floor, not a plan</div>
+                <div style="font-size:11px;color:var(--text-muted);line-height:1.55;">Official retirement age is 60. EPF unlocks at 55. Retiring before 55? You need non-EPF assets to bridge the gap.</div>
+              </div>
+            </div>
+            <div style="background:var(--surface2);border-radius:8px;padding:10px 12px;display:flex;gap:10px;align-items:flex-start;">
+              <span style="font-size:16px;flex-shrink:0;">🌱</span>
+              <div>
+                <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px;">Small steps compound into freedom</div>
+                <div style="font-size:11px;color:var(--text-muted);line-height:1.55;">Even RM 200/month from age 25 builds to ~RM 680k by 55. You don't need to be rich to start — you need to start to get rich.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Dropdown selector -->
       <div class="card" style="margin-bottom:14px;">
         <div class="card-title" style="margin-bottom:10px;">What-If Scenarios</div>
@@ -777,6 +881,8 @@ input[type=checkbox].hidden-cb { display:none; }
   <!-- ── SETTINGS PANE ── -->
   <div class="pane" id="pane-settings">
     <div class="content">
+
+      <!-- Profile -->
       <div class="settings-section">
         <div class="settings-title">Profile</div>
         <div class="settings-input-row">
@@ -793,12 +899,17 @@ input[type=checkbox].hidden-cb { display:none; }
           </div>
         </div>
         <div class="settings-input-row">
-          <label>Target Retirement Age (optional)</label>
+          <label>Target Retirement Age</label>
           <div class="input-wrap">
             <input class="pinput" type="number" id="s-target-age" min="30" max="80" onchange="saveSettings()">
           </div>
         </div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.5;padding:8px 10px;background:var(--surface2);border-radius:8px;">
+          🇲🇾 Malaysia official retirement age is <b style="color:var(--text);">60</b>. EPF fully unlocks at <b style="color:var(--text);">55</b>. Planning to retire earlier? You'll need non-EPF assets to bridge the gap.
+        </div>
       </div>
+
+      <!-- Calculation -->
       <div class="settings-section">
         <div class="settings-title">Calculation</div>
         <div class="settings-input-row">
@@ -808,12 +919,18 @@ input[type=checkbox].hidden-cb { display:none; }
             <span class="input-suffix">%</span>
           </div>
         </div>
+        <div style="font-size:11px;color:var(--text-muted);margin-bottom:10px;padding:8px 10px;background:var(--surface2);border-radius:8px;line-height:1.5;">
+          💡 <b style="color:var(--text);">4% is the global standard.</b> For Malaysian portfolios with more FD/EPF exposure, <b style="color:var(--text);">3–3.5%</b> is more conservative and recommended.
+        </div>
         <div class="settings-input-row">
           <label>Inflation Rate (%)</label>
           <div class="input-wrap">
             <input class="pinput with-suffix" type="number" id="s-infl" min="0" max="15" step="0.5" onchange="saveSettings()">
             <span class="input-suffix">%</span>
           </div>
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin-bottom:10px;padding:8px 10px;background:var(--surface2);border-radius:8px;line-height:1.5;">
+          🇲🇾 Malaysia's average inflation: <b style="color:var(--text);">2.5–3.5%</b>. Default is 3%. Use higher (4–5%) for a stress-test scenario.
         </div>
         <div class="settings-input-row">
           <label>Projection Until Age</label>
@@ -822,8 +939,10 @@ input[type=checkbox].hidden-cb { display:none; }
           </div>
         </div>
       </div>
+
+      <!-- Display -->
       <div class="settings-section">
-        <div class="settings-title">Privacy</div>
+        <div class="settings-title">Display</div>
         <div class="settings-row">
           <div>
             <div class="settings-row-label">Hide Values</div>
@@ -834,12 +953,24 @@ input[type=checkbox].hidden-cb { display:none; }
             <div class="toggle-track"><div class="toggle-thumb"></div></div>
           </label>
         </div>
+        <div class="settings-row">
+          <div>
+            <div class="settings-row-label">Inflation-Adjusted View</div>
+            <div class="settings-row-sub">Show real purchasing power</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" class="hidden-cb" id="s-inflation-adj" onchange="saveSettings()">
+            <div class="toggle-track"><div class="toggle-thumb"></div></div>
+          </label>
+        </div>
       </div>
+
+      <!-- Data -->
       <div class="settings-section">
         <div class="settings-title">Data</div>
         <div style="display:flex;gap:10px;">
-          <button class="btn-sm" style="flex:1;padding:12px;" onclick="exportData()">📤 Export JSON</button>
-          <button class="btn-sm" style="flex:1;padding:12px;" onclick="document.getElementById('import-file').click()">📥 Import JSON</button>
+          <button class="btn-sm" style="flex:1;padding:12px;" onclick="exportData()">📤 Export</button>
+          <button class="btn-sm" style="flex:1;padding:12px;" onclick="document.getElementById('import-file').click()">📥 Import</button>
         </div>
         <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
         <div id="reset-confirm" style="display:none;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:10px;padding:12px;margin-top:8px;text-align:center;">
@@ -851,9 +982,10 @@ input[type=checkbox].hidden-cb { display:none; }
         </div>
         <button class="btn-sm danger" style="width:100%;padding:12px;margin-top:8px;" onclick="document.getElementById('reset-confirm').style.display='block'">🗑 Reset All Data</button>
       </div>
+
       <div style="text-align:center;font-size:11px;color:var(--text-muted);margin-top:24px;line-height:1.6;">
-        FI Planner · No cloud storage · All data local only<br>
-        Built for Malaysian investors 🇲🇾
+        FI Planner · Privacy-first (no cloud storage) · All data stays on your device · Built for Malaysians 🇲🇾<br>
+        Educational tool only — not financial advice
       </div>
     </div>
   </div>
@@ -1062,10 +1194,10 @@ function startApp() {
   // Force chart redraw once layout is painted
   setTimeout(() => {
     recalc();
-    window.scrollTo({ top: 0, behavior: 'instant' });
-    document.getElementById('pane-dashboard')?.scrollTo({ top: 0, behavior: 'instant' });
+    window.scrollTo(0, 0);
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
+    document.querySelectorAll('.pane, .content').forEach(el => el.scrollTop = 0);
   }, 80);
 }
 
@@ -1077,6 +1209,7 @@ function syncSettingsUI() {
   document.getElementById('s-infl').value = state.inflation;
   document.getElementById('s-project-age').value = state.projectUntilAge;
   document.getElementById('s-hide').checked = state.hideValues;
+  document.getElementById('s-inflation-adj').checked = state.inflationAdjusted;
   document.getElementById('infl-rate-show').textContent = state.inflation;
   document.getElementById('infl-toggle').checked = state.inflationAdjusted;
 }
@@ -1101,6 +1234,10 @@ function showTab(tab, tabBtn, bnavBtn) {
   if (bn) bn.classList.add('active');
   if (bnavBtn) bnavBtn.classList.add('active');
   if (tab === 'dashboard') recalc();
+  window.scrollTo(0, 0);
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+  document.querySelectorAll('.pane, .content').forEach(el => el.scrollTop = 0);
 }
 
 // ═══════════════════════════════════════════
@@ -2099,6 +2236,14 @@ function renderScenarios() {
   }
 }
 
+function toggleInfoPanel(id) {
+  const body = document.getElementById(id);
+  const chevron = document.getElementById(id + '-chevron');
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  if (chevron) chevron.style.transform = isOpen ? '' : 'rotate(180deg)';
+}
+
 function applyScenario(id) {
   if (!id) { clearScenario(); return; }
   activeScenarioId = id;
@@ -2186,7 +2331,9 @@ function saveSettings() {
   state.withdrawalRate = +document.getElementById('s-wr').value || 4;
   state.inflation = +document.getElementById('s-infl').value ?? 3;
   state.projectUntilAge = +document.getElementById('s-project-age').value || 80;
+  state.inflationAdjusted = document.getElementById('s-inflation-adj').checked;
   document.getElementById('infl-rate-show').textContent = state.inflation;
+  document.getElementById('infl-toggle').checked = state.inflationAdjusted;
   saveState(); recalc();
 }
 
