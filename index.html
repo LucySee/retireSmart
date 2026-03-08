@@ -126,6 +126,29 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
 }
 .card-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
 .card-title { font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:var(--text-sub); }
+.disclaimer { text-align:center; font-size:11px; color:var(--text-muted); margin-top:16px; margin-bottom:4px; line-height:1.6; padding:0 8px; }
+.disclaimer b { color:var(--text-sub); }
+
+/* Info panel readability — brighter text, larger size */
+#info-my-reality, #info-discipline, #info-checkpoints, #info-why-now {
+  --text-muted: #9ba3c8;
+  --text-sub: #b0b8d8;
+}
+#info-my-reality div[style*="font-size:11px"],
+#info-discipline div[style*="font-size:11px"],
+#info-checkpoints div[style*="font-size:11px"],
+#info-why-now div[style*="font-size:11px"] {
+  font-size: 12.5px !important;
+  line-height: 1.65 !important;
+  color: #9ba3c8 !important;
+}
+#info-my-reality div[style*="font-size:10px"],
+#info-discipline div[style*="font-size:10px"],
+#info-checkpoints div[style*="font-size:10px"],
+#info-why-now div[style*="font-size:10px"] {
+  font-size: 11.5px !important;
+  color: #8891b8 !important;
+}
 
 /* ── STAT CARDS ── */
 .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px; }
@@ -658,6 +681,7 @@ input[type=checkbox].hidden-cb { display:none; }
           This income is counted toward your <span style="color:var(--passive);">Passive Income Path</span> retirement age.
         </div>
       </div><!-- end summary card -->
+      <div class="disclaimer"><b>Disclaimer:</b> For educational and awareness purposes only. Not financial advice.</div>
     </div>
   </div>
   <div class="pane" id="pane-assets">
@@ -666,6 +690,7 @@ input[type=checkbox].hidden-cb { display:none; }
       <div class="add-row">
         <button class="btn-add" onclick="addAsset()">＋ Add Asset</button>
       </div>
+      <div class="disclaimer"><b>Disclaimer:</b> For educational and awareness purposes only. Not financial advice.</div>
     </div>
   </div>
 
@@ -715,6 +740,7 @@ input[type=checkbox].hidden-cb { display:none; }
           </div>
         </div>
       </div>
+      <div class="disclaimer"><b>Disclaimer:</b> For educational and awareness purposes only. Not financial advice.</div>
     </div>
   </div>
 
@@ -735,6 +761,9 @@ input[type=checkbox].hidden-cb { display:none; }
           <span id="info-my-reality-chevron" style="color:var(--text-muted);font-size:16px;transition:transform 0.25s;">▼</span>
         </div>
         <div id="info-my-reality" style="display:none;padding:0 16px 16px;">
+          <div style="font-size:10px;color:var(--text-muted);line-height:1.6;padding:7px 10px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;margin-bottom:10px;">
+            📌 <b style="color:var(--text-muted);">Source:</b> EPF's official Retirement Income Adequacy (RIA) Framework, launched 12 December 2024 alongside Belanjawanku 2024/2025. Benchmarks take effect January 2026, with Basic Savings transitioning to RM 390k by 2028. <a href="https://www.kwsp.gov.my/en/w/epf-releases-belanjawanku-2024/2025-and-retirement-income-adequacy-framework" target="_blank" style="color:var(--accent);text-decoration:none;">kwsp.gov.my ↗</a>
+          </div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
             <div style="background:var(--surface2);border-radius:8px;padding:10px;">
               <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">EPF Basic</div>
@@ -744,24 +773,83 @@ input[type=checkbox].hidden-cb { display:none; }
             <div style="background:var(--surface2);border-radius:8px;padding:10px;">
               <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">EPF Adequate</div>
               <div style="font-size:15px;font-weight:700;color:#ffb800;font-family:var(--mono);">RM 650k</div>
-              <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">~RM 2,200/mo · modest lifestyle</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">~RM 2,167/mo · modest lifestyle</div>
             </div>
             <div style="background:var(--surface2);border-radius:8px;padding:10px;">
               <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">EPF Enhanced</div>
               <div style="font-size:15px;font-weight:700;color:#a78bfa;font-family:var(--mono);">RM 1.3M</div>
-              <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">~RM 4,300/mo · comfortable living</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">~RM 4,333/mo · comfortable living</div>
             </div>
             <div style="background:var(--surface2);border-radius:8px;padding:10px;">
-              <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Life Expectancy</div>
-              <div style="font-size:15px;font-weight:700;color:var(--text);font-family:var(--mono);">75–77</div>
-              <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">Plan well beyond that</div>
+              <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">The Goal</div>
+              <div style="font-size:15px;font-weight:700;color:var(--accent);font-family:var(--mono);">Never Run Out</div>
+              <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">Live off the growth, not the savings</div>
             </div>
           </div>
-          <div style="font-size:11px;color:var(--text-muted);line-height:1.6;padding:8px 10px;background:var(--surface2);border-radius:8px;margin-bottom:8px;">
-            📊 Based on 4% withdrawal rate over 25 years (age 55–80). Does not account for inflation.
+          <div style="font-size:11px;color:var(--text-muted);line-height:1.7;padding:8px 10px;background:var(--surface2);border-radius:8px;margin-bottom:8px;">
+            📊 <b style="color:var(--text);">How to read the figure?</b> EPF pays around 5–6% per year (2025: 6.10%). If you save RM 650k by retirement, you only withdraw 4% a year — that's <b style="color:var(--text);">~RM 2,167 every month</b> — while the remaining 1–2% stays reinvested and keeps growing your fund.<br><br>
+            You're never touching the principal. The fund keeps compounding. Done right, you will never run out of money.
           </div>
-          <div style="font-size:11px;color:var(--text-muted);line-height:1.6;padding:8px 10px;background:var(--surface2);border-radius:8px;">
-            💡 <b style="color:var(--text);">68% of Malaysians</b> retire with less than RM 50k in EPF savings — far below the basic threshold. Starting early makes the biggest difference.
+          <div style="font-size:11px;color:var(--text-muted);line-height:1.6;padding:8px 10px;background:var(--surface2);border-radius:8px;margin-bottom:8px;">
+            💡 In 2015, <b style="color:var(--text);">68% of EPF members aged 54</b> had less than RM 50k in savings — far below the basic threshold. Starting early makes the biggest difference.
+          </div>
+          <div style="font-size:12px;font-weight:700;color:var(--text);margin:12px 0 8px;">🧘 Stay Disciplined in Retirement</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="background:var(--surface2);border-radius:8px;padding:10px 12px;">
+              <div style="font-size:12px;font-weight:700;color:#ff5a5a;margin-bottom:4px;">⚠️ The most common mistake</div>
+              <div style="font-size:11px;color:var(--text-muted);line-height:1.6;">Most people withdraw EPF as a lump sum at 55 or 60 — and spend it within a few years. Don't be that person.</div>
+            </div>
+            <div style="background:var(--surface2);border-radius:8px;padding:10px 12px;">
+              <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:4px;">✅ The smarter way</div>
+              <div style="font-size:11px;color:var(--text-muted);line-height:1.6;">Set up <b style="color:var(--text);">monthly withdrawals</b> via EPF i-Akaun — online, no branch visit needed. Only take what you need for the month. Leave the rest earning 5–6% inside EPF.</div>
+            </div>
+            <div style="background:rgba(0,229,160,0.07);border:1px solid rgba(0,229,160,0.2);border-radius:8px;padding:10px 12px;">
+              <div style="font-size:11px;color:var(--text-muted);line-height:1.6;">The money you don't touch today keeps working for you tomorrow.<br><br>
+              <b style="color:var(--text);">Withdraw only what you need. Let the rest grow. Never run out.</b></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Collapsible: EPF Savings Checkpoints -->
+      <div class="card" style="margin-bottom:14px;padding:0;overflow:hidden;">
+        <div onclick="toggleInfoPanel('info-checkpoints')" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:18px;">📍</span>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--text);">EPF Savings Checkpoints</div>
+              <div style="font-size:11px;color:var(--text-muted);" id="checkpoint-subtitle">Are you on track?</div>
+            </div>
+          </div>
+          <span id="info-checkpoints-chevron" style="color:var(--text-muted);font-size:16px;transition:transform 0.25s;">▼</span>
+        </div>
+        <div id="info-checkpoints" style="display:none;padding:0 16px 16px;">
+          <div id="checkpoint-your-status" style="margin-bottom:10px;"></div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div id="cp-30" style="border-radius:8px;padding:10px 12px;">
+              <div style="margin-bottom:4px;">
+                <div style="font-size:12px;font-weight:700;color:var(--accent);">🌱 Age 30</div>
+              </div>
+              <div style="font-size:14px;font-weight:700;color:var(--text);font-family:var(--mono);margin-bottom:3px;">RM 38,000</div>
+              <div style="font-size:11px;color:var(--text-muted);line-height:1.5;">Over 90% of members have less than this target. (KRI, 2024)</div>
+            </div>
+            <div id="cp-40" style="border-radius:8px;padding:10px 12px;">
+              <div style="margin-bottom:4px;">
+                <div style="font-size:12px;font-weight:700;color:#ffb800;">🌳 Age 40</div>
+              </div>
+              <div style="font-size:14px;font-weight:700;color:var(--text);font-family:var(--mono);margin-bottom:3px;">RM 130,000</div>
+              <div style="font-size:11px;color:var(--text-muted);line-height:1.5;">Should have ~⅓ of the Basic Savings target. Falling behind now makes late-career saving harder.</div>
+            </div>
+            <div id="cp-50" style="border-radius:8px;padding:10px 12px;">
+              <div style="margin-bottom:4px;">
+                <div style="font-size:12px;font-weight:700;color:#a78bfa;">🌲 Age 50</div>
+              </div>
+              <div style="font-size:14px;font-weight:700;color:var(--text);font-family:var(--mono);margin-bottom:3px;">RM 260,000</div>
+              <div style="font-size:11px;color:var(--text-muted);line-height:1.5;">~⅔ of the Basic Savings target. Without this, retirement relies heavily on EPF withdrawals or other income.</div>
+            </div>
+          </div>
+          <div style="font-size:10px;color:var(--text-muted);line-height:1.6;padding:8px 10px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;margin-top:8px;">
+            📌 Based on EPF Basic Savings benchmark of <b style="color:var(--text-muted);">RM 390k by age 60</b>.<br>Source: Employees Provident Fund Retirement Income Adequacy (RIA) Framework. <a href="https://www.kwsp.gov.my/en/w/epf-releases-belanjawanku-2024/2025-and-retirement-income-adequacy-framework" target="_blank" style="color:var(--accent);text-decoration:none;">kwsp.gov.my ↗</a>
           </div>
         </div>
       </div>
@@ -784,7 +872,7 @@ input[type=checkbox].hidden-cb { display:none; }
               <span style="font-size:16px;flex-shrink:0;">📈</span>
               <div>
                 <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px;">Compound interest rewards the early starter</div>
-                <div style="font-size:11px;color:var(--text-muted);line-height:1.55;">RM 500/month at age 25 → ~RM 1.7M by 55 (at 7%). Starting at 35 gives only ~RM 760k. Same contribution, half the result.</div>
+                <div style="font-size:11px;color:var(--text-muted);line-height:1.55;">RM 500/month from age 25 at 6% grows to ~RM 500k by age 55. Starting at 35 grows to only ~RM 230k. Same contribution, less than half the result.</div>
               </div>
             </div>
             <div style="background:var(--surface2);border-radius:8px;padding:10px 12px;display:flex;gap:10px;align-items:flex-start;">
@@ -819,7 +907,7 @@ input[type=checkbox].hidden-cb { display:none; }
               <span style="font-size:16px;flex-shrink:0;">🌱</span>
               <div>
                 <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px;">Small steps compound into freedom</div>
-                <div style="font-size:11px;color:var(--text-muted);line-height:1.55;">Even RM 200/month from age 25 builds to ~RM 680k by 55. You don't need to be rich to start — you need to start to get rich.</div>
+                <div style="font-size:11px;color:var(--text-muted);line-height:1.55;">Even RM 200/month from age 25 can grow to ~RM 200k by 55 (6%). You don't need to be rich to start — you need to start to get rich.</div>
               </div>
             </div>
           </div>
@@ -871,9 +959,16 @@ input[type=checkbox].hidden-cb { display:none; }
             <div class="stat-val vals" style="font-size:13px;color:var(--accent);" id="sc-new-port90">–</div>
           </div>
         </div>
+        <div id="sc-gain-row" style="display:none;background:rgba(0,229,160,0.07);border:1px solid rgba(0,229,160,0.2);border-radius:8px;padding:10px 12px;margin-bottom:14px;">
+          <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Extra portfolio vs base <span id="sc-gain-age-label"></span></div>
+          <div class="stat-val vals" style="font-size:16px;color:var(--accent);" id="sc-gain-val">–</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px;" id="sc-gain-sub"></div>
+        </div>
 
         <button class="btn-sm" style="margin-top:4px;width:100%;" onclick="clearScenario()">✕ Clear Scenario</button>
       </div>
+
+      <div class="disclaimer"><b>Disclaimer:</b> For educational and awareness purposes only. Not financial advice.</div>
 
     </div>
   </div>
@@ -985,7 +1080,7 @@ input[type=checkbox].hidden-cb { display:none; }
 
       <div style="text-align:center;font-size:11px;color:var(--text-muted);margin-top:24px;line-height:1.6;">
         FI Planner · Privacy-first (no cloud storage) · All data stays on your device · Built for Malaysians 🇲🇾<br>
-        Educational tool only — not financial advice
+        <b>Disclaimer:</b> For educational and awareness purposes only. Not financial advice.
       </div>
     </div>
   </div>
@@ -2204,16 +2299,46 @@ function updatePassiveTotals() {
 // SCENARIOS
 // ═══════════════════════════════════════════
 const SCENARIOS = [
-  { id:'boost-etf', name:'🚀 Boost ETF Contributions 2×', desc:'Double your ETF monthly contribution',
-    apply(assets){ const a=assets.find(x=>x.name==='ETF'); if(a) return {[a.id]:{contrib:a.contrib*2}}; return {}; }},
-  { id:'stock-crash', name:'💥 20% Stock Market Crash', desc:'All volatile assets drop 20% in value immediately',
-    apply(assets){ const ov={}; assets.filter(a=>a.type==='volatile').forEach(a=>{ov[a.id]={current:a.current*0.8}}); return ov; }},
-  { id:'low-return', name:'📉 Conservative Returns (−2%)', desc:'Reduce all return rates by 2%',
-    apply(assets){ const ov={}; assets.forEach(a=>{ov[a.id]={rate:Math.max(0,a.rate-2)}}); return ov; }},
-  { id:'early-retire-55', name:'🎯 Target Retirement at 55', desc:'Stop EPF contributions at 55 — simulate early retirement',
-    apply(assets){ const ov={}; const epf=assets.find(a=>a.name==='EPF'); if(epf) ov[epf.id]={endAge:55}; return ov; }},
+  { id:'epf-self-1000', name:'💰 Add RM1,000/month to EPF',
+    desc(assets){ const a=assets.find(x=>x.name==='EPF'||(x.id||'').includes('epf')); return a ? `+RM1,000/mo to EPF · at ${a.rate}% return` : 'Add RM 1,000/month voluntary EPF self-contribution'; },
+    apply(assets){
+      const epf = assets.find(a => a.name==='EPF' || (a.id||'').includes('epf'));
+      if (!epf) return {};
+      const monthly = epf.freq==='monthly' ? epf.contrib : epf.freq==='quarterly' ? epf.contrib/3 : epf.contrib/12;
+      return { [epf.id]: { contrib: monthly + 1000, freq: 'monthly' } };
+    }},
+  { id:'fd-self-1000', name:'🏦 Add RM1,000/month to FD',
+    desc(assets){ const a=assets.find(x=>x.name==='Fixed Deposit'||x.name==='FD'||(x.id||'').includes('fd')); return a ? `+RM1,000/mo to FD · at ${a.rate}% return` : 'Add RM 1,000/month top-up to Fixed Deposit'; },
+    apply(assets){
+      const fd = assets.find(a => a.name==='Fixed Deposit' || a.name==='FD' || (a.id||'').includes('fd'));
+      if (!fd) return {};
+      const monthly = fd.freq==='monthly' ? fd.contrib : fd.freq==='quarterly' ? fd.contrib/3 : fd.contrib/12;
+      return { [fd.id]: { contrib: monthly + 1000, freq: 'monthly' } };
+    }},
   { id:'boost-passive', name:'💜 Add RM1,000 Passive/Month', desc:'See impact of new RM 1,000/month passive income',
     apply(assets){ return {}; }, passiveBoost: 1000 },
+  { id:'stocks-self-1000', name:'📈 Add RM1,000/month to Stocks',
+    desc(assets){ const a=assets.find(x=>x.name==='Stocks'||(x.id||'').includes('stock')); return a ? `+RM1,000/mo to Stocks · at ${a.rate}% return` : 'Add RM 1,000/month extra contribution to Stocks'; },
+    apply(assets){
+      const stocks = assets.find(a => a.name==='Stocks' || (a.id||'').includes('stock'));
+      if (!stocks) return {};
+      const monthly = stocks.freq==='monthly' ? stocks.contrib : stocks.freq==='quarterly' ? stocks.contrib/3 : stocks.contrib/12;
+      return { [stocks.id]: { contrib: monthly + 1000, freq: 'monthly' } };
+    }},
+  { id:'etf-self-1000', name:'📊 Add RM1,000/month to ETF',
+    desc(assets){ const a=assets.find(x=>x.name==='ETF'||(x.id||'').includes('etf')); return a ? `+RM1,000/mo to ETF · at ${a.rate}% return` : 'Add RM 1,000/month extra contribution to ETF'; },
+    apply(assets){
+      const etf = assets.find(a => a.name==='ETF' || (a.id||'').includes('etf'));
+      if (!etf) return {};
+      const monthly = etf.freq==='monthly' ? etf.contrib : etf.freq==='quarterly' ? etf.contrib/3 : etf.contrib/12;
+      return { [etf.id]: { contrib: monthly + 1000, freq: 'monthly' } };
+    }},
+  { id:'low-return', name:'📉 Conservative Returns (−2%)', desc:'Reduce all return rates by 2%',
+    apply(assets){ const ov={}; assets.forEach(a=>{ov[a.id]={rate:Math.max(0,a.rate-2)}}); return ov; }},
+  { id:'stock-crash', name:'💥 20% Stock Market Crash', desc:'All volatile assets drop 20% in value immediately',
+    apply(assets){ const ov={}; assets.filter(a=>a.type==='volatile').forEach(a=>{ov[a.id]={current:a.current*0.8}}); return ov; }},
+  { id:'boost-etf', name:'🚀 Boost ETF Contributions 2×', desc:'Double your ETF monthly contribution',
+    apply(assets){ const a=assets.find(x=>x.name==='ETF'); if(a) return {[a.id]:{contrib:a.contrib*2}}; return {}; }},
   { id:'no-contrib', name:'⛔ Stop All Contributions', desc:'What if you stop contributing today?',
     apply(assets){ const ov={}; assets.forEach(a=>{ov[a.id]={contrib:0}}); return ov; }},
 ];
@@ -2242,6 +2367,58 @@ function toggleInfoPanel(id) {
   const isOpen = body.style.display !== 'none';
   body.style.display = isOpen ? 'none' : 'block';
   if (chevron) chevron.style.transform = isOpen ? '' : 'rotate(180deg)';
+  if (!isOpen && id === 'info-checkpoints') renderCheckpoints();
+}
+
+function renderCheckpoints() {
+  const age = state.age || 0;
+  const epf = state.assets.find(a => a.name === 'EPF' || (a.id||'').includes('epf'));
+  const epfNow = epf ? epf.current : null;
+
+  const checkpoints = [
+    { id:'cp-30', age:30, target:38000,  label:'Age 30', color:'var(--accent)', note:'Over 90% of members have less than this target. (KRI, 2024)' },
+    { id:'cp-40', age:40, target:130000, label:'Age 40', color:'#ffb800', note:'Should have ~⅓ of the Basic Savings target. Falling behind now makes late-career saving harder.' },
+    { id:'cp-50', age:50, target:260000, label:'Age 50', color:'#a78bfa', note:'~⅔ of the Basic Savings target. Without this, retirement relies heavily on EPF withdrawals or other income.' },
+  ];
+
+  // Find which checkpoint is most relevant to user
+  let relevantCp = null;
+  if (age < 30) relevantCp = checkpoints[0];
+  else if (age < 40) relevantCp = checkpoints[0];
+  else if (age < 50) relevantCp = checkpoints[1];
+  else relevantCp = checkpoints[2];
+
+  // Status banner
+  const statusEl = document.getElementById('checkpoint-your-status');
+  const subtitleEl = document.getElementById('checkpoint-subtitle');
+  if (epfNow !== null && relevantCp) {
+    const onTrack = epfNow >= relevantCp.target;
+    const diff = Math.abs(epfNow - relevantCp.target);
+    statusEl.innerHTML = `
+      <div style="background:${onTrack ? 'rgba(0,229,160,0.1)' : 'rgba(255,90,90,0.1)'};border:1px solid ${onTrack ? 'rgba(0,229,160,0.3)' : 'rgba(255,90,90,0.3)'};border-radius:8px;padding:10px 12px;margin-bottom:4px;">
+        <div style="font-size:12px;font-weight:700;color:${onTrack ? 'var(--accent)' : '#ff5a5a'};margin-bottom:3px;">
+          ${onTrack ? '✅ You are on track!' : '⚠️ Below target'}
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);line-height:1.5;">
+          Your EPF: <b style="color:var(--text);">${fmtRM(epfNow)}</b> · Target at ${relevantCp.label}: <b style="color:var(--text);">${fmtRM(relevantCp.target)}</b><br>
+          ${onTrack ? `${fmtRM(diff)} ahead of the checkpoint.` : `${fmtRM(diff)} below the checkpoint.`}
+        </div>
+      </div>`;
+    subtitleEl.textContent = onTrack ? '✅ On track for your age' : '⚠️ Check your progress';
+  } else {
+    statusEl.innerHTML = '';
+    subtitleEl.textContent = 'Are you on track?';
+  }
+
+  // Highlight the relevant checkpoint card
+  checkpoints.forEach(cp => {
+    const el = document.getElementById(cp.id);
+    if (!el) return;
+    const isRelevant = cp === relevantCp;
+    el.style.background = isRelevant ? 'var(--surface2)' : 'rgba(255,255,255,0.03)';
+    el.style.border = isRelevant ? `1px solid ${cp.color}40` : '1px solid transparent';
+    el.style.opacity = age > cp.age + 10 ? '0.5' : '1';
+  });
 }
 
 function applyScenario(id) {
@@ -2250,8 +2427,9 @@ function applyScenario(id) {
   const sc = SCENARIOS.find(s => s.id === id);
   if (!sc) return;
 
-  document.getElementById('scenario-desc-line').textContent = sc.desc;
-  document.getElementById('scenario-desc-line2').textContent = sc.desc;
+  const descText = typeof sc.desc === 'function' ? sc.desc(state.assets) : sc.desc;
+  document.getElementById('scenario-desc-line').textContent = descText;
+  document.getElementById('scenario-desc-line2').textContent = descText;
 
   const wr = state.withdrawalRate / 100;
 
@@ -2296,6 +2474,26 @@ function applyScenario(id) {
   document.getElementById('sc-new-income').textContent = scFIAge ? fmtRM(scIncome) + '/mo' : '';
   document.getElementById('sc-base-port90').textContent = basePort90 !== null ? (basePort90 > 0 ? fmtRM(basePort90) : '⚠️ Depleted') : '–';
   document.getElementById('sc-new-port90').textContent = scPort90 !== null ? (scPort90 > 0 ? fmtRM(scPort90) : '⚠️ Depleted') : '–';
+
+  // Extra portfolio gain row — show diff at FI age or project-until age
+  const gainRow = document.getElementById('sc-gain-row');
+  const hasContribScenario = ['epf-self-1000','fd-self-1000','stocks-self-1000','etf-self-1000','boost-etf','no-contrib'].includes(id);
+  if (hasContribScenario && (baseFIRow || scFIRow)) {
+    const refAge = scFIAge || baseFIAge || (state.age + 20);
+    const refYear = refAge - state.age;
+    const baseAtRef = baseData.find(r => r.year === refYear)?.total || 0;
+    const scAtRef   = scData.find(r => r.year === refYear)?.total || 0;
+    const gain = scAtRef - baseAtRef;
+    document.getElementById('sc-gain-age-label').textContent = `at age ${refAge}`;
+    document.getElementById('sc-gain-val').textContent = (gain >= 0 ? '+' : '') + fmtRM(gain);
+    document.getElementById('sc-gain-val').style.color = gain >= 0 ? 'var(--accent)' : '#ff5a5a';
+    document.getElementById('sc-gain-sub').textContent = gain >= 0
+      ? `Scenario builds ${fmtRM(gain)} more than base`
+      : `Scenario builds ${fmtRM(Math.abs(gain))} less than base`;
+    gainRow.style.display = 'block';
+  } else {
+    gainRow.style.display = 'none';
+  }
 
   const diffEl = document.getElementById('sc-diff');
   const diffSub = document.getElementById('sc-diff-sub');
