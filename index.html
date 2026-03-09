@@ -463,175 +463,176 @@ input[type=checkbox].hidden-cb { display:none; }
   <div class="pane active" id="pane-dashboard">
     <div class="content">
 
-      <!-- Portfolio Today — topmost -->
-      <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:12px;padding:10px 14px;margin-bottom:10px;">
-        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted);margin-bottom:8px;">Portfolio Today</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
-          <div>
-            <div style="font-size:9px;color:var(--text-muted);">Total</div>
-            <div class="stat-val vals" style="font-size:13px;color:var(--text);" id="pb-total">–</div>
-          </div>
-          <div>
-            <div style="font-size:9px;color:var(--text-muted);">EPF</div>
-            <div class="stat-val vals" style="font-size:13px;color:var(--accent);" id="port-epf">–</div>
-          </div>
-          <div>
-            <div style="font-size:9px;color:var(--text-muted);">Non-EPF</div>
-            <div class="stat-val vals" style="font-size:13px;color:#fbbf24;" id="port-nonepf">–</div>
+      <!-- ══ ONE-GLANCE DASHBOARD BLOCK ══ -->
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:0;">
+
+        <!-- ① Portfolio Today — compact strip -->
+        <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:12px;padding:8px 12px;">
+          <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted);margin-bottom:6px;">Portfolio Today</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;">
+            <div>
+              <div style="font-size:8px;color:var(--text-muted);">Total</div>
+              <div class="stat-val vals" style="font-size:13px;color:var(--text);font-weight:700;" id="pb-total">–</div>
+            </div>
+            <div>
+              <div style="font-size:8px;color:var(--text-muted);">EPF</div>
+              <div class="stat-val vals" style="font-size:13px;color:var(--accent);" id="port-epf">–</div>
+            </div>
+            <div>
+              <div style="font-size:8px;color:var(--text-muted);">Non-EPF</div>
+              <div class="stat-val vals" style="font-size:13px;color:#fbbf24;" id="port-nonepf">–</div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Two Retirement Milestone Cards -->
-      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:0;">
+        <!-- ② Financial Independence -->
+        <div style="background:var(--surface2);border:1.5px solid rgba(0,229,160,0.4);border-radius:12px;padding:10px 12px;">
 
-        <!-- Milestone 1: Financial Independence (combined) -->
-        <div style="background:var(--surface2);border:1.5px solid rgba(0,229,160,0.4);border-radius:14px;padding:14px 16px;">
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;">
-            <div style="display:flex;align-items:center;gap:8px;">
-              <span style="font-size:18px;">🏆</span>
+          <!-- Header row -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span style="font-size:15px;">🏆</span>
               <div>
-                <div style="font-size:17px;font-weight:800;color:var(--text);">Financial Independence</div>
-                <div style="font-size:10px;color:var(--text-muted);margin-top:1px;" id="mile-fi-sub">Portfolio covers all expenses</div>
+                <div style="font-size:13px;font-weight:800;color:var(--text);">Financial Independence</div>
+                <div style="font-size:9px;color:var(--text-muted);" id="mile-fi-sub">Portfolio covers all expenses</div>
               </div>
             </div>
             <div style="text-align:right;flex-shrink:0;">
-              <div class="stat-val vals" style="font-size:34px;font-weight:800;color:var(--accent);line-height:1;" id="mile-fi-age">–</div>
-              <div style="font-size:10px;color:var(--text-muted);margin-top:2px;" id="mile-fi-yrs">–</div>
+              <div class="stat-val vals" style="font-size:28px;font-weight:800;color:var(--accent);line-height:1;" id="mile-fi-age">–</div>
+              <div style="font-size:9px;color:var(--text-muted);" id="mile-fi-yrs">–</div>
             </div>
           </div>
 
-          <!-- Retirement Score Badge -->
-          <div id="fi-score-bar" style="margin-bottom:10px;background:var(--bg);border-radius:10px;padding:10px 12px;">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-              <div style="font-size:10px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Retirement Score</div>
-              <div style="display:flex;align-items:center;gap:5px;">
-                <span id="fi-score-emoji" style="font-size:13px;">–</span>
-                <span id="fi-score-pct" style="font-family:var(--mono);font-size:15px;font-weight:700;">–</span>
-                <span id="fi-score-label" style="font-size:10px;color:var(--text-muted);"></span>
+          <!-- Retirement Score — compact inline -->
+          <div id="fi-score-bar" style="margin-bottom:8px;background:var(--bg);border-radius:8px;padding:7px 10px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+              <div style="font-size:9px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Retirement Score</div>
+              <div style="display:flex;align-items:center;gap:4px;">
+                <span id="fi-score-emoji" style="font-size:12px;">–</span>
+                <span id="fi-score-pct" style="font-family:var(--mono);font-size:13px;font-weight:700;">–</span>
+                <span id="fi-score-label" style="font-size:9px;color:var(--text-muted);"></span>
               </div>
             </div>
-            <div style="height:6px;border-radius:3px;background:rgba(255,255,255,0.06);overflow:hidden;">
+            <div style="height:5px;border-radius:3px;background:rgba(255,255,255,0.06);overflow:hidden;">
               <div id="fi-score-fill" style="height:100%;border-radius:3px;width:0%;transition:width 0.5s ease;"></div>
             </div>
-            <div style="font-size:9px;color:var(--text-muted);margin-top:5px;" id="fi-score-detail">Projected ÷ FI Target</div>
+            <div style="font-size:8px;color:var(--text-muted);margin-top:4px;" id="fi-score-detail">Projected ÷ FI Target</div>
           </div>
 
-          <div style="padding-top:10px;border-top:1px solid rgba(0,229,160,0.15);">
-
-            <!-- Row 1: FI Target · Monthly Income · Portfolio at 90 -->
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px;">
-              <div>
-                <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">FI Target</div>
-                <div class="stat-val vals" style="font-size:17px;font-weight:800;color:var(--accent);line-height:1.1;" id="mile-fi-target">–</div>
-                <div style="font-size:8px;color:transparent;margin-top:1px;">·</div>
-              </div>
-              <div>
-                <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Monthly Income</div>
-                <div class="stat-val vals" style="font-size:17px;font-weight:800;color:var(--accent);line-height:1.1;" id="mile-fi-income">–</div>
-                <div style="font-size:8px;color:var(--text-muted);margin-top:1px;">via 4% rule</div>
-              </div>
-              <div style="text-align:right;">
-                <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Portfolio at 90</div>
-                <div class="stat-val vals" style="font-size:13px;color:var(--accent);opacity:0.75;" id="mile-fi-port90">–</div>
-                <div style="font-size:8px;color:transparent;margin-top:1px;">·</div>
-              </div>
+          <!-- Key numbers: FI Target · Monthly Income · Portfolio at 90 -->
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-bottom:6px;">
+            <div>
+              <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;">FI Target</div>
+              <div class="stat-val vals" style="font-size:14px;font-weight:800;color:var(--accent);line-height:1.2;" id="mile-fi-target">–</div>
             </div>
-
-            <!-- Row 2: EPF · Non-EPF chips -->
-            <div style="display:flex;gap:6px;margin-bottom:8px;">
-              <div style="flex:1;background:rgba(0,229,160,0.08);border-radius:6px;padding:5px 8px;">
-                <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;">EPF</div>
-                <div class="stat-val vals" style="font-size:11px;color:var(--accent);" id="mile-fi-epf">–</div>
-              </div>
-              <div style="flex:1;background:rgba(0,229,160,0.08);border-radius:6px;padding:5px 8px;">
-                <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;">Non-EPF</div>
-                <div class="stat-val vals" style="font-size:11px;color:var(--accent);" id="mile-fi-nonepf">–</div>
-              </div>
+            <div>
+              <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;">Monthly Income</div>
+              <div class="stat-val vals" style="font-size:14px;font-weight:800;color:var(--accent);line-height:1.2;" id="mile-fi-income">–</div>
+              <div style="font-size:8px;color:var(--text-muted);">via <span id="fi-wr-label-1">4</span>% withdrawal rule</div>
             </div>
-
-            <!-- Row 3: Full-width Dividend + Passive box -->
-            <div style="background:rgba(0,229,160,0.06);border-radius:8px;padding:8px 10px;">
-              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-                <div style="font-size:9px;font-weight:700;color:#34d399;letter-spacing:0.03em;">💚 Dividend + Passive Income</div>
-                <button onclick="var el=document.getElementById('div-passive-tip');el.style.display=el.style.display==='block'?'none':'block';" style="background:rgba(0,229,160,0.15);border:1px solid rgba(0,229,160,0.3);border-radius:50%;width:20px;height:20px;font-size:11px;color:#34d399;cursor:pointer;line-height:20px;text-align:center;padding:0;flex-shrink:0;">ℹ</button>
-              </div>
-              <div id="div-passive-tip" style="display:none;font-size:8.5px;color:var(--text-muted);line-height:1.6;margin-bottom:8px;padding:7px 8px;background:rgba(0,229,160,0.04);border-radius:6px;border:1px solid rgba(0,229,160,0.1);">
-                💡 You don't withdraw everything — only a portion (4% rule). The rest stays invested and keeps growing. Over time, your principal grows too, meaning your income can increase year on year.
-              </div>
-              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
-                <div>
-                  <div style="font-size:8px;color:var(--text-muted);">Total/month</div>
-                  <div class="stat-val vals" style="font-size:13px;color:#34d399;font-weight:700;" id="mile-fi-divpassive">–</div>
-                </div>
-                <div>
-                  <div style="font-size:8px;color:var(--text-muted);">From EPF</div>
-                  <div class="stat-val vals" style="font-size:13px;color:#34d399;" id="mile-fi-div-epf">–</div>
-                </div>
-                <div>
-                  <div style="font-size:8px;color:var(--text-muted);">Non-EPF</div>
-                  <div class="stat-val vals" style="font-size:13px;color:#34d399;" id="mile-fi-div-nonepf">–</div>
-                </div>
-              </div>
-              <div style="font-size:8.5px;line-height:1.5;margin-top:6px;" id="mile-fi-epf-note"></div>
+            <div style="text-align:right;">
+              <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;">Portfolio at 90</div>
+              <div class="stat-val vals" style="font-size:12px;color:var(--accent);opacity:0.75;" id="mile-fi-port90">–</div>
             </div>
-
-            <span id="mile-fi-div90" style="display:none;"></span>
-
           </div>
 
+          <!-- EPF / Non-EPF split -->
+          <div style="display:flex;gap:5px;margin-bottom:6px;">
+            <div style="flex:1;background:rgba(0,229,160,0.08);border-radius:6px;padding:4px 7px;">
+              <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;">EPF</div>
+              <div class="stat-val vals" style="font-size:11px;color:var(--accent);" id="mile-fi-epf">–</div>
+            </div>
+            <div style="flex:1;background:rgba(0,229,160,0.08);border-radius:6px;padding:4px 7px;">
+              <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;">Non-EPF</div>
+              <div class="stat-val vals" style="font-size:11px;color:var(--accent);" id="mile-fi-nonepf">–</div>
+            </div>
+          </div>
+
+          <!-- Dividend + Passive Income box -->
+          <div style="background:rgba(0,229,160,0.06);border-radius:8px;padding:6px 8px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+              <div style="font-size:9px;font-weight:700;color:#34d399;">💚 Dividend + Passive Income</div>
+              <button onclick="var el=document.getElementById('div-passive-tip');el.style.display=el.style.display==='block'?'none':'block';" style="background:rgba(0,229,160,0.15);border:1px solid rgba(0,229,160,0.3);border-radius:50%;width:18px;height:18px;font-size:10px;color:#34d399;cursor:pointer;line-height:18px;text-align:center;padding:0;flex-shrink:0;">ℹ</button>
+            </div>
+            <div id="div-passive-tip" style="display:none;font-size:8px;color:var(--text-muted);line-height:1.5;margin-bottom:6px;padding:6px 7px;background:rgba(0,229,160,0.04);border-radius:6px;border:1px solid rgba(0,229,160,0.1);">
+              💡 You don't withdraw everything — only 4% of your portfolio per year (the 4% withdrawal rule). This is a globally recognised safe withdrawal rate. The rest stays invested and keeps growing. Over time, your principal grows too, meaning your income can increase year on year.
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;">
+              <div>
+                <div style="font-size:8px;color:var(--text-muted);">Total/month</div>
+                <div class="stat-val vals" style="font-size:12px;color:#34d399;font-weight:700;" id="mile-fi-divpassive">–</div>
+              </div>
+              <div>
+                <div style="font-size:8px;color:var(--text-muted);">From EPF</div>
+                <div class="stat-val vals" style="font-size:12px;color:#34d399;" id="mile-fi-div-epf">–</div>
+              </div>
+              <div>
+                <div style="font-size:8px;color:var(--text-muted);">Non-EPF</div>
+                <div class="stat-val vals" style="font-size:12px;color:#34d399;" id="mile-fi-div-nonepf">–</div>
+              </div>
+            </div>
+            <div style="font-size:8px;line-height:1.5;margin-top:5px;" id="mile-fi-epf-note"></div>
+          </div>
+
+          <span id="mile-fi-div90" style="display:none;"></span>
         </div>
 
-        <!-- Milestone 2: Age 55 -->
-        <div style="background:var(--surface2);border:1.5px solid rgba(167,139,250,0.4);border-radius:14px;padding:14px 16px;">
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;">
-            <div style="display:flex;align-items:center;gap:8px;">
-              <span style="font-size:18px;">🏦</span>
+        <!-- ③ At Age 55 -->
+        <div style="background:var(--surface2);border:1.5px solid rgba(167,139,250,0.4);border-radius:12px;padding:10px 12px;">
+
+          <!-- Header row -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span style="font-size:15px;">🏦</span>
               <div>
-                <div style="font-size:17px;font-weight:800;color:var(--text);">At Age 55</div>
-                <div style="font-size:10px;color:var(--text-muted);margin-top:1px;">EPF unlocks · your income snapshot</div>
+                <div style="font-size:13px;font-weight:800;color:var(--text);">At Age 55</div>
+                <div style="font-size:9px;color:var(--text-muted);">EPF unlocks · your income snapshot</div>
               </div>
             </div>
             <div style="text-align:right;flex-shrink:0;">
-              <div class="stat-val vals" style="font-size:30px;font-weight:800;color:var(--passive);line-height:1;">55</div>
+              <div class="stat-val vals" style="font-size:28px;font-weight:800;color:var(--passive);line-height:1;">55</div>
               <span id="mile-epf-sub" style="display:none;"></span>
             </div>
           </div>
-          <div style="padding-top:10px;border-top:1px solid rgba(167,139,250,0.15);">
-            <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Total Portfolio at 55</div>
-            <div class="stat-val vals" style="font-size:15px;color:var(--passive);margin-bottom:6px;" id="mile-epf-target">–</div>
-            <div style="display:flex;gap:6px;margin-bottom:8px;">
-              <div style="flex:1;background:rgba(167,139,250,0.08);border-radius:6px;padding:5px 8px;">
-                <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;">EPF</div>
+
+          <!-- Portfolio at 55 + EPF/Non-EPF -->
+          <div style="border-top:1px solid rgba(167,139,250,0.15);padding-top:7px;margin-bottom:6px;">
+            <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:5px;">
+              <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;">Total Portfolio at 55</div>
+              <div class="stat-val vals" style="font-size:14px;color:var(--passive);font-weight:700;" id="mile-epf-target">–</div>
+            </div>
+            <div style="display:flex;gap:5px;">
+              <div style="flex:1;background:rgba(167,139,250,0.08);border-radius:6px;padding:4px 7px;">
+                <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;">EPF</div>
                 <div class="stat-val vals" style="font-size:11px;color:var(--passive);" id="mile-epf-epf55">–</div>
               </div>
-              <div style="flex:1;background:rgba(167,139,250,0.08);border-radius:6px;padding:5px 8px;">
-                <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;">Non-EPF</div>
+              <div style="flex:1;background:rgba(167,139,250,0.08);border-radius:6px;padding:4px 7px;">
+                <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;">Non-EPF</div>
                 <div class="stat-val vals" style="font-size:11px;color:var(--passive);" id="mile-epf-nonepf55">–</div>
               </div>
             </div>
-            <!-- Two paths: each shows monthly income + port at 90 -->
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-              <!-- Path A: 4% Withdrawal -->
-              <div style="background:rgba(167,139,250,0.06);border-radius:8px;padding:8px 10px;">
-                <div style="font-size:9px;font-weight:700;color:var(--passive);margin-bottom:6px;letter-spacing:0.03em;">📊 4% Withdrawal</div>
-                <div style="font-size:8px;color:var(--text-muted);">Monthly Income</div>
-                <div class="stat-val vals" style="font-size:13px;color:var(--passive);font-weight:700;margin-bottom:5px;" id="mile-epf-income">–</div>
-                <div style="height:1px;background:rgba(167,139,250,0.15);margin-bottom:5px;"></div>
-                <div style="font-size:8px;color:var(--text-muted);">Port at 90</div>
-                <div class="stat-val vals" style="font-size:12px;color:var(--passive);font-weight:600;" id="mile-epf-port90-wr">–</div>
-              </div>
-              <!-- Path B: Dividend + Passive Income -->
-              <div style="background:rgba(167,139,250,0.06);border-radius:8px;padding:8px 10px;">
-                <div style="font-size:9px;font-weight:700;color:#c084fc;margin-bottom:6px;letter-spacing:0.03em;">💜 Dividend + Passive</div>
-                <div style="font-size:8px;color:var(--text-muted);">Monthly Income</div>
-                <div class="stat-val vals" style="font-size:13px;color:#c084fc;font-weight:700;margin-bottom:5px;" id="mile-epf-dividend">–</div>
-                <div style="height:1px;background:rgba(167,139,250,0.15);margin-bottom:5px;"></div>
-                <div style="font-size:8px;color:var(--text-muted);">Port at 90</div>
-                <div class="stat-val vals" style="font-size:12px;color:#c084fc;font-weight:600;" id="mile-epf-port90-div">–</div>
-              </div>
+          </div>
+
+          <!-- Two paths side by side -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+            <div style="background:rgba(167,139,250,0.06);border-radius:8px;padding:7px 8px;">
+              <div style="font-size:8px;font-weight:700;color:var(--passive);margin-bottom:4px;">📊 <span id="fi-wr-label-2">4</span>% Withdrawal Rule</div>
+              <div style="font-size:8px;color:var(--text-muted);">Monthly Income</div>
+              <div class="stat-val vals" style="font-size:13px;color:var(--passive);font-weight:700;margin-bottom:4px;" id="mile-epf-income">–</div>
+              <div style="height:1px;background:rgba(167,139,250,0.15);margin-bottom:4px;"></div>
+              <div style="font-size:8px;color:var(--text-muted);">Portfolio at 90</div>
+              <div class="stat-val vals" style="font-size:11px;color:var(--passive);font-weight:600;" id="mile-epf-port90-wr">–</div>
+            </div>
+            <div style="background:rgba(167,139,250,0.06);border-radius:8px;padding:7px 8px;">
+              <div style="font-size:8px;font-weight:700;color:#c084fc;margin-bottom:4px;">💜 Dividend + Passive</div>
+              <div style="font-size:8px;color:var(--text-muted);">Monthly Income</div>
+              <div class="stat-val vals" style="font-size:13px;color:#c084fc;font-weight:700;margin-bottom:4px;" id="mile-epf-dividend">–</div>
+              <div style="height:1px;background:rgba(167,139,250,0.15);margin-bottom:4px;"></div>
+              <div style="font-size:8px;color:var(--text-muted);">Portfolio at 90</div>
+              <div class="stat-val vals" style="font-size:11px;color:#c084fc;font-weight:600;" id="mile-epf-port90-div">–</div>
             </div>
           </div>
+
         </div>
 
       </div>
@@ -1827,6 +1828,8 @@ function recalc() {
   // ── MILESTONE 2: Age 55 Snapshot ──
   document.getElementById('stat-fi-target').textContent = fmtRM(fiAdjusted);
   document.getElementById('stat-wr-rate-show').textContent = state.withdrawalRate;
+  const wrDisplay = state.withdrawalRate || 4;
+  ['fi-wr-label-1','fi-wr-label-2'].forEach(id => { const el = document.getElementById(id); if(el) el.textContent = wrDisplay; });
 
   // ── Other stats ──
   const wrRetireRow = withdrawalRetireAge ? yearlyData.find(r => r.age === withdrawalRetireAge) : null;
