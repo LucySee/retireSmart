@@ -468,18 +468,18 @@ input[type=checkbox].hidden-cb { display:none; }
 
         <!-- ① Portfolio Today — compact strip -->
         <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:12px;padding:8px 12px;">
-          <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted);margin-bottom:6px;">Portfolio Today</div>
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-sub);margin-bottom:6px;">Portfolio Today</div>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;">
             <div>
-              <div style="font-size:8px;color:var(--text-muted);">Total</div>
+              <div style="font-size:11px;color:var(--text);opacity:0.6;">Total</div>
               <div class="stat-val vals" style="font-size:13px;color:var(--text);font-weight:700;" id="pb-total">–</div>
             </div>
             <div>
-              <div style="font-size:8px;color:var(--text-muted);">EPF</div>
+              <div style="font-size:11px;color:var(--text);opacity:0.6;">EPF</div>
               <div class="stat-val vals" style="font-size:13px;color:var(--accent);" id="port-epf">–</div>
             </div>
             <div>
-              <div style="font-size:8px;color:var(--text-muted);">Non-EPF</div>
+              <div style="font-size:11px;color:var(--text);opacity:0.6;">Non-EPF</div>
               <div class="stat-val vals" style="font-size:13px;color:#fbbf24;" id="port-nonepf">–</div>
             </div>
           </div>
@@ -498,8 +498,10 @@ input[type=checkbox].hidden-cb { display:none; }
               </div>
             </div>
             <div style="text-align:right;flex-shrink:0;">
-              <div class="stat-val vals" style="font-size:28px;font-weight:800;color:var(--accent);line-height:1;" id="mile-fi-age">–</div>
-              <div style="font-size:9px;color:var(--text-muted);" id="mile-fi-yrs">–</div>
+              <div style="display:flex;align-items:baseline;gap:5px;justify-content:flex-end;">
+                <div style="font-size:10px;color:var(--text-muted);font-style:italic;" id="mile-fi-yrs">–</div>
+                <div class="stat-val vals" style="font-size:28px;font-weight:800;color:var(--accent);line-height:1;" id="mile-fi-age">–</div>
+              </div>
             </div>
           </div>
 
@@ -522,16 +524,16 @@ input[type=checkbox].hidden-cb { display:none; }
           <!-- Key numbers: FI Target · Monthly Income · Portfolio at 90 -->
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-bottom:6px;">
             <div>
-              <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;">FI Target</div>
+              <div style="font-size:11px;color:var(--text);opacity:0.6;text-transform:uppercase;letter-spacing:0.03em;">FI Target</div>
               <div class="stat-val vals" style="font-size:14px;font-weight:800;color:var(--accent);line-height:1.2;" id="mile-fi-target">–</div>
             </div>
             <div>
-              <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;">Monthly Income</div>
+              <div style="font-size:11px;color:var(--text);opacity:0.6;text-transform:uppercase;letter-spacing:0.03em;">Monthly Income</div>
               <div class="stat-val vals" style="font-size:14px;font-weight:800;color:var(--accent);line-height:1.2;" id="mile-fi-income">–</div>
-              <div style="font-size:8px;color:var(--text-muted);">via <span id="fi-wr-label-1">4</span>% withdrawal rule</div>
+              <div style="font-size:9px;color:var(--text-muted);">via <span id="fi-wr-label-1">4</span>% withdrawal rule</div>
             </div>
             <div style="text-align:right;">
-              <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;">Portfolio at 90</div>
+              <div style="font-size:11px;color:var(--text);opacity:0.6;text-transform:uppercase;letter-spacing:0.03em;">Portfolio at 90</div>
               <div class="stat-val vals" style="font-size:12px;color:var(--accent);opacity:0.75;" id="mile-fi-port90">–</div>
             </div>
           </div>
@@ -539,11 +541,11 @@ input[type=checkbox].hidden-cb { display:none; }
           <!-- EPF / Non-EPF split -->
           <div style="display:flex;gap:5px;margin-bottom:6px;">
             <div style="flex:1;background:rgba(0,229,160,0.08);border-radius:6px;padding:4px 7px;">
-              <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;">EPF</div>
+              <div style="font-size:11px;color:var(--text);opacity:0.6;text-transform:uppercase;letter-spacing:0.03em;">EPF</div>
               <div class="stat-val vals" style="font-size:11px;color:var(--accent);" id="mile-fi-epf">–</div>
             </div>
             <div style="flex:1;background:rgba(0,229,160,0.08);border-radius:6px;padding:4px 7px;">
-              <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;">Non-EPF</div>
+              <div style="font-size:11px;color:var(--text);opacity:0.6;text-transform:uppercase;letter-spacing:0.03em;">Non-EPF</div>
               <div class="stat-val vals" style="font-size:11px;color:var(--accent);" id="mile-fi-nonepf">–</div>
             </div>
           </div>
@@ -559,15 +561,15 @@ input[type=checkbox].hidden-cb { display:none; }
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;">
               <div>
-                <div style="font-size:8px;color:var(--text-muted);">Total/month</div>
+                <div style="font-size:11px;color:var(--text);opacity:0.6;">Total/month</div>
                 <div class="stat-val vals" style="font-size:12px;color:#34d399;font-weight:700;" id="mile-fi-divpassive">–</div>
               </div>
               <div>
-                <div style="font-size:8px;color:var(--text-muted);">From EPF</div>
+                <div style="font-size:11px;color:var(--text);opacity:0.6;">From EPF</div>
                 <div class="stat-val vals" style="font-size:12px;color:#34d399;" id="mile-fi-div-epf">–</div>
               </div>
               <div>
-                <div style="font-size:8px;color:var(--text-muted);">Non-EPF</div>
+                <div style="font-size:11px;color:var(--text);opacity:0.6;">Non-EPF</div>
                 <div class="stat-val vals" style="font-size:12px;color:#34d399;" id="mile-fi-div-nonepf">–</div>
               </div>
             </div>
@@ -597,7 +599,10 @@ input[type=checkbox].hidden-cb { display:none; }
               </div>
             </div>
             <div style="text-align:right;flex-shrink:0;">
-              <div class="stat-val vals" style="font-size:28px;font-weight:800;color:var(--passive);line-height:1;">55</div>
+              <div style="display:flex;align-items:baseline;gap:5px;justify-content:flex-end;">
+                <div style="font-size:10px;color:var(--text-muted);font-style:italic;" id="mile-55-yrs">–</div>
+                <div class="stat-val vals" style="font-size:28px;font-weight:800;color:var(--passive);line-height:1;">55</div>
+              </div>
               <span id="mile-epf-sub" style="display:none;"></span>
             </div>
           </div>
@@ -605,16 +610,16 @@ input[type=checkbox].hidden-cb { display:none; }
           <!-- Portfolio at 55 + EPF/Non-EPF -->
           <div style="border-top:1px solid rgba(167,139,250,0.15);padding-top:7px;margin-bottom:6px;">
             <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:5px;">
-              <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;">Total Portfolio at 55</div>
+              <div style="font-size:11px;color:var(--text);opacity:0.6;text-transform:uppercase;letter-spacing:0.03em;">Total Portfolio at 55</div>
               <div class="stat-val vals" style="font-size:14px;color:var(--passive);font-weight:700;" id="mile-epf-target">–</div>
             </div>
             <div style="display:flex;gap:5px;">
               <div style="flex:1;background:rgba(167,139,250,0.08);border-radius:6px;padding:4px 7px;">
-                <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;">EPF</div>
+                <div style="font-size:11px;color:var(--text);opacity:0.6;text-transform:uppercase;letter-spacing:0.03em;">EPF</div>
                 <div class="stat-val vals" style="font-size:11px;color:var(--passive);" id="mile-epf-epf55">–</div>
               </div>
               <div style="flex:1;background:rgba(167,139,250,0.08);border-radius:6px;padding:4px 7px;">
-                <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;">Non-EPF</div>
+                <div style="font-size:11px;color:var(--text);opacity:0.6;text-transform:uppercase;letter-spacing:0.03em;">Non-EPF</div>
                 <div class="stat-val vals" style="font-size:11px;color:var(--passive);" id="mile-epf-nonepf55">–</div>
               </div>
             </div>
@@ -623,19 +628,19 @@ input[type=checkbox].hidden-cb { display:none; }
           <!-- Two paths side by side -->
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
             <div style="background:rgba(167,139,250,0.06);border-radius:8px;padding:7px 8px;">
-              <div style="font-size:8px;font-weight:700;color:var(--passive);margin-bottom:4px;">📊 <span id="fi-wr-label-2">4</span>% Withdrawal Rule</div>
-              <div style="font-size:8px;color:var(--text-muted);">Monthly Income</div>
+              <div style="font-size:10px;font-weight:700;color:var(--passive);margin-bottom:4px;">📊 <span id="fi-wr-label-2">4</span>% Withdrawal Rule</div>
+              <div style="font-size:11px;color:var(--text);opacity:0.6;">Monthly Income</div>
               <div class="stat-val vals" style="font-size:13px;color:var(--passive);font-weight:700;margin-bottom:4px;" id="mile-epf-income">–</div>
               <div style="height:1px;background:rgba(167,139,250,0.15);margin-bottom:4px;"></div>
-              <div style="font-size:8px;color:var(--text-muted);">Portfolio at 90</div>
+              <div style="font-size:11px;color:var(--text);opacity:0.6;">Portfolio at 90</div>
               <div class="stat-val vals" style="font-size:11px;color:var(--passive);font-weight:600;" id="mile-epf-port90-wr">–</div>
             </div>
             <div style="background:rgba(167,139,250,0.06);border-radius:8px;padding:7px 8px;">
-              <div style="font-size:8px;font-weight:700;color:#c084fc;margin-bottom:4px;">💜 Passive Income (div, int, etc.)</div>
-              <div style="font-size:8px;color:var(--text-muted);">Monthly Income</div>
+              <div style="font-size:10px;font-weight:700;color:#c084fc;margin-bottom:4px;">💜 Passive Income</div>
+              <div style="font-size:11px;color:var(--text);opacity:0.6;">Monthly Income</div>
               <div class="stat-val vals" style="font-size:13px;color:#c084fc;font-weight:700;margin-bottom:4px;" id="mile-epf-dividend">–</div>
               <div style="height:1px;background:rgba(167,139,250,0.15);margin-bottom:4px;"></div>
-              <div style="font-size:8px;color:var(--text-muted);">Portfolio at 90</div>
+              <div style="font-size:11px;color:var(--text);opacity:0.6;">Portfolio at 90</div>
               <div class="stat-val vals" style="font-size:11px;color:#c084fc;font-weight:600;" id="mile-epf-port90-div">–</div>
             </div>
           </div>
@@ -1665,7 +1670,7 @@ function recalc() {
     fiAgeEl.textContent  = fiMileAge;
     fiAgeEl.style.color  = 'var(--accent)';
     fiSubEl.textContent  = epfLocked ? `Age ${fiMileAge} · EPF still locked until 55` : `Age ${fiMileAge} · EPF fully accessible`;
-    fiYrsEl.textContent  = yrs <= 0 ? '🎉 Already there!' : `In ${yrs} yr${yrs===1?'':'s'}`;
+    fiYrsEl.textContent  = yrs <= 0 ? '🎉 already there!' : `in ${yrs} yr${yrs===1?'':'s'}`;
     fiTargetEl.textContent = fmtRM(fiAdjusted);
     fiIncomeEl.textContent = fmtRM(fiIncome) + '/mo';
     fiPort90El.textContent = port90 > 0 ? fmtRM(port90) : '⚠️ Depleted';
@@ -1822,6 +1827,7 @@ function recalc() {
       const fv = calcAssetFV(a, t55);
       if (isEPFAsset(a)) epf55 += fv; else nonEpf55 += fv;
     }
+    document.getElementById('mile-55-yrs').textContent = `in ${yrs55} yr${yrs55===1?'':'s'}`;
     render55(age55Row.total, age55Row.totalMonthlyIncome || 0, `In ${yrs55} yr${yrs55===1?'':'s'}`, epf55, nonEpf55);
   } else if (state.age >= 55) {
     const portNow = yearlyData[0]?.total || 0;
@@ -1830,6 +1836,7 @@ function recalc() {
       const fv = calcAssetFV(a, 0);
       if (isEPFAsset(a)) epfNow += fv; else nonEpfNow += fv;
     }
+    document.getElementById('mile-55-yrs').textContent = 'unlocked';
     render55(portNow, yearlyData[0]?.totalMonthlyIncome || 0, 'Already unlocked', epfNow, nonEpfNow);
   } else {
     epfSubEl.textContent = '–'; epfTargetEl.textContent = '–';
