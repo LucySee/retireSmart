@@ -2207,16 +2207,31 @@ function buildAssetPanel(a, idx) {
         </div>
         ${isEPFAsset(a) ? `
         <div class="full">
-          <div style="border:1px solid rgba(255,184,0,0.25);border-radius:8px;overflow:hidden;">
-            <div onclick="var b=document.getElementById('epf-info-${a.id}');var c=document.getElementById('epf-chev-${a.id}');b.style.display=b.style.display==='none'?'block':'none';c.style.transform=b.style.display==='block'?'rotate(180deg)':'';" style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:rgba(255,184,0,0.08);cursor:pointer;">
-              <div style="font-size:11px;font-weight:700;color:#ffb800;">⚠️ EPF Withdrawal Rules (KWSP)</div>
-              <span id="epf-chev-${a.id}" style="color:#ffb800;font-size:11px;transition:transform 0.2s;">▼</span>
+          <div style="border:1px solid rgba(0,229,160,0.2);border-radius:8px;overflow:hidden;">
+            <div onclick="var b=document.getElementById('epf-info-${a.id}');var c=document.getElementById('epf-chev-${a.id}');b.style.display=b.style.display==='none'?'block':'none';c.style.transform=b.style.display==='block'?'rotate(180deg)':'';" style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:rgba(0,229,160,0.06);cursor:pointer;">
+              <div style="font-size:11px;font-weight:700;color:var(--accent);">💡 EPF Withdrawal Rules (KWSP)</div>
+              <span id="epf-chev-${a.id}" style="color:var(--accent);font-size:11px;transition:transform 0.2s;">▼</span>
             </div>
-            <div id="epf-info-${a.id}" style="display:none;padding:10px 12px;font-size:11px;color:var(--text-sub);line-height:1.65;background:rgba(255,184,0,0.04);">
+            <div id="epf-info-${a.id}" style="display:none;padding:10px 12px;font-size:11px;color:var(--text-sub);line-height:1.65;background:rgba(0,229,160,0.03);">
               <b>Before age 55:</b> Locked — only excess above <b>RM1.1M</b> can be withdrawn (2026 threshold).<br>
               <b>At age 55:</b> Full balance in Akaun Persaraan + Akaun Sejahtera consolidates into <b>Akaun 55</b> — fully accessible.<br>
               <b>After age 55:</b> New contributions go to <b>Akaun Emas</b>, withdrawable at 60.<br>
               <b>EPF benchmarks:</b> Basic RM390k · Adequate RM650k · Enhanced RM1.3M
+            </div>
+          </div>
+        </div>` : ''}
+        ${(a.name === 'Fixed Deposit' || a.name === 'FD' || (a.id||'').includes('fd')) ? `
+        <div class="full">
+          <div style="border:1px solid rgba(0,229,160,0.2);border-radius:8px;overflow:hidden;">
+            <div onclick="var b=document.getElementById('fd-tips-${a.id}');var c=document.getElementById('fd-chev-${a.id}');b.style.display=b.style.display==='none'?'block':'none';c.style.transform=b.style.display==='block'?'rotate(180deg)':'';" style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:rgba(0,229,160,0.06);cursor:pointer;">
+              <div style="font-size:11px;font-weight:700;color:var(--accent);">💡 Smart Fixed Deposit Tips</div>
+              <span id="fd-chev-${a.id}" style="color:var(--accent);font-size:11px;transition:transform 0.2s;">▼</span>
+            </div>
+            <div id="fd-tips-${a.id}" style="display:none;padding:10px 12px;font-size:11px;color:var(--text-sub);line-height:1.65;background:rgba(0,229,160,0.03);">
+              Follow these tips to maximise your FD growth:<br><br>
+              🏦 <b>Use interbank transfer</b> — place your FD with whichever bank offers the best rate, not just your main bank.<br>
+              🔍 <b>Check rates before reinvestment</b> — rates change frequently. Always compare before rolling over your FD.<br>
+              ⚠️ <b>Never auto-renew after maturity</b> — banks often renew at a lower default rate. Manually renew to lock in the best available rate.
             </div>
           </div>
         </div>` : ''}
