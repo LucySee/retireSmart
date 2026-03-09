@@ -551,7 +551,7 @@ input[type=checkbox].hidden-cb { display:none; }
           <!-- Dividend + Passive Income box -->
           <div style="background:rgba(0,229,160,0.06);border-radius:8px;padding:6px 8px;">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
-              <div style="font-size:9px;font-weight:700;color:#34d399;">💚 Dividend + Passive Income</div>
+              <div style="font-size:9px;font-weight:700;color:#34d399;">💚 Passive Income (dividend, interest, etc.)</div>
               <button onclick="var el=document.getElementById('div-passive-tip');el.style.display=el.style.display==='block'?'none':'block';" style="background:rgba(0,229,160,0.15);border:1px solid rgba(0,229,160,0.3);border-radius:50%;width:18px;height:18px;font-size:10px;color:#34d399;cursor:pointer;line-height:18px;text-align:center;padding:0;flex-shrink:0;">ℹ</button>
             </div>
             <div id="div-passive-tip" style="display:none;font-size:8px;color:var(--text-muted);line-height:1.5;margin-bottom:6px;padding:6px 7px;background:rgba(0,229,160,0.04);border-radius:6px;border:1px solid rgba(0,229,160,0.1);">
@@ -571,7 +571,14 @@ input[type=checkbox].hidden-cb { display:none; }
                 <div class="stat-val vals" style="font-size:12px;color:#34d399;" id="mile-fi-div-nonepf">–</div>
               </div>
             </div>
-            <div style="font-size:8px;line-height:1.5;margin-top:5px;" id="mile-fi-epf-note"></div>
+            <div id="mile-fi-epf-note-wrap" style="display:none;margin-top:5px;">
+              <div onclick="var el=document.getElementById('mile-fi-epf-note-body');el.style.display=el.style.display==='none'?'block':'none';" style="display:flex;align-items:center;gap:5px;cursor:pointer;font-size:8px;color:#ffb800;font-weight:600;">
+                <span id="mile-fi-epf-note-icon">⚠️</span>
+                <span id="mile-fi-epf-note-title">EPF access note</span>
+                <span style="margin-left:auto;font-size:9px;">▼</span>
+              </div>
+              <div id="mile-fi-epf-note-body" style="display:none;margin-top:4px;font-size:8px;line-height:1.5;padding:6px 7px;background:rgba(255,184,0,0.05);border-radius:6px;border:1px solid rgba(255,184,0,0.15);" id="mile-fi-epf-note"></div>
+            </div>
           </div>
 
           <span id="mile-fi-div90" style="display:none;"></span>
@@ -624,7 +631,7 @@ input[type=checkbox].hidden-cb { display:none; }
               <div class="stat-val vals" style="font-size:11px;color:var(--passive);font-weight:600;" id="mile-epf-port90-wr">–</div>
             </div>
             <div style="background:rgba(167,139,250,0.06);border-radius:8px;padding:7px 8px;">
-              <div style="font-size:8px;font-weight:700;color:#c084fc;margin-bottom:4px;">💜 Dividend + Passive</div>
+              <div style="font-size:8px;font-weight:700;color:#c084fc;margin-bottom:4px;">💜 Passive Income (div, int, etc.)</div>
               <div style="font-size:8px;color:var(--text-muted);">Monthly Income</div>
               <div class="stat-val vals" style="font-size:13px;color:#c084fc;font-weight:700;margin-bottom:4px;" id="mile-epf-dividend">–</div>
               <div style="height:1px;background:rgba(167,139,250,0.15);margin-bottom:4px;"></div>
@@ -1122,11 +1129,6 @@ input[type=checkbox].hidden-cb { display:none; }
       <!-- Data -->
       <div class="settings-section">
         <div class="settings-title">Data</div>
-        <div style="display:flex;gap:10px;">
-          <button class="btn-sm" style="flex:1;padding:12px;" onclick="exportData()">📤 Export</button>
-          <button class="btn-sm" style="flex:1;padding:12px;" onclick="document.getElementById('import-file').click()">📥 Import</button>
-        </div>
-        <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
         <div id="reset-confirm" style="display:none;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:10px;padding:12px;margin-top:8px;text-align:center;">
           <div style="font-size:13px;font-weight:600;color:#ef4444;margin-bottom:8px;">Delete all data? This cannot be undone.</div>
           <div style="display:flex;gap:8px;">
@@ -1178,8 +1180,8 @@ const PASSIVE_COLOR = '#a78bfa';
 // Example: ETF total return 7%, dividend yield 3% → assetPassiveRate:3, rate:4 (price appreciation)
 const defaultAssets = [
   { id:'asset_epf',   name:'EPF',           current:0, rate:6,   contrib:0, freq:'monthly', startAge:0, endAge:0, color:COLORS[0], type:'stable',   assetPassiveRate:0, reinvestIncome:true  },
-  { id:'fd',    name:'Fixed Deposit', current:0, rate:3.5, contrib:0, freq:'monthly', startAge:0, endAge:0, color:COLORS[1], type:'stable',   assetPassiveRate:3.5,reinvestIncome:true  },
-  { id:'sav',   name:'Savings',       current:0, rate:2,   contrib:0, freq:'monthly', startAge:0, endAge:0, color:COLORS[2], type:'cash',     assetPassiveRate:0, reinvestIncome:true  },
+  { id:'fd',    name:'Fixed Deposit', current:0, rate:3,   contrib:0, freq:'monthly', startAge:0, endAge:0, color:COLORS[1], type:'stable',   assetPassiveRate:3,  reinvestIncome:true  },
+  { id:'sav',   name:'Savings',       current:0, rate:1,   contrib:0, freq:'monthly', startAge:0, endAge:0, color:COLORS[2], type:'cash',     assetPassiveRate:0,  reinvestIncome:true  },
   { id:'stk',   name:'Stocks',        current:0, rate:8,   contrib:0, freq:'monthly', startAge:0, endAge:0, color:COLORS[3], type:'volatile', assetPassiveRate:3, reinvestIncome:true  },
   { id:'etf',   name:'ETF',           current:0, rate:7,   contrib:0, freq:'monthly', startAge:0, endAge:0, color:COLORS[4], type:'volatile', assetPassiveRate:4, reinvestIncome:true  },
 ];
@@ -1691,21 +1693,32 @@ function recalc() {
     if (divEpfEl) divEpfEl.textContent = fmtRM(epfDivAtFI) + '/mo';
     const divNonEpfEl = document.getElementById('mile-fi-div-nonepf');
     if (divNonEpfEl) divNonEpfEl.textContent = fmtRM(nonEpfDivAtFI) + '/mo';
-    const epfNoteEl = document.getElementById('mile-fi-epf-note');
-    if (epfNoteEl) {
+    const epfNoteEl = document.getElementById('mile-fi-epf-note-body');
+    const epfNoteWrap = document.getElementById('mile-fi-epf-note-wrap');
+    const epfNoteTitle = document.getElementById('mile-fi-epf-note-title');
+    const epfNoteIcon = document.getElementById('mile-fi-epf-note-icon');
+    if (epfNoteEl && epfNoteWrap) {
       if (fiMileAge < EPF_LOCK_AGE) {
         const epfFVAtFI = state.assets.filter(isEPFAsset).reduce((s, a) => s + calcAssetFV(a, fiRow.year), 0);
         const excessAtFI = Math.max(0, epfFVAtFI - EPF_EXCESS_THRESHOLD);
         if (excessAtFI > 0) {
-          epfNoteEl.innerHTML = `⚠️ EPF locked until 55, but your balance exceeds the RM1.1M threshold — <b>${fmtRM(excessAtFI)}</b> may be withdrawn early via i-Akaun (More Than RM1M Savings Withdrawal). <a href="https://www.kwsp.gov.my/en/member/life-stages/million-savings" target="_blank" style="color:#ffb800;opacity:0.8;text-decoration:underline;white-space:nowrap;">kwsp.gov.my ↗</a>`;
+          epfNoteEl.innerHTML = `EPF locked until 55, but your balance exceeds the RM1.1M threshold — <b>${fmtRM(excessAtFI)}</b> may be withdrawn early via i-Akaun (More Than RM1M Savings Withdrawal). <a href="https://www.kwsp.gov.my/en/member/life-stages/million-savings" target="_blank" style="color:#ffb800;opacity:0.8;text-decoration:underline;white-space:nowrap;">kwsp.gov.my ↗</a>`;
+          epfNoteEl.style.color = '#ffb800';
+          epfNoteIcon.textContent = '⚠️';
+          epfNoteTitle.textContent = 'EPF partially accessible before 55';
         } else {
-          epfNoteEl.innerHTML = `⚠️ EPF locked until age 55, or when total savings exceed RM1.1M (2026 threshold; rising to RM1.2M in 2027, RM1.3M in 2028). Only non-EPF + passive income accessible at FI age ${fiMileAge}. <a href="https://www.kwsp.gov.my/en/member/life-stages/million-savings" target="_blank" style="color:#ffb800;opacity:0.8;text-decoration:underline;white-space:nowrap;">kwsp.gov.my ↗</a>`;
+          epfNoteEl.innerHTML = `EPF locked until age 55, or when total savings exceed RM1.1M (2026 threshold; rising to RM1.2M in 2027, RM1.3M in 2028). Only non-EPF + passive income accessible at FI age ${fiMileAge}. <a href="https://www.kwsp.gov.my/en/member/life-stages/million-savings" target="_blank" style="color:#ffb800;opacity:0.8;text-decoration:underline;white-space:nowrap;">kwsp.gov.my ↗</a>`;
+          epfNoteEl.style.color = '#ffb800';
+          epfNoteIcon.textContent = '⚠️';
+          epfNoteTitle.textContent = 'EPF locked until age 55';
         }
-        epfNoteEl.style.color = '#ffb800';
       } else {
-        epfNoteEl.innerHTML = `✅ EPF fully accessible at age ${fiMileAge}. All dividend income available. <a href="https://www.kwsp.gov.my/en/member/life-stages/age-55-60-withdrawal" target="_blank" style="color:var(--accent);opacity:0.7;text-decoration:underline;white-space:nowrap;">kwsp.gov.my ↗</a>`;
+        epfNoteEl.innerHTML = `EPF fully accessible at age ${fiMileAge}. All dividend income available. <a href="https://www.kwsp.gov.my/en/member/life-stages/age-55-60-withdrawal" target="_blank" style="color:var(--accent);opacity:0.7;text-decoration:underline;white-space:nowrap;">kwsp.gov.my ↗</a>`;
         epfNoteEl.style.color = 'var(--accent)';
+        epfNoteIcon.textContent = '✅';
+        epfNoteTitle.textContent = 'EPF fully accessible';
       }
+      epfNoteWrap.style.display = 'block';
     }
     // Dividend income at 90 — portfolio at 90 × return rate ÷ 12, no reinvestment
     const div90Monthly = port90 > 0 ? (port90 * Math.min(avgRate, 0.06)) / 12 : 0;
@@ -1735,8 +1748,10 @@ function recalc() {
     if (divEpfEl) divEpfEl.textContent = '–';
     const divNonEpfEl = document.getElementById('mile-fi-div-nonepf');
     if (divNonEpfEl) divNonEpfEl.textContent = '–';
-    const epfNoteEl = document.getElementById('mile-fi-epf-note');
-    if (epfNoteEl) { epfNoteEl.textContent = '–'; epfNoteEl.style.color = ''; }
+    const epfNoteWrap2 = document.getElementById('mile-fi-epf-note-wrap');
+    const epfNoteEl2 = document.getElementById('mile-fi-epf-note-body');
+    if (epfNoteEl2) { epfNoteEl2.textContent = ''; }
+    if (epfNoteWrap2) { epfNoteWrap2.style.display = 'none'; }
     const fiEpfEl2 = document.getElementById('mile-fi-epf');
     if (fiEpfEl2) fiEpfEl2.textContent = '–';
     const fiNonEpfEl2 = document.getElementById('mile-fi-nonepf');
@@ -2145,56 +2160,64 @@ function buildAssetPanel(a, idx) {
             <option value="yearly" ${a.freq==='yearly'?'selected':''}>Yearly</option>
           </select>
         </div>
-        <div>
-          <div class="plabel">Start Age (optional)</div>
-          <input class="pinput" type="number" value="${a.startAge||''}" placeholder="${state.age}" min="18" max="80"
-            onchange="updateAsset('${a.id}','startAge',+this.value)">
-        </div>
-        <div>
-          <div class="plabel">Stop Contributing Age</div>
-          <input class="pinput" type="number" value="${a.endAge||''}" placeholder="Lifetime" min="18" max="80"
-            onchange="updateAsset('${a.id}','endAge',+this.value)">
-        </div>
-        <div>
-          <div class="plabel">Asset Type</div>
-          <select class="pselect" onchange="updateAsset('${a.id}','type',this.value)">
-            <option value="stable" ${a.type==='stable'?'selected':''}>Stable (EPF, FD)</option>
-            <option value="volatile" ${a.type==='volatile'?'selected':''}>Volatile (Stocks, ETF)</option>
-            <option value="cash" ${a.type==='cash'?'selected':''}>Cash (Savings)</option>
-          </select>
-        </div>
         <div class="full">
-          <details style="background:var(--passive-dim);border-radius:8px;border:1px solid rgba(167,139,250,0.2);">
-            <summary style="padding:10px 14px;cursor:pointer;font-size:11px;font-weight:700;color:var(--passive);text-transform:uppercase;letter-spacing:0.06em;list-style:none;display:flex;align-items:center;justify-content:space-between;">
-              <span>💜 Override Income Yield (optional)</span>
-              <span style="font-size:10px;color:var(--text-muted);font-weight:400;text-transform:none;letter-spacing:0;">Default: uses return rate</span>
+          <details style="background:var(--surface2);border-radius:8px;border:1px solid var(--border2);">
+            <summary style="padding:10px 14px;cursor:pointer;font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;list-style:none;display:flex;align-items:center;justify-content:space-between;">
+              <span>⚙️ Advanced</span>
+              <span style="font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;">Start/stop age · asset type · yield</span>
             </summary>
-            <div style="padding:0 14px 12px;">
-              <div style="font-size:11px;color:var(--text-muted);line-height:1.55;margin-bottom:10px;">
-                By default, the <b>Passive Income Path</b> uses this asset's return rate (${a.rate}%) as the income yield at retirement.
-                Override only if you know the specific dividend/interest yield differs from total return.
+            <div style="padding:0 14px 14px;display:flex;flex-direction:column;gap:10px;">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
+                <div>
+                  <div class="plabel">Start Age (optional)</div>
+                  <input class="pinput" type="number" value="${a.startAge||''}" placeholder="${state.age}" min="18" max="80"
+                    onchange="updateAsset('${a.id}','startAge',+this.value)">
+                </div>
+                <div>
+                  <div class="plabel">Stop Contributing Age</div>
+                  <input class="pinput" type="number" value="${a.endAge||''}" placeholder="Lifetime" min="18" max="80"
+                    onchange="updateAsset('${a.id}','endAge',+this.value)">
+                </div>
               </div>
-              <div class="plabel">Custom Annual Income Yield (%)</div>
-              <div class="input-wrap">
-                <input class="pinput with-suffix" type="number" value="${a.assetPassiveRate||''}" placeholder="Leave blank to use return rate (${a.rate}%)" min="0" max="30" step="0.5"
-                  onchange="updateAsset('${a.id}','assetPassiveRate',this.value===''?0:+this.value)">
-                <span class="input-suffix">%</span>
+              <div>
+                <div class="plabel">Asset Type</div>
+                <select class="pselect" onchange="updateAsset('${a.id}','type',this.value)">
+                  <option value="stable" ${a.type==='stable'?'selected':''}>Stable (EPF, FD)</option>
+                  <option value="volatile" ${a.type==='volatile'?'selected':''}>Volatile (Stocks, ETF)</option>
+                  <option value="cash" ${a.type==='cash'?'selected':''}>Cash (Savings)</option>
+                </select>
+                <div style="font-size:10px;color:var(--text-muted);margin-top:4px;">Used for scenario simulations e.g. stock market crash applies to Volatile assets only.</div>
               </div>
-              <div style="font-size:10px;color:var(--text-muted);margin-top:5px;">
-                e.g. EPF: ~5% · FD: ~3.5% · REITs: ~5-7% · Dividend stocks: ~3-5% · ETF: ~3-4%
-              </div>
+              ${a.type === 'volatile' ? `
+              <div>
+                <div class="plabel">Annual Dividend Yield (optional)</div>
+                <div style="font-size:10px;color:var(--text-muted);line-height:1.5;margin-bottom:6px;">
+                  Total return has two parts — <b>price growth</b> + <b>dividends paid out</b>.<br>
+                  e.g. ETF at 7% total return but only 4% paid as dividends → set 4%. Leave blank to use full return rate.
+                </div>
+                <div class="input-wrap">
+                  <input class="pinput with-suffix" type="number" value="${a.assetPassiveRate||''}" placeholder="e.g. 4 for ETF · 3 for stocks" min="0" max="30" step="0.5"
+                    onchange="updateAsset('${a.id}','assetPassiveRate',this.value===''?0:+this.value)">
+                  <span class="input-suffix">%</span>
+                </div>
+                <div style="font-size:10px;color:var(--text-muted);margin-top:4px;">Typical: Dividend stocks ~3–5% · ETF ~3–4% · REITs ~5–7%</div>
+              </div>` : ''}
             </div>
           </details>
         </div>
         ${isEPFAsset(a) ? `
         <div class="full">
-          <div style="background:rgba(255,184,0,0.08);border:1px solid rgba(255,184,0,0.25);border-radius:8px;padding:10px 14px;font-size:11px;color:var(--text-sub);line-height:1.65;">
-            <div style="font-weight:700;color:#ffb800;margin-bottom:5px;">⚠️ EPF Withdrawal Rules (KWSP)</div>
-            <b>Before age 55:</b> Locked — only excess above <b>RM1.1M</b> can be withdrawn (2026 threshold). Retirement detection uses only accessible portion.<br>
-            <b>At age 55:</b> Full balance in Akaun Persaraan + Akaun Sejahtera consolidates into <b>Akaun 55</b> — fully accessible.<br>
-            <b>After age 55:</b> New contributions go to <b>Akaun Emas</b>, withdrawable at 60.<br>
-            <b>EPF benchmarks:</b> Basic RM390k · Adequate RM650k · Enhanced RM1.3M<br>
-            <span style="color:var(--text-muted);">Retirement age here reflects when accessible EPF + other assets meet your FI number.</span>
+          <div style="border:1px solid rgba(255,184,0,0.25);border-radius:8px;overflow:hidden;">
+            <div onclick="var b=document.getElementById('epf-info-${a.id}');var c=document.getElementById('epf-chev-${a.id}');b.style.display=b.style.display==='none'?'block':'none';c.style.transform=b.style.display==='block'?'rotate(180deg)':'';" style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:rgba(255,184,0,0.08);cursor:pointer;">
+              <div style="font-size:11px;font-weight:700;color:#ffb800;">⚠️ EPF Withdrawal Rules (KWSP)</div>
+              <span id="epf-chev-${a.id}" style="color:#ffb800;font-size:11px;transition:transform 0.2s;">▼</span>
+            </div>
+            <div id="epf-info-${a.id}" style="display:none;padding:10px 12px;font-size:11px;color:var(--text-sub);line-height:1.65;background:rgba(255,184,0,0.04);">
+              <b>Before age 55:</b> Locked — only excess above <b>RM1.1M</b> can be withdrawn (2026 threshold).<br>
+              <b>At age 55:</b> Full balance in Akaun Persaraan + Akaun Sejahtera consolidates into <b>Akaun 55</b> — fully accessible.<br>
+              <b>After age 55:</b> New contributions go to <b>Akaun Emas</b>, withdrawable at 60.<br>
+              <b>EPF benchmarks:</b> Basic RM390k · Adequate RM650k · Enhanced RM1.3M
+            </div>
           </div>
         </div>` : ''}
       </div>
