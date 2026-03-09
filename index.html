@@ -712,6 +712,49 @@ input[type=checkbox].hidden-cb { display:none; }
         <div class="chart-legend" id="chart-legend"></div>
       </div>
 
+      <!-- EPF Savings Checkpoints -->
+      <div class="card" style="margin-bottom:14px;padding:0;overflow:hidden;">
+        <div onclick="toggleInfoPanel('info-checkpoints')" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:18px;">📍</span>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--text);">EPF Savings Checkpoints</div>
+              <div style="font-size:11px;color:var(--text-muted);" id="checkpoint-subtitle">Are you on track?</div>
+            </div>
+          </div>
+          <span id="info-checkpoints-chevron" style="color:var(--text-muted);font-size:16px;transition:transform 0.25s;">▼</span>
+        </div>
+        <div id="info-checkpoints" style="display:none;padding:0 16px 16px;">
+          <div id="checkpoint-your-status" style="margin-bottom:10px;"></div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div id="cp-30" style="border-radius:8px;padding:10px 12px;">
+              <div style="margin-bottom:4px;">
+                <div style="font-size:12px;font-weight:700;color:var(--accent);">🌱 Age 30</div>
+              </div>
+              <div style="font-size:14px;font-weight:700;color:var(--text);font-family:var(--mono);margin-bottom:3px;">RM 38,000</div>
+              <div style="font-size:11px;color:var(--text-muted);line-height:1.5;">Over 90% of members have less than this target. (KRI, 2024)</div>
+            </div>
+            <div id="cp-40" style="border-radius:8px;padding:10px 12px;">
+              <div style="margin-bottom:4px;">
+                <div style="font-size:12px;font-weight:700;color:#ffb800;">🌳 Age 40</div>
+              </div>
+              <div style="font-size:14px;font-weight:700;color:var(--text);font-family:var(--mono);margin-bottom:3px;">RM 130,000</div>
+              <div style="font-size:11px;color:var(--text-muted);line-height:1.5;">Should have ~⅓ of the Basic Savings target. Falling behind now makes late-career saving harder.</div>
+            </div>
+            <div id="cp-50" style="border-radius:8px;padding:10px 12px;">
+              <div style="margin-bottom:4px;">
+                <div style="font-size:12px;font-weight:700;color:#a78bfa;">🌲 Age 50</div>
+              </div>
+              <div style="font-size:14px;font-weight:700;color:var(--text);font-family:var(--mono);margin-bottom:3px;">RM 260,000</div>
+              <div style="font-size:11px;color:var(--text-muted);line-height:1.5;">~⅔ of the Basic Savings target. Without this, retirement relies heavily on EPF withdrawals or other income.</div>
+            </div>
+          </div>
+          <div style="font-size:10px;color:var(--text-muted);line-height:1.6;padding:8px 10px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;margin-top:8px;">
+            📌 Based on EPF Basic Savings benchmark of <b style="color:var(--text-muted);">RM 390k by age 60</b>.<br>Source: Employees Provident Fund Retirement Income Adequacy (RIA) Framework. <a href="https://www.kwsp.gov.my/en/w/epf-releases-belanjawanku-2024/2025-and-retirement-income-adequacy-framework" target="_blank" style="color:var(--accent);text-decoration:none;">kwsp.gov.my ↗</a>
+          </div>
+        </div>
+      </div>
+
       <!-- Summary table -->
       <div class="card">
         <div class="card-header"><span class="card-title">Asset Summary</span></div>
@@ -928,49 +971,6 @@ input[type=checkbox].hidden-cb { display:none; }
             </div>
           </div>
 
-        </div>
-      </div>
-
-      <!-- Collapsible: EPF Savings Checkpoints -->
-      <div class="card" style="margin-bottom:14px;padding:0;overflow:hidden;">
-        <div onclick="toggleInfoPanel('info-checkpoints')" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;">
-          <div style="display:flex;align-items:center;gap:10px;">
-            <span style="font-size:18px;">📍</span>
-            <div>
-              <div style="font-size:13px;font-weight:700;color:var(--text);">EPF Savings Checkpoints</div>
-              <div style="font-size:11px;color:var(--text-muted);" id="checkpoint-subtitle">Are you on track?</div>
-            </div>
-          </div>
-          <span id="info-checkpoints-chevron" style="color:var(--text-muted);font-size:16px;transition:transform 0.25s;">▼</span>
-        </div>
-        <div id="info-checkpoints" style="display:none;padding:0 16px 16px;">
-          <div id="checkpoint-your-status" style="margin-bottom:10px;"></div>
-          <div style="display:flex;flex-direction:column;gap:8px;">
-            <div id="cp-30" style="border-radius:8px;padding:10px 12px;">
-              <div style="margin-bottom:4px;">
-                <div style="font-size:12px;font-weight:700;color:var(--accent);">🌱 Age 30</div>
-              </div>
-              <div style="font-size:14px;font-weight:700;color:var(--text);font-family:var(--mono);margin-bottom:3px;">RM 38,000</div>
-              <div style="font-size:11px;color:var(--text-muted);line-height:1.5;">Over 90% of members have less than this target. (KRI, 2024)</div>
-            </div>
-            <div id="cp-40" style="border-radius:8px;padding:10px 12px;">
-              <div style="margin-bottom:4px;">
-                <div style="font-size:12px;font-weight:700;color:#ffb800;">🌳 Age 40</div>
-              </div>
-              <div style="font-size:14px;font-weight:700;color:var(--text);font-family:var(--mono);margin-bottom:3px;">RM 130,000</div>
-              <div style="font-size:11px;color:var(--text-muted);line-height:1.5;">Should have ~⅓ of the Basic Savings target. Falling behind now makes late-career saving harder.</div>
-            </div>
-            <div id="cp-50" style="border-radius:8px;padding:10px 12px;">
-              <div style="margin-bottom:4px;">
-                <div style="font-size:12px;font-weight:700;color:#a78bfa;">🌲 Age 50</div>
-              </div>
-              <div style="font-size:14px;font-weight:700;color:var(--text);font-family:var(--mono);margin-bottom:3px;">RM 260,000</div>
-              <div style="font-size:11px;color:var(--text-muted);line-height:1.5;">~⅔ of the Basic Savings target. Without this, retirement relies heavily on EPF withdrawals or other income.</div>
-            </div>
-          </div>
-          <div style="font-size:10px;color:var(--text-muted);line-height:1.6;padding:8px 10px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;margin-top:8px;">
-            📌 Based on EPF Basic Savings benchmark of <b style="color:var(--text-muted);">RM 390k by age 60</b>.<br>Source: Employees Provident Fund Retirement Income Adequacy (RIA) Framework. <a href="https://www.kwsp.gov.my/en/w/epf-releases-belanjawanku-2024/2025-and-retirement-income-adequacy-framework" target="_blank" style="color:var(--accent);text-decoration:none;">kwsp.gov.my ↗</a>
-          </div>
         </div>
       </div>
 

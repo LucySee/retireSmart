@@ -1,6 +1,6 @@
 # 🇲🇾 RetireSmart
 
-A free, privacy-first Financial Independence planner for Malaysians. No account. No server. Just open and plan.
+A free, privacy-first Financial Independence planner built for Malaysians. No account. No login. No server. Just open and plan.
 
 **[→ Open App](https://lucysee.github.io/retireSmart)**
 
@@ -8,21 +8,40 @@ A free, privacy-first Financial Independence planner for Malaysians. No account.
 
 ## What it does
 
-- 📊 Multi-asset portfolio — EPF, FD, Savings, Stocks, ETF
-- 🏆 Tells you your FI age using the 4% withdrawal rule
-- 💜 Passive income tracker — rental, dividends, side income
-- 🔄 What-if scenarios — crash, boost contributions, stop saving
-- 📈 Portfolio projection chart to age 90
-- 🔐 Hide values mode — safe to use in public
+**Dashboard**
+- 📊 Portfolio Today — total, EPF, Non-EPF breakdown
+- 🏆 Financial Independence — FI age, monthly income, portfolio at 90, passive income split
+- 🏦 At Age 55 — EPF unlock snapshot, 4% withdrawal rule vs passive income paths
+- 📈 Retirement Score progress bar
+- 🔄 Inflation adjustment toggle
+- 📍 EPF Savings Checkpoints — see if you're on track by age 30 / 40 / 50
+- 📋 Asset Summary table
 
-## Built for Malaysia
+**Assets**
+Track EPF, FD, Savings, Stocks, ETF or any custom asset with individual return rates, contribution frequency, and EPF rules built-in.
 
-EPF withdrawal rules, RM currency, 3% default inflation, 6% EPF return.
+**Passive Income**
+Add rental, dividends, or side income — each with its own growth rate. Automatically reduces your FI target.
 
-## Privacy
+**What-If Scenarios**
+Instantly compare 5 scenarios against your base plan — passive income boost, market crash, conservative returns, and more.
 
-Everything stays in your browser. No cloud, no account, no tracking.
+**Settings**
+Adjust withdrawal rate, inflation rate, target retirement age, and hide values mode.
 
 ---
 
-Built with vanilla HTML/CSS/JS — zero dependencies.
+## Built for Malaysia
+
+- EPF lock age 55, RM1.1M early withdrawal threshold (2026; rising to RM1.2M in 2027, RM1.3M in 2028)
+- EPF benchmarks: Basic RM390k · Adequate RM650k · Enhanced RM1.3M
+- RM currency throughout
+- Based on EPF Retirement Income Adequacy (RIA) Framework
+
+## Privacy
+
+Everything lives in your browser. No cloud, no account, no tracking. Reset anytime from Settings.
+
+---
+
+Built with vanilla HTML/CSS/JS — zero dependencies, works offline.
