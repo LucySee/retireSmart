@@ -519,7 +519,7 @@ input[type=checkbox].hidden-cb { display:none; }
 
           <div style="padding-top:10px;border-top:1px solid rgba(0,229,160,0.15);">
 
-            <!-- Row 1: FI Target · Monthly Income · Port at 90 -->
+            <!-- Row 1: FI Target · Monthly Income · Portfolio at 90 -->
             <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px;">
               <div>
                 <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">FI Target</div>
@@ -532,7 +532,7 @@ input[type=checkbox].hidden-cb { display:none; }
                 <div style="font-size:8px;color:var(--text-muted);margin-top:1px;">via 4% rule</div>
               </div>
               <div style="text-align:right;">
-                <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Port at 90</div>
+                <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Portfolio at 90</div>
                 <div class="stat-val vals" style="font-size:13px;color:var(--accent);opacity:0.75;" id="mile-fi-port90">–</div>
                 <div style="font-size:8px;color:transparent;margin-top:1px;">·</div>
               </div>
@@ -550,10 +550,10 @@ input[type=checkbox].hidden-cb { display:none; }
               </div>
             </div>
 
-            <!-- Row 3: Full-width Div + Passive box -->
+            <!-- Row 3: Full-width Dividend + Passive box -->
             <div style="background:rgba(0,229,160,0.06);border-radius:8px;padding:8px 10px;">
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-                <div style="font-size:9px;font-weight:700;color:#34d399;letter-spacing:0.03em;">💚 Div + Passive Income</div>
+                <div style="font-size:9px;font-weight:700;color:#34d399;letter-spacing:0.03em;">💚 Dividend + Passive Income</div>
                 <button onclick="var el=document.getElementById('div-passive-tip');el.style.display=el.style.display==='block'?'none':'block';" style="background:rgba(0,229,160,0.15);border:1px solid rgba(0,229,160,0.3);border-radius:50%;width:20px;height:20px;font-size:11px;color:#34d399;cursor:pointer;line-height:20px;text-align:center;padding:0;flex-shrink:0;">ℹ</button>
               </div>
               <div id="div-passive-tip" style="display:none;font-size:8.5px;color:var(--text-muted);line-height:1.6;margin-bottom:8px;padding:7px 8px;background:rgba(0,229,160,0.04);border-radius:6px;border:1px solid rgba(0,229,160,0.1);">
@@ -561,7 +561,7 @@ input[type=checkbox].hidden-cb { display:none; }
               </div>
               <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
                 <div>
-                  <div style="font-size:8px;color:var(--text-muted);">Total/mo</div>
+                  <div style="font-size:8px;color:var(--text-muted);">Total/month</div>
                   <div class="stat-val vals" style="font-size:13px;color:#34d399;font-weight:700;" id="mile-fi-divpassive">–</div>
                 </div>
                 <div>
@@ -594,7 +594,7 @@ input[type=checkbox].hidden-cb { display:none; }
             </div>
             <div style="text-align:right;flex-shrink:0;">
               <div class="stat-val vals" style="font-size:30px;font-weight:800;color:var(--passive);line-height:1;">55</div>
-              <div style="font-size:10px;color:var(--text-muted);margin-top:2px;" id="mile-epf-sub">–</div>
+              <span id="mile-epf-sub" style="display:none;"></span>
             </div>
           </div>
           <div style="padding-top:10px;border-top:1px solid rgba(167,139,250,0.15);">
@@ -621,9 +621,9 @@ input[type=checkbox].hidden-cb { display:none; }
                 <div style="font-size:8px;color:var(--text-muted);">Port at 90</div>
                 <div class="stat-val vals" style="font-size:12px;color:var(--passive);font-weight:600;" id="mile-epf-port90-wr">–</div>
               </div>
-              <!-- Path B: Dividend Only -->
+              <!-- Path B: Dividend + Passive Income -->
               <div style="background:rgba(167,139,250,0.06);border-radius:8px;padding:8px 10px;">
-                <div style="font-size:9px;font-weight:700;color:#c084fc;margin-bottom:6px;letter-spacing:0.03em;">💜 Dividend Only</div>
+                <div style="font-size:9px;font-weight:700;color:#c084fc;margin-bottom:6px;letter-spacing:0.03em;">💜 Dividend + Passive</div>
                 <div style="font-size:8px;color:var(--text-muted);">Monthly Income</div>
                 <div class="stat-val vals" style="font-size:13px;color:#c084fc;font-weight:700;margin-bottom:5px;" id="mile-epf-dividend">–</div>
                 <div style="height:1px;background:rgba(167,139,250,0.15);margin-bottom:5px;"></div>
