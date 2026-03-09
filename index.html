@@ -103,7 +103,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
 .btn-prime:hover { box-shadow: 0 6px 30px rgba(0,229,160,0.45); }
 
 /* ── APP SHELL ── */
-#app { display:none; flex-direction:column; min-height:100vh; }
+#app { display:none; flex-direction:column; align-items:stretch; }
 
 .icon-btn {
   width:34px; height:34px; border-radius:8px; border:1px solid var(--border2);
@@ -116,7 +116,7 @@ input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
 
 /* Content area */
 .pane { display:none; }
-.pane.active { display:block; }
+.pane.active { display:block; width:100%; }
 .content { padding:12px 16px 100px; max-width:860px; margin:0 auto; }
 
 /* ── CARDS ── */
@@ -462,8 +462,28 @@ input[type=checkbox].hidden-cb { display:none; }
   <!-- ── DASHBOARD PANE ── -->
   <div class="pane active" id="pane-dashboard">
     <div class="content">
+
+      <!-- Portfolio Today — topmost -->
+      <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:12px;padding:10px 14px;margin-bottom:10px;">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted);margin-bottom:8px;">Portfolio Today</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+          <div>
+            <div style="font-size:9px;color:var(--text-muted);">Total</div>
+            <div class="stat-val vals" style="font-size:13px;color:var(--text);" id="pb-total">–</div>
+          </div>
+          <div>
+            <div style="font-size:9px;color:var(--text-muted);">EPF</div>
+            <div class="stat-val vals" style="font-size:13px;color:var(--accent);" id="port-epf">–</div>
+          </div>
+          <div>
+            <div style="font-size:9px;color:var(--text-muted);">Non-EPF</div>
+            <div class="stat-val vals" style="font-size:13px;color:#fbbf24;" id="port-nonepf">–</div>
+          </div>
+        </div>
+      </div>
+
       <!-- Two Retirement Milestone Cards -->
-      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:0;">
 
         <!-- Milestone 1: Financial Independence (combined) -->
         <div style="background:var(--surface2);border:1.5px solid rgba(0,229,160,0.4);border-radius:14px;padding:14px 16px;">
@@ -497,40 +517,79 @@ input[type=checkbox].hidden-cb { display:none; }
             <div style="font-size:9px;color:var(--text-muted);margin-top:5px;" id="fi-score-detail">Projected ÷ FI Target</div>
           </div>
 
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding-top:10px;border-top:1px solid rgba(0,229,160,0.15);">
-            <div>
-              <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">FI Target</div>
-              <div class="stat-val vals" style="font-size:13px;color:var(--accent);" id="mile-fi-target">–</div>
+          <div style="padding-top:10px;border-top:1px solid rgba(0,229,160,0.15);">
+
+            <!-- Row 1: FI Target · Monthly Income · Port at 90 -->
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px;">
+              <div>
+                <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">FI Target</div>
+                <div class="stat-val vals" style="font-size:17px;font-weight:800;color:var(--accent);line-height:1.1;" id="mile-fi-target">–</div>
+                <div style="font-size:8px;color:transparent;margin-top:1px;">·</div>
+              </div>
+              <div>
+                <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Monthly Income</div>
+                <div class="stat-val vals" style="font-size:17px;font-weight:800;color:var(--accent);line-height:1.1;" id="mile-fi-income">–</div>
+                <div style="font-size:8px;color:var(--text-muted);margin-top:1px;">via 4% rule</div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Port at 90</div>
+                <div class="stat-val vals" style="font-size:13px;color:var(--accent);opacity:0.75;" id="mile-fi-port90">–</div>
+                <div style="font-size:8px;color:transparent;margin-top:1px;">·</div>
+              </div>
             </div>
-            <div>
-              <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Monthly Income</div>
-              <div class="stat-val vals" style="font-size:13px;color:var(--accent);" id="mile-fi-income">–</div>
+
+            <!-- Row 2: EPF · Non-EPF chips -->
+            <div style="display:flex;gap:6px;margin-bottom:8px;">
+              <div style="flex:1;background:rgba(0,229,160,0.08);border-radius:6px;padding:5px 8px;">
+                <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;">EPF</div>
+                <div class="stat-val vals" style="font-size:11px;color:var(--accent);" id="mile-fi-epf">–</div>
+              </div>
+              <div style="flex:1;background:rgba(0,229,160,0.08);border-radius:6px;padding:5px 8px;">
+                <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;">Non-EPF</div>
+                <div class="stat-val vals" style="font-size:11px;color:var(--accent);" id="mile-fi-nonepf">–</div>
+              </div>
             </div>
-            <div>
-              <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Port at 90</div>
-              <div class="stat-val vals" style="font-size:13px;color:var(--accent);" id="mile-fi-port90">–</div>
+
+            <!-- Row 3: Full-width Div + Passive box -->
+            <div style="background:rgba(0,229,160,0.06);border-radius:8px;padding:8px 10px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+                <div style="font-size:9px;font-weight:700;color:#34d399;letter-spacing:0.03em;">💚 Div + Passive Income</div>
+                <button onclick="var el=document.getElementById('div-passive-tip');el.style.display=el.style.display==='block'?'none':'block';" style="background:rgba(0,229,160,0.15);border:1px solid rgba(0,229,160,0.3);border-radius:50%;width:20px;height:20px;font-size:11px;color:#34d399;cursor:pointer;line-height:20px;text-align:center;padding:0;flex-shrink:0;">ℹ</button>
+              </div>
+              <div id="div-passive-tip" style="display:none;font-size:8.5px;color:var(--text-muted);line-height:1.6;margin-bottom:8px;padding:7px 8px;background:rgba(0,229,160,0.04);border-radius:6px;border:1px solid rgba(0,229,160,0.1);">
+                💡 You don't withdraw everything — only a portion (4% rule). The rest stays invested and keeps growing. Over time, your principal grows too, meaning your income can increase year on year.
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+                <div>
+                  <div style="font-size:8px;color:var(--text-muted);">Total/mo</div>
+                  <div class="stat-val vals" style="font-size:13px;color:#34d399;font-weight:700;" id="mile-fi-divpassive">–</div>
+                </div>
+                <div>
+                  <div style="font-size:8px;color:var(--text-muted);">From EPF</div>
+                  <div class="stat-val vals" style="font-size:13px;color:#34d399;" id="mile-fi-div-epf">–</div>
+                </div>
+                <div>
+                  <div style="font-size:8px;color:var(--text-muted);">Non-EPF</div>
+                  <div class="stat-val vals" style="font-size:13px;color:#34d399;" id="mile-fi-div-nonepf">–</div>
+                </div>
+              </div>
+              <div style="font-size:8.5px;line-height:1.5;margin-top:6px;" id="mile-fi-epf-note"></div>
             </div>
+
+            <span id="mile-fi-div90" style="display:none;"></span>
+
           </div>
-          <div style="display:flex;gap:6px;margin-top:8px;">
-            <div style="flex:1;background:rgba(0,229,160,0.06);border-radius:6px;padding:5px 8px;">
-              <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;">EPF</div>
-              <div class="stat-val vals" style="font-size:11px;color:var(--accent);" id="mile-fi-epf">–</div>
-            </div>
-            <div style="flex:1;background:rgba(0,229,160,0.06);border-radius:6px;padding:5px 8px;">
-              <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;">Non-EPF</div>
-              <div class="stat-val vals" style="font-size:11px;color:var(--accent);" id="mile-fi-nonepf">–</div>
-            </div>
-          </div>
+
         </div>
 
         <!-- Milestone 2: Age 55 -->
-        <div style="flex:1.3;min-height:0;background:var(--surface2);border:1.5px solid rgba(167,139,250,0.4);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;justify-content:space-between;">
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+        <div style="background:var(--surface2);border:1.5px solid rgba(167,139,250,0.4);border-radius:14px;padding:14px 16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;">
             <div style="display:flex;align-items:center;gap:8px;">
               <span style="font-size:18px;">🏦</span>
               <div>
                 <div style="font-size:17px;font-weight:800;color:var(--text);">At Age 55</div>
-                <div style="font-size:10px;color:var(--text-muted);margin-top:1px;">EPF unlocks · full snapshot</div>
+                <div style="font-size:10px;color:var(--text-muted);margin-top:1px;">EPF unlocks · your income snapshot</div>
               </div>
             </div>
             <div style="text-align:right;flex-shrink:0;">
@@ -577,24 +636,20 @@ input[type=checkbox].hidden-cb { display:none; }
 
       </div>
 
-      <!-- Portfolio Breakdown -->
-      <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:12px;padding:10px 14px;margin-bottom:14px;">
-        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted);margin-bottom:8px;">Portfolio Today</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+      <!-- Inflation Adjustment — after Age 55 -->
+      <div class="card" style="padding:14px 16px;margin-top:10px;margin-bottom:10px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
           <div>
-            <div style="font-size:9px;color:var(--text-muted);">Total</div>
-            <div class="stat-val vals" style="font-size:13px;color:var(--text);" id="pb-total">–</div>
+            <div style="font-size:13px;font-weight:600;">Inflation Adjustment</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Real returns after <span id="infl-rate-show">3</span>% inflation</div>
           </div>
-          <div>
-            <div style="font-size:9px;color:var(--text-muted);">EPF</div>
-            <div class="stat-val vals" style="font-size:13px;color:var(--accent);" id="port-epf">–</div>
-          </div>
-          <div>
-            <div style="font-size:9px;color:var(--text-muted);">Non-EPF</div>
-            <div class="stat-val vals" style="font-size:13px;color:#fbbf24;" id="port-nonepf">–</div>
-          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" class="hidden-cb" id="infl-toggle" onchange="recalc()">
+            <div class="toggle-track"><div class="toggle-thumb"></div></div>
+          </label>
         </div>
       </div>
+
       <span id="stat-passive-retire-age" style="display:none"></span>
       <span id="stat-passive-retire-sub" style="display:none"></span>
       <span id="stat-passive-fi-target" style="display:none"></span>
@@ -647,20 +702,6 @@ input[type=checkbox].hidden-cb { display:none; }
         </div>
         <div class="chart-wrap"><canvas id="main-chart"></canvas></div>
         <div class="chart-legend" id="chart-legend"></div>
-      </div>
-
-      <!-- Inflation toggle -->
-      <div class="card" style="padding:14px 16px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;">
-          <div>
-            <div style="font-size:13px;font-weight:600;">Inflation Adjustment</div>
-            <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">Real returns after <span id="infl-rate-show">3</span>% inflation</div>
-          </div>
-          <label class="toggle-switch">
-            <input type="checkbox" class="hidden-cb" id="infl-toggle" onchange="recalc()">
-            <div class="toggle-track"><div class="toggle-thumb"></div></div>
-          </label>
-        </div>
       </div>
 
       <!-- Summary table -->
@@ -736,7 +777,6 @@ input[type=checkbox].hidden-cb { display:none; }
             <div style="margin-top:6px;">📌 <b>Rental income</b> – net rent after loan/expenses</div>
             <div style="margin-top:4px;">📌 <b>Business income</b> – ongoing side business profits</div>
             <div style="margin-top:4px;">📌 <b>Royalties / Digital</b> – books, courses, content</div>
-            <div style="margin-top:4px;">📌 <b>Other dividends</b> – from stocks/REITs not in your asset list</div>
           </div>
         </div>
       </div>
@@ -748,6 +788,62 @@ input[type=checkbox].hidden-cb { display:none; }
   <div class="pane" id="pane-scenario">
     <div class="content">
 
+      <!-- ① What-If Selector — TOP, always visible -->
+      <div class="card" style="margin-bottom:14px;">
+        <div class="card-title" style="margin-bottom:6px;">What-If Scenarios</div>
+        <div style="font-size:12px;color:var(--text-sub);margin-bottom:12px;line-height:1.5;">Pick a scenario — result appears instantly below.</div>
+        <select id="scenario-select" class="pselect" style="width:100%;font-size:14px;padding:12px 14px;border-radius:10px;" onchange="applyScenario(this.value)">
+          <option value="">— Select a scenario —</option>
+        </select>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:8px;" id="scenario-desc-line"></div>
+      </div>
+
+      <!-- ② Result card — appears right below selector -->
+      <div class="card" id="scenario-result" style="display:none;margin-bottom:14px;">
+        <div class="card-title" style="margin-bottom:4px;">Impact on Your Retirement</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-bottom:14px;" id="scenario-desc-line2"></div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px;">
+          <div class="stat-card" style="text-align:center;">
+            <div class="stat-label">Base FI Age</div>
+            <div class="stat-val accent vals" id="sc-base-age" style="font-size:22px;">–</div>
+            <div class="stat-sub" id="sc-base-income" style="margin-top:2px;"></div>
+          </div>
+          <div class="stat-card" style="text-align:center;">
+            <div class="stat-label">Scenario FI Age</div>
+            <div class="stat-val vals" id="sc-new-age" style="font-size:22px;">–</div>
+            <div class="stat-sub" id="sc-new-income" style="margin-top:2px;"></div>
+          </div>
+          <div class="stat-card" style="text-align:center;">
+            <div class="stat-label">Change</div>
+            <div class="stat-val vals" id="sc-diff" style="font-size:18px;">–</div>
+            <div class="stat-sub" id="sc-diff-sub" style="margin-top:4px;"></div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+          <div style="background:var(--surface);border-radius:8px;padding:8px 10px;">
+            <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Base Port at 90</div>
+            <div class="stat-val vals" style="font-size:13px;color:var(--accent);" id="sc-base-port90">–</div>
+            <div style="font-size:8px;color:var(--text-muted);margin-top:3px;">Div/mo: <span class="vals" id="sc-base-div90" style="color:#ffb800;">–</span></div>
+          </div>
+          <div style="background:var(--surface);border-radius:8px;padding:8px 10px;">
+            <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Scenario Port at 90</div>
+            <div class="stat-val vals" style="font-size:13px;color:var(--accent);" id="sc-new-port90">–</div>
+            <div style="font-size:8px;color:var(--text-muted);margin-top:3px;">Div/mo: <span class="vals" id="sc-new-div90" style="color:#ffb800;">–</span></div>
+          </div>
+        </div>
+
+        <div id="sc-gain-row" style="display:none;background:rgba(0,229,160,0.07);border:1px solid rgba(0,229,160,0.2);border-radius:8px;padding:10px 12px;margin-bottom:14px;">
+          <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Portfolio difference vs base <span id="sc-gain-age-label"></span></div>
+          <div class="stat-val vals" style="font-size:16px;color:var(--accent);" id="sc-gain-val">–</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px;" id="sc-gain-sub"></div>
+        </div>
+
+        <button class="btn-sm" style="margin-top:4px;width:100%;" onclick="clearScenario()">✕ Clear Scenario</button>
+      </div>
+
+      <!-- ③ Educational cards — below the fold, collapsed by default -->
       <!-- Collapsible: Malaysian Retirement Reality -->
       <div class="card" style="margin-bottom:14px;padding:0;overflow:hidden;">
         <div onclick="toggleInfoPanel('info-my-reality')" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;">
@@ -930,60 +1026,6 @@ input[type=checkbox].hidden-cb { display:none; }
         </div>
       </div>
 
-      <!-- Dropdown selector -->
-      <div class="card" style="margin-bottom:14px;">
-        <div class="card-title" style="margin-bottom:10px;">What-If Scenarios</div>
-        <div style="font-size:12px;color:var(--text-sub);margin-bottom:14px;line-height:1.6;">
-          Pick a scenario to instantly see how it shifts both retirement ages.
-        </div>
-        <select id="scenario-select" class="pselect" style="width:100%;font-size:14px;padding:12px 14px;border-radius:10px;" onchange="applyScenario(this.value)">
-          <option value="">— Select a scenario —</option>
-        </select>
-        <div style="font-size:11px;color:var(--text-muted);margin-top:8px;" id="scenario-desc-line"></div>
-      </div>
-
-      <!-- Instant result — shown immediately on selection -->
-      <div class="card" id="scenario-result" style="display:none;">
-        <div class="card-title" style="margin-bottom:4px;">Impact on Your Retirement</div>
-        <div style="font-size:11px;color:var(--text-muted);margin-bottom:14px;" id="scenario-desc-line2"></div>
-
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px;">
-          <div class="stat-card" style="text-align:center;">
-            <div class="stat-label">Base FI Age</div>
-            <div class="stat-val accent vals" id="sc-base-age" style="font-size:22px;">–</div>
-            <div class="stat-sub" id="sc-base-income" style="margin-top:2px;"></div>
-          </div>
-          <div class="stat-card" style="text-align:center;">
-            <div class="stat-label">Scenario FI Age</div>
-            <div class="stat-val vals" id="sc-new-age" style="font-size:22px;">–</div>
-            <div class="stat-sub" id="sc-new-income" style="margin-top:2px;"></div>
-          </div>
-          <div class="stat-card" style="text-align:center;">
-            <div class="stat-label">Change</div>
-            <div class="stat-val vals" id="sc-diff" style="font-size:18px;">–</div>
-            <div class="stat-sub" id="sc-diff-sub" style="margin-top:4px;"></div>
-          </div>
-        </div>
-
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
-          <div style="background:var(--surface);border-radius:8px;padding:8px 10px;">
-            <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Base Port at 90</div>
-            <div class="stat-val vals" style="font-size:13px;color:var(--accent);" id="sc-base-port90">–</div>
-          </div>
-          <div style="background:var(--surface);border-radius:8px;padding:8px 10px;">
-            <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Scenario Port at 90</div>
-            <div class="stat-val vals" style="font-size:13px;color:var(--accent);" id="sc-new-port90">–</div>
-          </div>
-        </div>
-        <div id="sc-gain-row" style="display:none;background:rgba(0,229,160,0.07);border:1px solid rgba(0,229,160,0.2);border-radius:8px;padding:10px 12px;margin-bottom:14px;">
-          <div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Extra portfolio vs base <span id="sc-gain-age-label"></span></div>
-          <div class="stat-val vals" style="font-size:16px;color:var(--accent);" id="sc-gain-val">–</div>
-          <div style="font-size:11px;color:var(--text-muted);margin-top:2px;" id="sc-gain-sub"></div>
-        </div>
-
-        <button class="btn-sm" style="margin-top:4px;width:100%;" onclick="clearScenario()">✕ Clear Scenario</button>
-      </div>
-
       <div class="disclaimer"><b>Disclaimer:</b> For educational and awareness purposes only. Not financial advice.</div>
 
     </div>
@@ -1088,7 +1130,7 @@ input[type=checkbox].hidden-cb { display:none; }
           <div style="font-size:13px;font-weight:600;color:#ef4444;margin-bottom:8px;">Delete all data? This cannot be undone.</div>
           <div style="display:flex;gap:8px;">
             <button onclick="document.getElementById('reset-confirm').style.display='none'" style="flex:1;padding:10px;border-radius:8px;border:1px solid var(--border2);background:var(--surface2);color:var(--text);font-family:var(--font);font-size:13px;cursor:pointer;">Cancel</button>
-            <button onclick="localStorage.removeItem('fi_planner_v3');location.reload();" style="flex:1;padding:10px;border-radius:8px;border:none;background:#ef4444;color:#fff;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;">Yes, Reset</button>
+            <button onclick="localStorage.clear();location.href=location.href.split('?')[0]+'?reset='+Date.now();" style="flex:1;padding:10px;border-radius:8px;border:none;background:#ef4444;color:#fff;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;">Yes, Reset</button>
           </div>
         </div>
         <button class="btn-sm danger" style="width:100%;padding:12px;margin-top:8px;" onclick="document.getElementById('reset-confirm').style.display='block'">🗑 Reset All Data</button>
@@ -1192,23 +1234,21 @@ function obNext() {
   list.innerHTML = state.assets.map((a, i) => {
     const isEPF = a.name.toLowerCase().includes('epf') || a.name.toLowerCase().includes('kwsp');
     const fields = `
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
         <div class="field" style="margin:0;">
-          <label style="font-size:10px;">Current Balance (RM)</label>
+          <label style="font-size:10px;white-space:nowrap;">Balance (RM)</label>
           <input type="number" id="ob-asset-cur-${i}" placeholder="0" min="0" style="font-size:16px;">
         </div>
         <div class="field" style="margin:0;">
-          <label style="font-size:10px;">Annual Return (%)</label>
+          <label style="font-size:10px;white-space:nowrap;">Return %/yr</label>
           <input type="number" id="ob-asset-rate-${i}" value="${a.rate}" min="0" max="30" step="0.1" style="font-size:16px;">
         </div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
         <div class="field" style="margin:0;">
-          <label style="font-size:10px;">Monthly Contribution (RM)</label>
+          <label style="font-size:10px;white-space:nowrap;">Contribution (RM)</label>
           <input type="number" id="ob-asset-con-${i}" placeholder="0" min="0" style="font-size:16px;">
         </div>
         <div class="field" style="margin:0;">
-          <label style="font-size:10px;">Frequency</label>
+          <label style="font-size:10px;white-space:nowrap;">Frequency</label>
           <select id="ob-asset-freq-${i}" style="font-size:16px;background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;color:var(--text);width:100%;">
             <option value="monthly">Monthly</option>
             <option value="quarterly">Quarterly</option>
@@ -1401,7 +1441,7 @@ function calcAssetFV(asset, t) {
 // Before 55: only excess above RM1.1M is accessible
 // At 55+: full balance accessible
 const EPF_LOCK_AGE = 55;
-const EPF_EXCESS_THRESHOLD = 1_200_000; // RM1.2M threshold
+const EPF_EXCESS_THRESHOLD = 1_100_000; // RM1.1M threshold (from Jan 2026; rising to RM1.2M in 2027, RM1.3M in 2028. Source: EPF/kwsp.gov.my)
 
 function calcAccessibleFV(asset, t) {
   const fv = calcAssetFV(asset, t);
@@ -1552,11 +1592,12 @@ function sim90(retireAge, portfolio) {
     ? state.assets.reduce((s, a) => s + (a.rate / 100) * (a.current || 1), 0) /
       state.assets.reduce((s, a) => s + (a.current || 1), 0)
     : 0.05;
-  const adjRate = state.inflationAdjusted ? avgRate / (1 + state.inflation / 100) : avgRate;
+  const retireRate = Math.min(avgRate, 0.06);
+  const wr = (state.withdrawalRate || 4) / 100;
   let bal = portfolio;
-  const annualWithdraw = state.expense * 12;
-  for (let y = 0; y < (90 - retireAge); y++) {
-    bal = bal * (1 + adjRate) - annualWithdraw;
+  for (let age = retireAge; age < 90; age++) {
+    bal = bal * (1 + retireRate);      // earn return
+    bal = bal - (bal * wr);            // withdraw 4% of current balance
     if (bal <= 0) return 0;
   }
   return bal;
@@ -1626,8 +1667,53 @@ function recalc() {
     fiIncomeEl.textContent = fmtRM(fiIncome) + '/mo';
     fiPort90El.textContent = port90 > 0 ? fmtRM(port90) : '⚠️ Depleted';
     fiPort90El.style.color = port90 <= 0 ? '#ff5a5a' : '';
-    document.getElementById('mile-fi-epf').textContent = fmtRM(fiEPF);
-    document.getElementById('mile-fi-nonepf').textContent = fmtRM(fiNonEPF);
+    // Dividend + passive at FI age — totalMonthlyIncome already includes standalone passive
+    // Also add EPF yield even if locked (user can plan around it — it's their money)
+    let divPassiveAtFI = fiRow.totalMonthlyIncome || 0;
+    let epfDivAtFI = 0;
+    // If EPF is locked at FI age, add its yield back manually (excluded in calcAssetMonthlyIncomeAtT)
+    for (const a of state.assets) {
+      if (isEPFAsset(a) && fiMileAge < EPF_LOCK_AGE) {
+        const fv = calcAssetFV(a, fiRow.year);
+        const epfYield = (fv * getAssetIncomeYield(a)) / 12;
+        epfDivAtFI += epfYield;
+        divPassiveAtFI += epfYield;
+      } else if (isEPFAsset(a)) {
+        const fv = calcAssetFV(a, fiRow.year);
+        epfDivAtFI += (fv * getAssetIncomeYield(a)) / 12;
+      }
+    }
+    const nonEpfDivAtFI = divPassiveAtFI - epfDivAtFI;
+    const divPassiveEl = document.getElementById('mile-fi-divpassive');
+    if (divPassiveEl) divPassiveEl.textContent = fmtRM(divPassiveAtFI) + '/mo';
+    const divEpfEl = document.getElementById('mile-fi-div-epf');
+    if (divEpfEl) divEpfEl.textContent = fmtRM(epfDivAtFI) + '/mo';
+    const divNonEpfEl = document.getElementById('mile-fi-div-nonepf');
+    if (divNonEpfEl) divNonEpfEl.textContent = fmtRM(nonEpfDivAtFI) + '/mo';
+    const epfNoteEl = document.getElementById('mile-fi-epf-note');
+    if (epfNoteEl) {
+      if (fiMileAge < EPF_LOCK_AGE) {
+        const epfFVAtFI = state.assets.filter(isEPFAsset).reduce((s, a) => s + calcAssetFV(a, fiRow.year), 0);
+        const excessAtFI = Math.max(0, epfFVAtFI - EPF_EXCESS_THRESHOLD);
+        if (excessAtFI > 0) {
+          epfNoteEl.innerHTML = `⚠️ EPF locked until 55, but your balance exceeds the RM1.1M threshold — <b>${fmtRM(excessAtFI)}</b> may be withdrawn early via i-Akaun (More Than RM1M Savings Withdrawal). <a href="https://www.kwsp.gov.my/en/member/life-stages/million-savings" target="_blank" style="color:#ffb800;opacity:0.8;text-decoration:underline;white-space:nowrap;">kwsp.gov.my ↗</a>`;
+        } else {
+          epfNoteEl.innerHTML = `⚠️ EPF locked until age 55, or when total savings exceed RM1.1M (2026 threshold; rising to RM1.2M in 2027, RM1.3M in 2028). Only non-EPF + passive income accessible at FI age ${fiMileAge}. <a href="https://www.kwsp.gov.my/en/member/life-stages/million-savings" target="_blank" style="color:#ffb800;opacity:0.8;text-decoration:underline;white-space:nowrap;">kwsp.gov.my ↗</a>`;
+        }
+        epfNoteEl.style.color = '#ffb800';
+      } else {
+        epfNoteEl.innerHTML = `✅ EPF fully accessible at age ${fiMileAge}. All dividend income available. <a href="https://www.kwsp.gov.my/en/member/life-stages/age-55-60-withdrawal" target="_blank" style="color:var(--accent);opacity:0.7;text-decoration:underline;white-space:nowrap;">kwsp.gov.my ↗</a>`;
+        epfNoteEl.style.color = 'var(--accent)';
+      }
+    }
+    // Dividend income at 90 — portfolio at 90 × return rate ÷ 12, no reinvestment
+    const div90Monthly = port90 > 0 ? (port90 * Math.min(avgRate, 0.06)) / 12 : 0;
+    const div90El = document.getElementById('mile-fi-div90');
+    if (div90El) { div90El.textContent = port90 > 0 ? fmtRM(div90Monthly) + '/mo' : '–'; }
+    const fiEpfEl = document.getElementById('mile-fi-epf');
+    if (fiEpfEl) fiEpfEl.textContent = fmtRM(fiEPF);
+    const fiNonEpfEl = document.getElementById('mile-fi-nonepf');
+    if (fiNonEpfEl) fiNonEpfEl.textContent = fmtRM(fiNonEPF);
   } else {
     const lastRow  = yearlyData[yearlyData.length - 1];
     const bestIncome = lastRow ? (lastRow.total * wr / 12) + calcStandalonePassiveAtT(lastRow.year) : 0;
@@ -1640,8 +1726,20 @@ function recalc() {
     fiIncomeEl.textContent = fmtRM(bestIncome) + '/mo';
     fiPort90El.textContent = '–';
     fiPort90El.style.color = '';
-    document.getElementById('mile-fi-epf').textContent = '–';
-    document.getElementById('mile-fi-nonepf').textContent = '–';
+    const div90El = document.getElementById('mile-fi-div90');
+    if (div90El) div90El.textContent = '–';
+    const divPassiveEl = document.getElementById('mile-fi-divpassive');
+    if (divPassiveEl) divPassiveEl.textContent = '–';
+    const divEpfEl = document.getElementById('mile-fi-div-epf');
+    if (divEpfEl) divEpfEl.textContent = '–';
+    const divNonEpfEl = document.getElementById('mile-fi-div-nonepf');
+    if (divNonEpfEl) divNonEpfEl.textContent = '–';
+    const epfNoteEl = document.getElementById('mile-fi-epf-note');
+    if (epfNoteEl) { epfNoteEl.textContent = '–'; epfNoteEl.style.color = ''; }
+    const fiEpfEl2 = document.getElementById('mile-fi-epf');
+    if (fiEpfEl2) fiEpfEl2.textContent = '–';
+    const fiNonEpfEl2 = document.getElementById('mile-fi-nonepf');
+    if (fiNonEpfEl2) fiNonEpfEl2.textContent = '–';
   }
 
   // ── Retirement Score ──
@@ -1683,7 +1781,8 @@ function recalc() {
     const growthRate = Math.max(0, adjRate - yieldRate);
     const port90div = port55 * Math.pow(1 + growthRate, 35);
 
-    epfSubEl.textContent = yrsLabel;
+    epfSubEl.textContent = `Dividend + passive: ${fmtRM(monthlyDividend)}/mo`;
+    epfSubEl.style.fontSize = '10px';
     epfTargetEl.textContent = fmtRM(port55);
     document.getElementById('mile-epf-epf55').textContent = fmtRM(epfVal || 0);
     document.getElementById('mile-epf-nonepf55').textContent = fmtRM(nonEpfVal || 0);
@@ -2217,7 +2316,6 @@ function buildPassivePanel(p) {
           <div class="plabel">Income Type</div>
           <select class="pselect" onchange="updatePassive('${p.id}','type',this.value)">
             <option value="rental" ${p.type==='rental'?'selected':''}>🏠 Rental</option>
-            <option value="dividend" ${p.type==='dividend'?'selected':''}>📈 Dividends</option>
             <option value="business" ${p.type==='business'?'selected':''}>💼 Business</option>
             <option value="royalty" ${p.type==='royalty'?'selected':''}>🎨 Royalties</option>
             <option value="other" ${p.type==='other'?'selected':''}>💜 Other</option>
@@ -2315,40 +2413,8 @@ function updatePassiveTotals() {
 // SCENARIOS
 // ═══════════════════════════════════════════
 const SCENARIOS = [
-  { id:'epf-self-1000', name:'💰 Add RM1,000/month to EPF',
-    desc(assets){ const a=assets.find(x=>x.name==='EPF'||(x.id||'').includes('epf')); return a ? `+RM1,000/mo to EPF · at ${a.rate}% return` : 'Add RM 1,000/month voluntary EPF self-contribution'; },
-    apply(assets){
-      const epf = assets.find(a => a.name==='EPF' || (a.id||'').includes('epf'));
-      if (!epf) return {};
-      const monthly = epf.freq==='monthly' ? epf.contrib : epf.freq==='quarterly' ? epf.contrib/3 : epf.contrib/12;
-      return { [epf.id]: { contrib: monthly + 1000, freq: 'monthly' } };
-    }},
-  { id:'fd-self-1000', name:'🏦 Add RM1,000/month to FD',
-    desc(assets){ const a=assets.find(x=>x.name==='Fixed Deposit'||x.name==='FD'||(x.id||'').includes('fd')); return a ? `+RM1,000/mo to FD · at ${a.rate}% return` : 'Add RM 1,000/month top-up to Fixed Deposit'; },
-    apply(assets){
-      const fd = assets.find(a => a.name==='Fixed Deposit' || a.name==='FD' || (a.id||'').includes('fd'));
-      if (!fd) return {};
-      const monthly = fd.freq==='monthly' ? fd.contrib : fd.freq==='quarterly' ? fd.contrib/3 : fd.contrib/12;
-      return { [fd.id]: { contrib: monthly + 1000, freq: 'monthly' } };
-    }},
   { id:'boost-passive', name:'💜 Add RM1,000 Passive/Month', desc:'See impact of new RM 1,000/month passive income',
     apply(assets){ return {}; }, passiveBoost: 1000 },
-  { id:'stocks-self-1000', name:'📈 Add RM1,000/month to Stocks',
-    desc(assets){ const a=assets.find(x=>x.name==='Stocks'||(x.id||'').includes('stock')); return a ? `+RM1,000/mo to Stocks · at ${a.rate}% return` : 'Add RM 1,000/month extra contribution to Stocks'; },
-    apply(assets){
-      const stocks = assets.find(a => a.name==='Stocks' || (a.id||'').includes('stock'));
-      if (!stocks) return {};
-      const monthly = stocks.freq==='monthly' ? stocks.contrib : stocks.freq==='quarterly' ? stocks.contrib/3 : stocks.contrib/12;
-      return { [stocks.id]: { contrib: monthly + 1000, freq: 'monthly' } };
-    }},
-  { id:'etf-self-1000', name:'📊 Add RM1,000/month to ETF',
-    desc(assets){ const a=assets.find(x=>x.name==='ETF'||(x.id||'').includes('etf')); return a ? `+RM1,000/mo to ETF · at ${a.rate}% return` : 'Add RM 1,000/month extra contribution to ETF'; },
-    apply(assets){
-      const etf = assets.find(a => a.name==='ETF' || (a.id||'').includes('etf'));
-      if (!etf) return {};
-      const monthly = etf.freq==='monthly' ? etf.contrib : etf.freq==='quarterly' ? etf.contrib/3 : etf.contrib/12;
-      return { [etf.id]: { contrib: monthly + 1000, freq: 'monthly' } };
-    }},
   { id:'low-return', name:'📉 Conservative Returns (−2%)', desc:'Reduce all return rates by 2%',
     apply(assets){ const ov={}; assets.forEach(a=>{ov[a.id]={rate:Math.max(0,a.rate-2)}}); return ov; }},
   { id:'stock-crash', name:'💥 20% Stock Market Crash', desc:'All volatile assets drop 20% in value immediately',
@@ -2491,9 +2557,19 @@ function applyScenario(id) {
   document.getElementById('sc-base-port90').textContent = basePort90 !== null ? (basePort90 > 0 ? fmtRM(basePort90) : '⚠️ Depleted') : '–';
   document.getElementById('sc-new-port90').textContent = scPort90 !== null ? (scPort90 > 0 ? fmtRM(scPort90) : '⚠️ Depleted') : '–';
 
+  // Dividend income at 90 — portfolio × blended return rate ÷ 12
+  const avgRate = state.assets.length > 0
+    ? state.assets.reduce((s, a) => s + (parseFloat(a.rate) || 0), 0) / state.assets.length / 100
+    : 0.05;
+  const blendedRate = Math.min(avgRate, 0.06);
+  const baseDiv90 = basePort90 > 0 ? (basePort90 * blendedRate) / 12 : 0;
+  const scDiv90   = scPort90   > 0 ? (scPort90   * blendedRate) / 12 : 0;
+  document.getElementById('sc-base-div90').textContent = basePort90 > 0 ? fmtRM(baseDiv90) + '/mo' : '–';
+  document.getElementById('sc-new-div90').textContent  = scPort90   > 0 ? fmtRM(scDiv90)   + '/mo' : '–';
+
   // Extra portfolio gain row — show diff at FI age or project-until age
   const gainRow = document.getElementById('sc-gain-row');
-  const hasContribScenario = ['epf-self-1000','fd-self-1000','stocks-self-1000','etf-self-1000','boost-etf','no-contrib'].includes(id);
+  const hasContribScenario = ['boost-passive','boost-etf','no-contrib'].includes(id);
   if (hasContribScenario && (baseFIRow || scFIRow)) {
     const refAge = scFIAge || baseFIAge || (state.age + 20);
     const refYear = refAge - state.age;
@@ -2524,7 +2600,9 @@ function applyScenario(id) {
     diffEl.textContent = '–'; diffEl.style.color = ''; diffSub.textContent = 'Not yet achievable';
   }
 
-  document.getElementById('scenario-result').style.display = 'block';
+  const resultEl = document.getElementById('scenario-result');
+  resultEl.style.display = 'block';
+  setTimeout(() => resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
 }
 
 function clearScenario() {
@@ -2595,8 +2673,8 @@ function importData(evt) {
 }
 function confirmReset() {
   if (confirm('Reset all data? This cannot be undone.')) {
-    localStorage.removeItem('fi_planner_v3');
-    location.reload();
+    localStorage.clear();
+    location.href = location.href.split('?')[0] + '?reset=' + Date.now();
   }
 }
 
