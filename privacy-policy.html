@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f5f0;
+      --ink: #1a1814;
+      --mid: #6b6760;
+      --rule: #d8d4cc;
+      --accent: #2d5a3d;
+      --tag-bg: #e8f0eb;
+      --tag-ink: #2d5a3d;
+    }
+
+    html { font-size: 16px; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 24px 100px;
+    }
+
+    .stamp {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1.5px solid var(--accent);
+      color: var(--accent);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 2px;
+      margin-bottom: 40px;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.1s forwards;
+    }
+
+    .stamp::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    header {
+      width: 100%;
+      max-width: 680px;
+      border-bottom: 1.5px solid var(--ink);
+      padding-bottom: 28px;
+      margin-bottom: 48px;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.2s forwards;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 5vw, 3.2rem);
+      font-weight: 600;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    .meta {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--mid);
+      letter-spacing: 0.05em;
+    }
+
+    main {
+      width: 100%;
+      max-width: 680px;
+    }
+
+    .section {
+      margin-bottom: 48px;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards;
+    }
+
+    .section:nth-child(1) { animation-delay: 0.35s; }
+    .section:nth-child(2) { animation-delay: 0.45s; }
+    .section:nth-child(3) { animation-delay: 0.55s; }
+    .section:nth-child(4) { animation-delay: 0.65s; }
+    .section:nth-child(5) { animation-delay: 0.75s; }
+
+    .section-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--mid);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 14px;
+      letter-spacing: -0.01em;
+    }
+
+    p {
+      line-height: 1.75;
+      color: #3a3833;
+      font-size: 0.97rem;
+    }
+
+    p + p { margin-top: 12px; }
+
+    .highlight-box {
+      background: var(--tag-bg);
+      border-left: 3px solid var(--accent);
+      padding: 20px 24px;
+      margin-top: 16px;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .highlight-box p {
+      color: var(--accent);
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    .tag {
+      display: inline-block;
+      background: var(--tag-bg);
+      color: var(--tag-ink);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 2px;
+      margin-right: 6px;
+      margin-top: 6px;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid var(--rule);
+      margin: 48px 0;
+    }
+
+    footer {
+      width: 100%;
+      max-width: 680px;
+      padding-top: 32px;
+      border-top: 1.5px solid var(--ink);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 12px;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.85s forwards;
+    }
+
+    .footer-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--mid);
+      letter-spacing: 0.06em;
+      line-height: 1.6;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 40px 20px 80px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="stamp">Privacy Policy</div>
+
+  <header>
+    <h1>Your data<br>stays with you.</h1>
+    <div class="meta">Effective date: <span id="eff-date"></span> &nbsp;·&nbsp; Version 1.0</div>
+  </header>
+
+  <main>
+
+    <div class="section">
+      <div class="section-num">§ 01</div>
+      <h2>Overview</h2>
+      <p>This Privacy Policy describes how this application handles information. The short version: it doesn't collect any.</p>
+      <div class="highlight-box">
+        <p>This app collects no personal data, transmits nothing to external servers, and stores nothing beyond your own device.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-num">§ 02</div>
+      <h2>Data Collection</h2>
+      <p>This application does not collect, record, store, or transmit any personal information. This includes but is not limited to:</p>
+      <div style="margin-top: 14px;">
+        <span class="tag">Name</span>
+        <span class="tag">Email address</span>
+        <span class="tag">IP address</span>
+        <span class="tag">Location data</span>
+        <span class="tag">Usage analytics</span>
+        <span class="tag">Device identifiers</span>
+        <span class="tag">Cookies</span>
+        <span class="tag">Crash reports</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-num">§ 03</div>
+      <h2>Local Operation</h2>
+      <p>This app runs entirely on your local device as an offline file. All computations and data processing occur locally. No internet connection is required or used during normal operation.</p>
+      <p>Any data you enter into the app remains on your device and under your full control at all times.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-num">§ 04</div>
+      <h2>Third Parties</h2>
+      <p>This application does not integrate with any third-party services, analytics platforms, advertising networks, or data brokers. There are no SDKs, trackers, or remote dependencies embedded in the app.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-num">§ 05</div>
+      <h2>Changes to This Policy</h2>
+      <p>If this policy is ever updated, the effective date above will reflect the change. Continued use of the app constitutes acceptance of the revised policy.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-num">§ 06</div>
+      <h2>Contact</h2>
+      <p>If you have questions about this Privacy Policy, please reach out via the contact information provided with the application.</p>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="footer-label">
+      This document is provided for transparency.<br>
+      No legal advice is implied or given.
+    </div>
+    <div class="footer-label" style="text-align: right;">
+      Offline application<br>
+      No data collected
+    </div>
+  </footer>
+
+  <script>
+    const d = new Date();
+    document.getElementById('eff-date').textContent =
+      d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  </script>
+
+</body>
+</html>
