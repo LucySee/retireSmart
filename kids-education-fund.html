@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kids Education Fund</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-family: 'Nunito Sans', sans-serif;
+  background: #f0f4ff;
+  color: #1e2d4a;
+  font-size: 15px;
+}
+
+:root {
+  --bg: #f0f4ff;
+  --white: #ffffff;
+  --purple: #6c63ff;
+  --purple-lt: #8b85ff;
+  --purple-pale: #eeecff;
+  --green: #22a87a;
+  --green-lt: #2dc98f;
+  --green-pale: #dff6ee;
+  --orange: #f5873a;
+  --orange-pale: #fff0e6;
+  --pink: #f05fa0;
+  --pink-pale: #ffedf5;
+  --blue: #3b82f6;
+  --blue-pale: #eff6ff;
+  --ink: #1e2d4a;
+  --ink-mid: #445571;
+  --ink-lt: #7a90b0;
+  --border: #dde5f5;
+  --radius: 18px;
+  --shadow: 0 2px 12px rgba(108,99,255,0.08);
+  --shadow-lg: 0 8px 32px rgba(108,99,255,0.15);
+}
+
+.app { display: flex; flex-direction: column; min-height: 100vh; width: 100%; }
+
+/* HEADER */
+.hdr {
+  background: linear-gradient(135deg, #6c63ff, #9b74ff);
+  width: 100%; padding: 0 1.25rem; height: 66px;
+  display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;
+  flex-shrink: 0; box-shadow: 0 4px 20px rgba(108,99,255,0.35);
+}
+.hdr-brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.hdr-icon {
+  width: 38px; height: 38px; flex-shrink: 0;
+  background: rgba(255,255,255,0.22); border-radius: 12px;
+  display: flex; align-items: center; justify-content: center; font-size: 20px;
+}
+.hdr-title { font-family: 'Nunito', sans-serif; font-size: 1.1rem; font-weight: 800; color: #fff; white-space: nowrap; }
+.hdr-sub { font-size: 0.65rem; color: rgba(255,255,255,0.7); letter-spacing: 0.04em; }
+.hdr-btns { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+
+.btn { cursor: pointer; border: none; font-family: 'Nunito', sans-serif; transition: all 0.18s; display: inline-flex; align-items: center; gap: 5px; font-weight: 700; }
+.btn-amber { background: #fff; color: var(--purple); padding: 8px 16px; border-radius: 10px; font-size: 0.84rem; }
+.btn-amber:hover { background: #f5f3ff; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(255,255,255,0.4); }
+.btn-ghost { background: rgba(255,255,255,0.15); color: #fff; border: 1.5px solid rgba(255,255,255,0.3); padding: 8px 14px; border-radius: 10px; font-size: 0.8rem; }
+.btn-ghost:hover { background: rgba(255,255,255,0.25); }
+
+/* CONTENT */
+.content { flex: 1; width: 100%; max-width: 1040px; margin: 0 auto; padding: 1.6rem 1.25rem 3rem; }
+
+/* EMPTY */
+.empty { text-align: center; padding: 3.5rem 1.5rem; background: var(--white); border-radius: var(--radius); border: 2.5px dashed var(--border); }
+.empty-emoji { font-size: 3.5rem; }
+.empty h2 { font-family: 'Nunito', sans-serif; font-size: 1.45rem; font-weight: 800; margin: 0.75rem 0 0.4rem; color: var(--ink); }
+.empty p { color: var(--ink-lt); font-size: 0.9rem; margin-bottom: 1.4rem; line-height: 1.65; }
+
+/* SUMMARY */
+.summary {
+  background: linear-gradient(135deg, #22a87a, #2dc98f);
+  border-radius: var(--radius); padding: 1.3rem 1.5rem; margin-bottom: 1.4rem;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;
+  color: white; box-shadow: 0 6px 24px rgba(34,168,122,0.3);
+  animation: fadeUp 0.35s ease;
+}
+@keyframes fadeUp { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:translateY(0); } }
+.sum-lbl { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.82; margin-bottom: 3px; font-weight: 600; }
+.sum-amt { font-family: 'Nunito', sans-serif; font-size: 2rem; font-weight: 800; line-height: 1; }
+.sum-note { font-size: 0.76rem; opacity: 0.75; margin-top: 4px; }
+.sum-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { background: rgba(255,255,255,0.2); border-radius: 20px; padding: 4px 12px; font-size: 0.77rem; font-weight: 600; }
+
+/* SECTION */
+.sec-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+.sec-title { font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 700; color: var(--ink-mid); display: flex; align-items: center; gap: 8px; }
+.badge-n { background: var(--white); border: 1.5px solid var(--border); border-radius: 20px; padding: 2px 10px; font-size: 0.75rem; font-weight: 700; color: var(--ink-lt); font-family: 'Nunito', sans-serif; }
+
+/* CARDS */
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1.2rem; }
+.card { background: var(--white); border-radius: var(--radius); border: 1.5px solid var(--border); box-shadow: var(--shadow); overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; animation: cardIn 0.3s ease; }
+@keyframes cardIn { from { opacity:0; transform:scale(0.96) translateY(8px); } to { opacity:1; transform:scale(1) translateY(0); } }
+.card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+
+.card-hdr { padding: 1.15rem 1.25rem 1rem; display: flex; align-items: flex-start; justify-content: space-between; border-bottom: 1.5px solid var(--border); }
+.card-av { width: 44px; height: 44px; border-radius: 13px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; margin-right: 11px; }
+.av-public { background: var(--green-pale); }
+.av-private { background: var(--orange-pale); }
+.av-overseas { background: var(--pink-pale); }
+.card-name-row { display: flex; align-items: center; gap: 10px; }
+.card-name { font-family: 'Nunito', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--ink); }
+.card-age { color: var(--ink-lt); font-size: 0.78rem; margin-top: 2px; }
+.pill { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.67rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; font-family: 'Nunito', sans-serif; }
+.p-public { background: var(--green-pale); color: var(--green); }
+.p-private { background: var(--orange-pale); color: #c05a10; }
+.p-overseas { background: var(--pink-pale); color: var(--pink); }
+
+.card-body { padding: 1.1rem 1.25rem; }
+.living-tag { font-size: 0.72rem; color: var(--ink-lt); background: var(--bg); border-radius: 20px; display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; margin-bottom: 0.9rem; border: 1px solid var(--border); font-weight: 500; }
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+.stat-lbl { font-size: 0.67rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--ink-lt); margin-bottom: 3px; font-weight: 600; }
+.stat-val { font-size: 0.95rem; font-weight: 700; color: var(--ink); }
+.sv-teal { color: var(--green); }
+
+/* TOOLTIP */
+.info-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 15px; height: 15px; border-radius: 50%;
+  background: var(--purple-pale); color: var(--purple);
+  font-size: 9px; font-weight: 800; cursor: pointer;
+  margin-left: 5px; vertical-align: middle; flex-shrink: 0;
+  font-style: normal; transition: all 0.15s;
+}
+.info-icon:hover { background: var(--purple); color: #fff; }
+#globalTip {
+  display: none; position: fixed;
+  background: #fffdf7;
+  border: 1.5px solid #e8d9b8;
+  border-radius: 14px; padding: 14px 16px;
+  font-size: 0.82rem; line-height: 1.6;
+  max-width: min(300px, calc(100vw - 24px));
+  z-index: 1000; box-shadow: 0 8px 28px rgba(180,140,60,0.15);
+  pointer-events: none; font-family: 'Nunito Sans', sans-serif;
+  font-weight: 400; white-space: normal;
+}
+#globalTip.visible { display: block; }
+
+.sv-big { font-family: 'Nunito', sans-serif; font-size: 1.2rem; font-weight: 800; color: var(--green); }
+
+.card-foot { padding: 0.85rem 1.25rem; border-top: 1.5px solid var(--border); display: flex; gap: 7px; background: #fafbff; }
+.bt-tl { flex:1; background: linear-gradient(135deg, var(--purple), var(--purple-lt)); color:#fff; border:none; padding:8px 10px; border-radius:10px; font-family:'Nunito',sans-serif; font-size:0.78rem; font-weight:700; cursor:pointer; transition:all 0.18s; }
+.bt-tl:hover { opacity:0.88; transform:translateY(-1px); }
+.bt-ed { background:var(--bg); color:var(--ink-mid); border:1.5px solid var(--border); padding:8px 13px; border-radius:10px; font-family:'Nunito',sans-serif; font-size:0.78rem; font-weight:600; cursor:pointer; transition:all 0.18s; }
+.bt-ed:hover { border-color:var(--purple); color:var(--purple); }
+.bt-rm { background:none; color:#e05a5a; border:1.5px solid #fad5d5; padding:8px 10px; border-radius:10px; font-size:0.78rem; cursor:pointer; transition:all 0.18s; }
+.bt-rm:hover { background:#fff0f0; }
+
+/* OVERLAY / MODAL */
+.overlay { position:fixed; inset:0; z-index:300; background:rgba(20,30,60,0.45); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; padding:1rem; animation:fadeIn 0.18s ease; }
+@keyframes fadeIn { from{opacity:0}to{opacity:1} }
+.modal { background:var(--white); border-radius:22px; width:100%; max-width:500px; max-height:92vh; overflow-y:auto; box-shadow:0 24px 64px rgba(108,99,255,0.22); animation:popIn 0.25s cubic-bezier(0.34,1.5,0.64,1); }
+@keyframes popIn { from{opacity:0;transform:scale(0.93) translateY(16px);}to{opacity:1;transform:scale(1) translateY(0);} }
+.modal-wide { max-width:660px; }
+
+.modal-hdr { padding:1.3rem 1.5rem 1rem; border-bottom:1.5px solid var(--border); display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; background:var(--white); z-index:1; }
+.modal-title { font-family:'Nunito',sans-serif; font-size:1.2rem; font-weight:800; color:var(--ink); }
+.modal-x { width:32px; height:32px; background:var(--bg); border:none; border-radius:9px; cursor:pointer; font-size:1.1rem; color:var(--ink-mid); display:flex; align-items:center; justify-content:center; transition:all 0.15s; }
+.modal-x:hover { background:var(--purple-pale); color:var(--purple); }
+.modal-body { padding:1.3rem 1.5rem; }
+.modal-foot { padding:1rem 1.5rem 1.3rem; border-top:1.5px solid var(--border); display:flex; gap:8px; justify-content:flex-end; position:sticky; bottom:0; background:var(--white); }
+
+/* FORM */
+.fg { margin-bottom:1rem; }
+.fl { display:block; font-size:0.8rem; font-weight:700; color:var(--ink-mid); margin-bottom:5px; }
+.opt { font-weight:500; color:var(--ink-lt); font-size:0.74rem; }
+.fi { width:100%; padding:10px 14px; border:2px solid var(--border); border-radius:11px; font-family:'Nunito Sans',sans-serif; font-size:0.9rem; color:var(--ink); background:#fff; outline:none; transition:border-color 0.18s,box-shadow 0.18s; }
+.fi:focus { border-color:var(--purple); box-shadow:0 0 0 3px rgba(108,99,255,0.12); }
+.fgrid { display:grid; grid-template-columns:1fr 1fr; gap:0.9rem; }
+
+.radio-row { display:flex; gap:7px; flex-wrap:wrap; }
+.r-opt { display:none; }
+.r-lbl { flex:1; min-width:fit-content; padding:9px 10px; border:2px solid var(--border); border-radius:11px; cursor:pointer; text-align:center; font-size:0.8rem; font-weight:600; transition:all 0.16s; font-family:'Nunito',sans-serif; }
+.r-opt:checked + .r-lbl { border-color:var(--purple); background:var(--purple-pale); color:var(--purple); }
+
+.tog-row { display:flex; gap:7px; }
+.t-opt { display:none; }
+.t-lbl { flex:1; padding:9px; border:2px solid var(--border); border-radius:11px; cursor:pointer; text-align:center; font-size:0.8rem; font-weight:600; transition:all 0.16s; font-family:'Nunito',sans-serif; }
+.t-opt:checked + .t-lbl { border-color:var(--orange); background:var(--orange-pale); color:var(--orange); }
+
+.adv-btn { background:none; border:none; color:var(--purple); font-size:0.79rem; cursor:pointer; text-decoration:underline; padding:0; font-family:'Nunito',sans-serif; font-weight:600; }
+.adv-panel { background:var(--bg); border-radius:12px; padding:0.9rem; margin-top:0.7rem; display:none; border:1.5px solid var(--border); }
+.adv-panel.open { display:block; }
+
+.note-box { background:linear-gradient(135deg,var(--green-pale),#e8faf4); border-radius:12px; padding:0.85rem 1rem; margin-top:0.9rem; font-size:0.76rem; color:var(--green); line-height:1.7; border:1px solid #c0eed9; }
+.note-box strong { display:block; margin-bottom:3px; font-size:0.78rem; }
+
+.btn-primary { background:linear-gradient(135deg, var(--purple), var(--purple-lt)); color:#fff; border:none; padding:11px 24px; border-radius:11px; font-family:'Nunito',sans-serif; font-weight:700; font-size:0.88rem; cursor:pointer; transition:all 0.18s; }
+.btn-primary:hover { opacity:0.9; box-shadow:0 4px 16px rgba(108,99,255,0.35); transform:translateY(-1px); }
+.btn-cancel { background:var(--bg); color:var(--ink-mid); border:2px solid var(--border); padding:11px 18px; border-radius:11px; font-family:'Nunito',sans-serif; font-size:0.88rem; font-weight:600; cursor:pointer; transition:all 0.18s; }
+.btn-cancel:hover { border-color:var(--purple); color:var(--purple); }
+
+/* TIMELINE */
+.tl-stats { display:flex; gap:1.2rem; flex-wrap:wrap; padding:0.9rem 1.5rem 1rem; border-bottom:1.5px solid var(--border); }
+.tls-lbl { font-size:0.67rem; text-transform:uppercase; letter-spacing:0.07em; color:var(--ink-lt); font-weight:600; }
+.tls-val { font-size:0.97rem; font-weight:700; color:var(--ink); }
+.chart-wrap { padding:1rem 1.5rem 0.5rem; }
+.chart-svg { width:100%; display:block; height:148px; }
+.tbl-wrap { padding:0 1.5rem 0.5rem; max-height:230px; overflow-y:auto; }
+.tbl { width:100%; border-collapse:collapse; font-size:0.8rem; }
+.tbl th { text-align:left; padding:7px 8px; font-size:0.67rem; text-transform:uppercase; letter-spacing:0.07em; color:var(--ink-lt); border-bottom:2px solid var(--border); position:sticky; top:0; background:var(--white); font-weight:700; }
+.tbl td { padding:7px 8px; border-bottom:1px solid #eef1f9; }
+.tbl tr:last-child td { border-bottom:none; }
+.m50 td { background:rgba(245,135,58,0.07); font-weight:700; color:#c05a10; }
+.m75 td { background:rgba(34,168,122,0.07); font-weight:700; color:var(--green); }
+.m100 td { background:rgba(34,168,122,0.13); font-weight:700; color:var(--green); }
+.mbadge { display:inline-block; padding:1px 8px; border-radius:10px; font-size:0.66rem; font-weight:700; margin-left:5px; }
+
+/* SETTINGS */
+.settings-note { font-size:0.79rem; color:var(--ink-lt); margin-bottom:0.9rem; line-height:1.6; }
+.danger-btn { width:100%; margin-top:0.5rem; background:none; border:2px solid #fad5d5; color:#e05a5a; padding:10px; border-radius:11px; cursor:pointer; font-family:'Nunito',sans-serif; font-size:0.82rem; font-weight:600; transition:all 0.18s; }
+.danger-btn:hover { background:#fff0f0; }
+
+/* SAVINGS BAR */
+.sav-bar-track { background:#eef1f9; border-radius:20px; height:7px; overflow:hidden; margin:6px 0 4px; }
+.sav-bar-fill { height:100%; border-radius:20px; transition:width 0.6s cubic-bezier(0.34,1.2,0.64,1); }
+
+::-webkit-scrollbar { width:5px; height:5px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--border); border-radius:10px; }
+
+@media (max-width:480px) {
+  .hdr-sub { display:none; }
+  .btn-ghost { display:none; }
+  .sum-amt { font-size:1.6rem; }
+  .cards { grid-template-columns:1fr; }
+  .fgrid { grid-template-columns:1fr; }
+  .tl-stats { gap:0.8rem; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<header class="hdr">
+  <div class="hdr-brand">
+    <div class="hdr-icon">🎓</div>
+    <div>
+      <div class="hdr-title">Kids Education Fund</div>
+      <div class="hdr-sub">Education Savings Planner</div>
+    </div>
+  </div>
+  <div class="hdr-btns">
+    <button class="btn btn-ghost" onclick="openSettings()">⚙ Settings</button>
+    <button class="btn btn-amber" onclick="openAdd()">＋ Add Child</button>
+  </div>
+</header>
+
+<div class="content">
+  <div class="empty" id="emptyState">
+    <div class="empty-emoji">👨‍👩‍👧‍👦</div>
+    <h2>Start Planning Today</h2>
+    <p>Add your first child to begin estimating education<br>costs and monthly savings required.</p>
+    <button class="btn btn-amber" onclick="openAdd()">＋ Add First Child</button>
+  </div>
+
+  <div id="dash" style="display:none">
+    <div class="summary" id="summary">
+      <div>
+        <div class="sum-lbl">Total Monthly Saving Needed</div>
+        <div class="sum-amt" id="totalAmt">RM 0</div>
+        <div class="sum-note">Combined for all children's education funds</div>
+      </div>
+      <div class="sum-chips" id="sumChips"></div>
+    </div>
+    <div class="sec-hdr">
+      <div class="sec-title">Children <span class="badge-n" id="childCount">0</span></div>
+      <button onclick="clearAll()" style="background:none;border:1.5px solid #fad5d5;color:#e05a5a;padding:6px 12px;border-radius:9px;font-family:'Nunito',sans-serif;font-size:0.74rem;font-weight:700;cursor:pointer;transition:all 0.18s;" onmouseover="this.style.background='#fff0f0'" onmouseout="this.style.background='none'">🗑 Reset All</button>
+    </div>
+    <div class="cards" id="cardsGrid"></div>
+  </div>
+</div>
+</div>
+
+<!-- ADD/EDIT MODAL -->
+<div class="overlay" id="addModal" style="display:none" onclick="overlayClose(event,'addModal')">
+  <div class="modal">
+    <div class="modal-hdr">
+      <div class="modal-title" id="modalTitle">Add Child</div>
+      <button class="modal-x" onclick="closeModal('addModal')">✕</button>
+    </div>
+    <div class="modal-body" style="padding:1rem 1.25rem;">
+
+      <!-- SECTION 1: About the Child -->
+      <div style="font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-lt);margin-bottom:0.6rem;">👦 About the Child</div>
+      <div style="background:var(--bg);border-radius:12px;padding:0.9rem 1rem;margin-bottom:1.1rem;">
+        <div class="fgrid">
+          <div class="fg">
+            <label class="fl">Name</label>
+            <input class="fi" id="f_name" type="text" placeholder="e.g. Emma">
+          </div>
+          <div class="fg">
+            <label class="fl">Age <span class="opt">(0–17)</span></label>
+            <input class="fi" id="f_age" type="number" min="0" max="17" placeholder="e.g. 5">
+          </div>
+        </div>
+        <div class="fg" style="margin-bottom:0;">
+          <label class="fl">University Start Age <span class="opt">(default 18)</span></label>
+          <input class="fi" id="f_uniAge" type="number" min="16" max="25" placeholder="18" oninput="updateFormNote()" style="max-width:120px;">
+        </div>
+      </div>
+
+      <!-- SECTION 2: Parent -->
+      <div style="font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-lt);margin-bottom:0.6rem;">👨‍👩‍👧 Parent</div>
+      <div style="background:var(--bg);border-radius:12px;padding:0.9rem 1rem;margin-bottom:1.1rem;">
+        <div class="fg" style="margin-bottom:0;">
+          <label class="fl">Your Age</label>
+          <input class="fi" id="f_parentAge" type="number" min="18" max="80" placeholder="e.g. 35" style="max-width:120px;">
+        </div>
+      </div>
+
+      <!-- SECTION 3: University Plan -->
+      <div style="font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-lt);margin-bottom:0.6rem;">🎓 University Plan</div>
+      <div style="background:var(--bg);border-radius:12px;padding:0.9rem 1rem;margin-bottom:1.1rem;">
+        <div class="fg">
+          <label class="fl">University Type</label>
+          <div class="radio-row" style="flex-wrap:wrap;">
+            <input type="radio" name="uniType" id="r_pub" value="public" class="r-opt" checked>
+            <label for="r_pub" class="r-lbl">🏛 Public</label>
+            <input type="radio" name="uniType" id="r_semi" value="semi" class="r-opt">
+            <label for="r_semi" class="r-lbl">🏫 Semi-Private</label>
+            <input type="radio" name="uniType" id="r_pri" value="private" class="r-opt">
+            <label for="r_pri" class="r-lbl">🎓 Private</label>
+            <input type="radio" name="uniType" id="r_ovs" value="overseas" class="r-opt">
+            <label for="r_ovs" class="r-lbl">✈️ Overseas</label>
+          </div>
+        </div>
+        <div class="fg" style="margin-bottom:0;">
+          <label class="fl">Include Living Cost</label>
+          <div class="tog-row">
+            <input type="radio" name="living" id="t_yes" value="yes" class="t-opt" checked>
+            <label for="t_yes" class="t-lbl">✓ Yes</label>
+            <input type="radio" name="living" id="t_no" value="no" class="t-opt">
+            <label for="t_no" class="t-lbl">✕ No</label>
+          </div>
+        </div>
+        <div style="margin-top:0.6rem;background:#fff;border:1.5px solid var(--border);border-radius:10px;font-size:0.74rem;line-height:1.6;color:var(--ink-mid);overflow:hidden;">
+          <button onclick="const p=this.nextElementSibling;const o=p.style.display==='block';p.style.display=o?'none':'block';this.querySelector('.chev').style.transform=o?'rotate(0deg)':'rotate(180deg)';"
+            style="width:100%;background:none;border:none;padding:0.65rem 0.9rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.74rem;font-weight:700;color:var(--ink-mid);text-align:left;">
+            <span>💡 How living cost is estimated</span>
+            <span class="chev" style="font-size:0.7rem;transition:transform 0.2s;display:inline-block;">▼</span>
+          </button>
+          <div style="display:none;padding:0 1rem 0.75rem;">
+            <div style="display:flex;gap:0.5rem;margin-bottom:0.6rem;">
+              <div style="flex:1;background:var(--green-pale);border-radius:8px;padding:0.5rem 0.7rem;">
+                <div style="font-size:0.68rem;color:var(--green);font-weight:600;margin-bottom:2px;">🏠 Local/yr</div>
+                <div style="font-size:1rem;font-weight:700;color:var(--green);">RM 8–14k</div>
+              </div>
+              <div style="flex:1;background:var(--pink-pale);border-radius:8px;padding:0.5rem 0.7rem;">
+                <div style="font-size:0.68rem;color:var(--pink);font-weight:600;margin-bottom:2px;">✈️ Overseas/yr</div>
+                <div style="font-size:1rem;font-weight:700;color:var(--pink);">RM 28–35k</div>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:auto 1fr auto auto;gap:0.3rem 0.6rem;align-items:center;">
+              <span style="font-size:0.8rem;">🏠</span><span style="color:var(--ink-lt);">Accommodation</span><span style="color:var(--ink-mid);font-weight:600;text-align:right;">~40%</span><span style="color:var(--ink-lt);text-align:right;font-size:0.7rem;">RM 3.2–5.6k</span>
+              <span style="font-size:0.8rem;">🍽️</span><span style="color:var(--ink-lt);">Food &amp; daily</span><span style="color:var(--ink-mid);font-weight:600;text-align:right;">~30%</span><span style="color:var(--ink-lt);text-align:right;font-size:0.7rem;">RM 2.4–4.2k</span>
+              <span style="font-size:0.8rem;">🚌</span><span style="color:var(--ink-lt);">Transport</span><span style="color:var(--ink-mid);font-weight:600;text-align:right;">~15%</span><span style="color:var(--ink-lt);text-align:right;font-size:0.7rem;">RM 1.2–2.1k</span>
+              <span style="font-size:0.8rem;">📚</span><span style="color:var(--ink-lt);">Books &amp; supplies</span><span style="color:var(--ink-mid);font-weight:600;text-align:right;">~10%</span><span style="color:var(--ink-lt);text-align:right;font-size:0.7rem;">RM 0.8–1.4k</span>
+              <span style="font-size:0.8rem;">🎭</span><span style="color:var(--ink-lt);">Miscellaneous</span><span style="color:var(--ink-mid);font-weight:600;text-align:right;">~5%</span><span style="color:var(--ink-lt);text-align:right;font-size:0.7rem;">RM 0.4–0.7k</span>
+            </div>
+            <div style="border-top:1px solid var(--border);margin-top:0.6rem;padding-top:0.55rem;color:var(--ink-lt);font-size:0.7rem;">
+              Based on <strong style="color:var(--ink-mid);">Education Malaysia Global Services (EMGS)</strong> student cost data.<br>
+              <a href="https://educationmalaysia.gov.my/plan-your-studies/plan-your-budget/cost-of-living" target="_blank" rel="noopener" style="color:var(--green);text-decoration:none;font-weight:600;">📎 EducationMalaysia.gov.my ↗</a>
+              <span style="opacity:0.75"> · Adjust base amounts in ⚙ Settings.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 4: Savings -->
+      <div style="font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-lt);margin-bottom:0.6rem;">💰 Savings</div>
+      <div style="background:var(--bg);border-radius:12px;padding:0.9rem 1rem;margin-bottom:0.5rem;">
+        <div class="fg">
+          <label class="fl">Current Savings <span class="opt">(optional, RM)</span></label>
+          <input class="fi" id="f_savings" type="number" min="0" placeholder="e.g. 10000">
+        </div>
+        <div class="fg" style="margin-bottom:0.5rem;">
+          <label class="fl">Expected Return Rate <span class="opt">(%/yr)</span></label>
+          <input class="fi" id="f_curRate" type="number" step="0.1" placeholder="Default 4%">
+          <div style="display:flex;gap:5px;margin-top:0.5rem;">
+            <button type="button" onclick="document.getElementById('f_curRate').value=4.05" style="flex:1;background:var(--green-pale);color:var(--green);border:1.5px solid #b0e8d0;border-radius:8px;padding:5px 4px;font-size:0.68rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;">🎓 SSPN 4.05%</button>
+            <button type="button" onclick="document.getElementById('f_curRate').value=4" style="flex:1;background:var(--blue-pale);color:var(--blue);border:1.5px solid #bdd7ff;border-radius:8px;padding:5px 4px;font-size:0.68rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;">🏦 ASB ~4%</button>
+            <button type="button" onclick="document.getElementById('f_curRate').value=7" style="flex:1;background:var(--orange-pale);color:var(--orange);border:1.5px solid #ffd0a8;border-radius:8px;padding:5px 4px;font-size:0.68rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;">📈 Unit Trust ~7%</button>
+          </div>
+        </div>
+        <div style="background:#f6fff9;border:1.5px solid #b0e8d0;border-radius:10px;font-size:0.74rem;color:#2a7a55;overflow:hidden;">
+          <button onclick="const p=this.nextElementSibling;const o=p.style.display==='block';p.style.display=o?'none':'block';this.querySelector('.chev').style.transform=o?'rotate(0deg)':'rotate(180deg)';"
+            style="width:100%;background:none;border:none;padding:0.65rem 0.85rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.74rem;font-weight:700;color:#2a7a55;text-align:left;">
+            <span>🎓 Why consider SSPN?</span>
+            <span class="chev" style="font-size:0.7rem;transition:transform 0.2s;display:inline-block;">▼</span>
+          </button>
+          <div style="display:none;padding:0 0.85rem 0.75rem;">
+            <div style="display:grid;grid-template-columns:auto 1fr;gap:4px 8px;line-height:1.7;">
+              <span>✅</span><span>Government-guaranteed savings</span>
+              <span>✅</span><span>Shariah-compliant</span>
+              <span>✅</span><span>Income tax relief up to <strong>RM8,000/yr</strong></span>
+              <span>✅</span><span>Free takaful coverage for depositors</span>
+              <span>✅</span><span>Matching grant up to <strong>RM10,000</strong> — govt tops up your savings (family income ≤ RM4,000/mo)</span>
+              <span>📊</span><span>2024 dividend: <strong>4.05%</strong> (highest in 10 years)</span>
+              <span>📊</span><span>Historical avg since 2004: ~<strong>3.75%</strong>/yr</span>
+            </div>
+            <div style="margin-top:0.6rem;border-top:1px solid #b0e8d0;padding-top:0.6rem;">
+              <a href="https://www.ptptn.gov.my/en/ptptn-umum-dividen-simpan-sspn-4-05-peratus-tertinggi-dalam-tempoh-10-tahun/" target="_blank" rel="noopener" style="color:var(--green);font-weight:700;text-decoration:none;font-size:0.71rem;">📎 PTPTN Official: SSPN 4.05% Dividend 2024 ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeModal('addModal')">Cancel</button>
+      <button class="btn-primary" onclick="saveChild()">Save Child</button>
+    </div>
+  </div>
+</div>
+
+<!-- TIMELINE MODAL -->
+<div class="overlay" id="tlModal" style="display:none" onclick="overlayClose(event,'tlModal')">
+  <div class="modal modal-wide">
+    <div class="modal-hdr">
+      <div class="modal-title" id="tlTitle">Timeline</div>
+      <button class="modal-x" onclick="closeModal('tlModal')">✕</button>
+    </div>
+    <div class="tl-stats" id="tlStats"></div>
+    <div class="chart-wrap">
+      <svg class="chart-svg" id="tlSvg" viewBox="0 0 620 148" preserveAspectRatio="none"></svg>
+    </div>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Year</th><th>Parent Age</th><th>Monthly</th><th>Cumulative</th><th>Progress</th></tr></thead>
+        <tbody id="tlBody"></tbody>
+      </table>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeModal('tlModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div class="overlay" id="setModal" style="display:none" onclick="overlayClose(event,'setModal')">
+  <div class="modal" style="max-width:460px;">
+    <div class="modal-hdr">
+      <div class="modal-title">⚙ Settings</div>
+      <button class="modal-x" onclick="closeModal('setModal')">✕</button>
+    </div>
+    <div class="modal-body" style="padding:1rem 1.25rem;">
+
+      <!-- SECTION 1: General -->
+      <div style="margin-bottom:1.1rem;">
+        <div style="font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-lt);margin-bottom:0.65rem;">🎓 General</div>
+        <div style="background:var(--bg);border-radius:12px;padding:0.9rem 1rem;">
+          <div class="fgrid" style="align-items:end;">
+            <div class="fg" style="margin-bottom:0;">
+              <label class="fl">University Start Age</label>
+              <input class="fi" id="s_uniAge" type="number" min="16" max="25" value="18" style="text-align:center;font-weight:700;font-size:1rem;">
+            </div>
+            <div class="fg" style="margin-bottom:0;">
+              <label class="fl">Study Duration <span class="opt">(yrs)</span></label>
+              <input class="fi" value="4" disabled style="background:#eef1f9;color:var(--ink-lt);text-align:center;cursor:not-allowed;">
+            </div>
+          </div>
+          <div style="font-size:0.71rem;color:var(--ink-lt);margin-top:0.55rem;line-height:1.5;">e.g. set 17 for early entry, 19–20 after national service or gap year</div>
+        </div>
+      </div>
+
+      <!-- SECTION 2: Base Costs -->
+      <div style="margin-bottom:1.1rem;">
+        <div style="font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-lt);margin-bottom:0.65rem;">💰 Base Costs (Today's RM · per year)</div>
+        <div style="font-size:0.72rem;color:var(--ink-lt);margin-bottom:0.7rem;">Used as starting point before inflation is applied. Adjust to match your target university.</div>
+
+        <!-- Public -->
+        <div style="border:1.5px solid #b0e8d0;border-radius:12px;overflow:hidden;margin-bottom:0.6rem;">
+          <div style="background:var(--green-pale);padding:0.6rem 0.9rem;display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-weight:700;font-size:0.82rem;color:var(--green);">🏛 Public</span>
+            <span style="font-size:0.7rem;color:var(--green);opacity:0.8;">UM · UPM · UTM · UiTM</span>
+          </div>
+          <div class="fgrid" style="padding:0.7rem 0.9rem;gap:0.7rem;">
+            <div><label class="fl" style="font-size:0.72rem;font-weight:600;">Tuition / yr</label><input class="fi" id="s_pub" type="number" value="10000"></div>
+            <div><label class="fl" style="font-size:0.72rem;font-weight:600;">Living / yr</label><input class="fi" id="s_pubL" type="number" value="8000"></div>
+          </div>
+        </div>
+
+        <!-- Semi-Private -->
+        <div style="border:1.5px solid #ffd0a8;border-radius:12px;overflow:hidden;margin-bottom:0.6rem;">
+          <div style="background:#fff0e8;padding:0.6rem 0.9rem;display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-weight:700;font-size:0.82rem;color:#c07030;">🏫 Semi-Private</span>
+            <span style="font-size:0.7rem;color:#c07030;opacity:0.8;">UTAR · MMU · HELP · APU</span>
+          </div>
+          <div class="fgrid" style="padding:0.7rem 0.9rem;gap:0.7rem;">
+            <div><label class="fl" style="font-size:0.72rem;font-weight:600;">Tuition / yr</label><input class="fi" id="s_semi" type="number" value="18000"></div>
+            <div><label class="fl" style="font-size:0.72rem;font-weight:600;">Living / yr</label><input class="fi" id="s_semiL" type="number" value="10000"></div>
+          </div>
+        </div>
+
+        <!-- Full Private -->
+        <div style="border:1.5px solid #ffd0a8;border-radius:12px;overflow:hidden;margin-bottom:0.6rem;">
+          <div style="background:var(--orange-pale);padding:0.6rem 0.9rem;display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-weight:700;font-size:0.82rem;color:#9a6c0a;">🎓 Full Private</span>
+            <span style="font-size:0.7rem;color:#9a6c0a;opacity:0.8;">Taylor's · Sunway · Monash · Nottingham</span>
+          </div>
+          <div class="fgrid" style="padding:0.7rem 0.9rem;gap:0.7rem;">
+            <div><label class="fl" style="font-size:0.72rem;font-weight:600;">Tuition / yr</label><input class="fi" id="s_pri" type="number" value="35000"></div>
+            <div><label class="fl" style="font-size:0.72rem;font-weight:600;">Living / yr</label><input class="fi" id="s_priL" type="number" value="14000"></div>
+          </div>
+        </div>
+
+        <!-- Overseas -->
+        <div style="border:1.5px solid #ffbedd;border-radius:12px;overflow:hidden;">
+          <div style="background:var(--pink-pale);padding:0.6rem 0.9rem;display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-weight:700;font-size:0.82rem;color:var(--pink);">✈️ Overseas</span>
+            <span style="font-size:0.7rem;color:var(--pink);opacity:0.8;">UK · Australia · US</span>
+          </div>
+          <div class="fgrid" style="padding:0.7rem 0.9rem;gap:0.7rem;">
+            <div><label class="fl" style="font-size:0.72rem;font-weight:600;">Tuition / yr</label><input class="fi" id="s_ovs" type="number" value="60000"></div>
+            <div><label class="fl" style="font-size:0.72rem;font-weight:600;">Living / yr</label><input class="fi" id="s_ovsL" type="number" value="30000"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 3: Inflation Rates -->
+      <div style="margin-bottom:1.1rem;">
+        <div style="font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-lt);margin-bottom:0.65rem;">📈 Annual Inflation Rates (%)</div>
+        <div style="font-size:0.72rem;color:var(--ink-lt);margin-bottom:0.7rem;">How much education costs rise each year. Malaysia's historical range: 5–10%/yr.</div>
+        <div style="background:var(--bg);border-radius:12px;padding:0.85rem 1rem;">
+          <div style="font-size:0.72rem;font-weight:700;color:var(--ink-mid);margin-bottom:0.5rem;">Tuition</div>
+          <div class="fgrid" style="gap:0.6rem;margin-bottom:0.85rem;">
+            <div><label class="fl" style="font-size:0.71rem;font-weight:600;">🏛 Public</label><input class="fi" id="s_infPub" type="number" step="0.5" value="5" style="text-align:center;"></div>
+            <div><label class="fl" style="font-size:0.71rem;font-weight:600;">🏫 Semi-Private</label><input class="fi" id="s_infSemi" type="number" step="0.5" value="5" style="text-align:center;"></div>
+            <div><label class="fl" style="font-size:0.71rem;font-weight:600;">🎓 Full Private</label><input class="fi" id="s_infPri" type="number" step="0.5" value="5" style="text-align:center;"></div>
+            <div><label class="fl" style="font-size:0.71rem;font-weight:600;">✈️ Overseas</label><input class="fi" id="s_infOvs" type="number" step="0.5" value="6.5" style="text-align:center;"></div>
+          </div>
+          <div style="font-size:0.72rem;font-weight:700;color:var(--ink-mid);margin-bottom:0.5rem;">Living Cost</div>
+          <div class="fgrid" style="gap:0.6rem;">
+            <div><label class="fl" style="font-size:0.71rem;font-weight:600;">🏠 Local</label><input class="fi" id="s_infLivLocal" type="number" step="0.5" value="4" style="text-align:center;"></div>
+            <div><label class="fl" style="font-size:0.71rem;font-weight:600;">✈️ Overseas</label><input class="fi" id="s_infLivOvs" type="number" step="0.5" value="6" style="text-align:center;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SAVE -->
+      <button class="btn-primary" style="width:100%;margin-bottom:0.5rem;" onclick="saveSettings()">💾 Save Settings</button>
+      <button class="danger-btn" onclick="clearAll()">🗑 Clear All Data</button>
+
+      <p style="font-size:0.68rem;color:var(--ink-lt);margin-top:0.75rem;text-align:center;">All data stored locally in your browser — no cloud, no login.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+let children = JSON.parse(localStorage.getItem('kef_ch') || '[]');
+let cfg = JSON.parse(localStorage.getItem('kef_cfg') || 'null') || { pub:10000, pubL:8000, semi:18000, semiL:10000, pri:35000, priL:14000, ovs:60000, ovsL:30000, infPub:5, infSemi:5, infPri:5, infOvs:6.5, infLivLocal:4, infLivOvs:6, uniAge:18 };
+let editId = null;
+const STUDY = 4;
+
+function calc(c) {
+  const uniAge = c.uniAge || cfg.uniAge || 18;
+  const yrs = uniAge - c.age;
+  const t = (c.uni==='public'?cfg.pub:c.uni==='semi'?cfg.semi:c.uni==='private'?cfg.pri:cfg.ovs) * STUDY;
+  const l = c.living==='yes' ? (c.uni==='public'?cfg.pubL:c.uni==='semi'?cfg.semiL:c.uni==='private'?cfg.priL:cfg.ovsL) * STUDY : 0;
+  const tuitionInf = (c.uni==='public'?(cfg.infPub||5):c.uni==='semi'?(cfg.infSemi||5):c.uni==='private'?(cfg.infPri||5):(cfg.infOvs||6.5)) / 100;
+  const livingInf  = (c.uni==='overseas'?(cfg.infLivOvs||6):(cfg.infLivLocal||4)) / 100;
+  const futT = t * Math.pow(1 + tuitionInf, yrs);
+  const futL = l * Math.pow(1 + livingInf, yrs);
+  const futEdu = futT + futL;
+  const curR = (c.curRate||4) / 100;
+  const futR = curR;
+  const futSav = (c.savings||0) * Math.pow(1 + curR, yrs);
+  const remain = Math.max(0, futEdu - futSav);
+  const mR = futR / 12, n = yrs * 12;
+  const monthly = n===0||remain===0 ? 0 : mR===0 ? remain/n : remain*mR/(Math.pow(1+mR,n)-1);
+  return { yrs, futEdu, futSav, remain, monthly };
+}
+
+function toggleTip(e, el) {
+  e.stopPropagation();
+  const tip = document.getElementById('globalTip');
+  if (el._tipOpen) {
+    tip.classList.remove('visible');
+    el._tipOpen = false;
+    return;
+  }
+  document.querySelectorAll('.info-icon').forEach(i => i._tipOpen = false);
+  tip.classList.remove('visible');
+  // Build content
+  const parts = el.dataset.tip.split('|');
+  const [base, calc] = parts[2].split('~');
+  tip.innerHTML = `
+    <strong style="font-size:0.85rem;display:block;margin-bottom:6px;color:#2d1f0a;">${parts[0]}</strong>
+    <div style="font-size:0.78rem;color:#8a7050;margin-bottom:10px;">${parts[1]}</div>
+    <div style="display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:0.78rem;border-top:1px solid #e8d9b8;padding-top:10px;">
+      <span style="color:#b89a60;white-space:nowrap;font-weight:600;">Base cost</span><span style="font-weight:700;color:#2d1f0a;">${base}</span>
+      <span style="color:#b89a60;white-space:nowrap;font-weight:600;">Inflation</span><span style="color:#5a4020;">${calc}</span>
+    </div>
+    <div style="font-size:0.7rem;color:#c4a870;margin-top:10px;border-top:1px solid #f0e4c8;padding-top:8px;">📌 ${parts[3]}</div>`;
+  tip.classList.add('visible');
+  // Smart position: prefer below, flip above if not enough room
+  const rect = el.getBoundingClientRect();
+  const tipW = Math.min(300, window.innerWidth - 24);
+  tip.style.width = tipW + 'px';
+  tip.style.visibility = 'hidden';
+  tip.style.display = 'block';
+  const tipH = tip.offsetHeight;
+  tip.style.display = '';
+  tip.style.visibility = '';
+  let left = rect.left;
+  if (left + tipW > window.innerWidth - 12) left = window.innerWidth - tipW - 12;
+  if (left < 12) left = 12;
+  const spaceBelow = window.innerHeight - rect.bottom - 12;
+  const top = spaceBelow >= tipH ? rect.bottom + 8 : rect.top - tipH - 8;
+  tip.style.left = left + 'px';
+  tip.style.top = Math.max(8, top) + 'px';
+  el._tipOpen = true;
+}
+function closeTip(e) {
+  if (!e.target.classList.contains('info-icon')) {
+    document.getElementById('globalTip').classList.remove('visible');
+    document.querySelectorAll('.info-icon').forEach(i => i._tipOpen = false);
+  }
+}
+document.addEventListener('click', closeTip);
+document.addEventListener('touchstart', closeTip, { passive: true });
+document.addEventListener('pointerdown', closeTip);
+document.addEventListener('scroll', () => {
+  document.getElementById('globalTip').classList.remove('visible');
+  document.querySelectorAll('.info-icon').forEach(i => i._tipOpen = false);
+}, { passive: true });
+document.addEventListener('click', () => {
+  document.querySelectorAll('.info-icon.active').forEach(i => i.classList.remove('active'));
+});
+
+function render() {
+  const e = document.getElementById('emptyState'), d = document.getElementById('dash');
+  if (!children.length) { e.style.display=''; d.style.display='none'; return; }
+  e.style.display='none'; d.style.display='';
+  document.getElementById('childCount').textContent = children.length;
+  let total = 0;
+  const grid = document.getElementById('cardsGrid');
+  grid.innerHTML = '';
+  children.forEach(c => {
+    const r = calc(c); total += r.monthly;
+    const lbl = {public:'Public',semi:'Semi-Private',private:'Private',overseas:'Overseas'}[c.uni];
+    const ico = {public:'🏛',semi:'🏫',private:'🎓',overseas:'✈️'}[c.uni];
+    const el = document.createElement('div');
+    el.className = 'card';
+    el.innerHTML = `
+      <div class="card-hdr">
+        <div class="card-name-row">
+          <div class="card-av av-${c.uni==='semi'?'private':c.uni}">${ico}</div>
+          <div><div class="card-name">${esc(c.name)}</div><div class="card-age">Age ${c.age} · ${r.yrs} yrs to uni (at ${cfg.uniAge||18})</div></div>
+        </div>
+        <span class="pill p-${c.uni==='semi'?'private':c.uni}" style="${c.uni==='semi'?'background:#fff0e8;color:#c07030;':''}">${lbl}</span>
+      </div>
+      <div class="card-body">
+        <div class="living-tag">${c.living==='yes'?'🏠 Includes living':'📚 Tuition only'}</div>
+        <div class="stat-grid">
+          <div>
+            <div class="stat-lbl" style="display:flex;align-items:center;">
+              Total Cost at ${c.uni==='public'?'Public Uni':c.uni==='semi'?'Semi-Private Uni':c.uni==='private'?'Full Private Uni':'Overseas Uni'}
+              <span class="info-icon" onclick="toggleTip(event,this)" data-tip="${
+                  c.uni==='public'
+                    ? `🏛 Public Uni|e.g. UM, UPM, UTM, UiTM|Base: RM 8k–15k/yr × 4 yrs~Tuition +${cfg.infPub||5}%/yr · Living +${cfg.infLivLocal||4}%/yr|MoHE fee schedules & student surveys (2023)`
+                    : c.uni==='semi'
+                    ? `🏫 Semi-Private Uni|e.g. UTAR, MMU, HELP, APU|Base: RM 15k–22k/yr × 4 yrs~Tuition +${cfg.infSemi||5}%/yr · Living +${cfg.infLivLocal||4}%/yr|EduAdvisor & university prospectuses (2023)`
+                    : c.uni==='private'
+                    ? `🎓 Full Private Uni|e.g. Taylor's, Sunway, Monash, Nottingham|Base: RM 28k–45k/yr × 4 yrs~Tuition +${cfg.infPri||5}%/yr · Living +${cfg.infLivLocal||4}%/yr|University prospectuses & EduAdvisor (2023)`
+                    : `✈️ Overseas Uni|e.g. UK, Australia, US|Base: RM 50k–90k/yr × 4 yrs~Tuition +${cfg.infOvs||6.5}%/yr · Living +${cfg.infLivOvs||6}%/yr|QS rankings & student cost surveys (2023)`
+                }">i</span>
+            </div>
+            <div class="stat-val sv-teal">${rm(r.futEdu)}</div>
+          </div>
+          <div><div class="stat-lbl">Monthly Needed</div><div class="stat-val sv-big">${rm(r.monthly)}/mo</div></div>
+          <div><div class="stat-lbl">Your Age at Uni</div><div class="stat-val">${c.parentAge + r.yrs} yrs</div></div>
+        </div>
+        ${(c.savings||0)>0 ? `
+        <div style="margin-top:0.85rem;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;">
+            <span class="stat-lbl">Current Savings Coverage</span>
+            <span style="font-size:0.72rem;font-weight:700;color:${r.futSav>=r.futEdu?'#2a7c72':r.futSav/r.futEdu>0.5?'#3a9d90':'#e8a020'}">${Math.min(100,Math.round(r.futSav/r.futEdu*100))}% covered</span>
+          </div>
+          <div style="background:#ebe5de;border-radius:10px;height:7px;width:100%;overflow:hidden;">
+            <div style="background:${r.futSav>=r.futEdu?'#2a7c72':r.futSav/r.futEdu>0.5?'#3a9d90':'#e8a020'};height:100%;width:${Math.min(100,Math.round(r.futSav/r.futEdu*100))}%;border-radius:10px;"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:0.69rem;color:var(--ink-lt);">
+            <span>${rm(r.futSav)} projected</span>
+            <span>Goal ${rm(r.futEdu)}</span>
+          </div>
+        </div>` : ''}
+      </div>
+      <div class="card-foot">
+        <button class="bt-tl" onclick="openTimeline('${c.id}')">📊 Timeline</button>
+        <button class="bt-ed" onclick="openEdit('${c.id}')">✏ Edit</button>
+        <button class="bt-rm" onclick="removeChild('${c.id}')">✕</button>
+      </div>`;
+    grid.appendChild(el);
+  });
+  document.getElementById('totalAmt').textContent = rm(total) + '/mo';
+  document.getElementById('sumChips').innerHTML = children.map(c=>`<div class="chip">👤 ${esc(c.name)}</div>`).join('');
+}
+
+function openModal(id) { document.getElementById(id).style.display='flex'; }
+function closeModal(id) { document.getElementById(id).style.display='none'; }
+function overlayClose(e,id) { if(e.target===document.getElementById(id)) closeModal(id); }
+
+function updateFormNote() {
+  const field = document.getElementById('f_uniAge');
+  const val = field ? (parseInt(field.value) || cfg.uniAge || 18) : (cfg.uniAge || 18);
+  const el = document.getElementById('noteUniAgeForm');
+  if (el) el.textContent = val;
+}
+
+function openAdd() {
+  editId = null;
+  document.getElementById('modalTitle').textContent = 'Add Child';
+  ['f_name','f_age','f_parentAge','f_savings','f_curRate'].forEach(id=>document.getElementById(id).value='');
+  document.querySelector('[name=uniType][value=public]').checked = true;
+  document.querySelector('[name=living][value=yes]').checked = true;
+  document.getElementById('f_uniAge').value = cfg.uniAge || 18;
+  updateFormNote();
+  openModal('addModal');
+}
+
+function openEdit(id) {
+  const c = children.find(x=>x.id===id); if(!c) return;
+  editId = id;
+  document.getElementById('modalTitle').textContent = 'Edit Child';
+  document.getElementById('f_name').value = c.name;
+  document.getElementById('f_age').value = c.age;
+  document.getElementById('f_parentAge').value = c.parentAge;
+  document.getElementById('f_savings').value = c.savings||'';
+  document.getElementById('f_curRate').value = c.curRate||'';
+  document.querySelector(`[name=uniType][value=${c.uni}]`).checked = true;
+  document.querySelector(`[name=living][value=${c.living}]`).checked = true;
+  document.getElementById('f_uniAge').value = c.uniAge || cfg.uniAge || 18;
+  updateFormNote();
+  openModal('addModal');
+}
+
+function saveChild() {
+  const name = document.getElementById('f_name').value.trim();
+  const age  = parseInt(document.getElementById('f_age').value);
+  const pAge = parseInt(document.getElementById('f_parentAge').value);
+  const uniAge = parseInt(document.getElementById('f_uniAge').value) || cfg.uniAge || 18;
+  if (!name || isNaN(age)||age<0||age>17||isNaN(pAge)) { alert('Please fill Child Name, Age (0–17), and Parent Age.'); return; }
+  const obj = {
+    name, age, parentAge:pAge, uniAge,
+    uni:    document.querySelector('[name=uniType]:checked').value,
+    living: document.querySelector('[name=living]:checked').value,
+    savings:  parseFloat(document.getElementById('f_savings').value)||0,
+    curRate: parseFloat(document.getElementById('f_curRate').value)||4,
+  };
+  if (editId) { const i=children.findIndex(x=>x.id===editId); children[i]={...children[i],...obj}; }
+  else { obj.id=Date.now().toString(); children.push(obj); }
+  save(); closeModal('addModal'); render();
+}
+
+function removeChild(id) {
+  if (!confirm('Remove this child?')) return;
+  children=children.filter(x=>x.id!==id); save(); render();
+}
+
+function openSettings() {
+  document.getElementById('s_pub').value=cfg.pub; document.getElementById('s_pubL').value=cfg.pubL;
+  document.getElementById('s_semi').value=cfg.semi||18000; document.getElementById('s_semiL').value=cfg.semiL||10000;
+  document.getElementById('s_pri').value=cfg.pri; document.getElementById('s_priL').value=cfg.priL;
+  document.getElementById('s_ovs').value=cfg.ovs; document.getElementById('s_ovsL').value=cfg.ovsL;
+  document.getElementById('s_infPub').value=cfg.infPub||5;
+  document.getElementById('s_infSemi').value=cfg.infSemi||5;
+  document.getElementById('s_infPri').value=cfg.infPri||5;
+  document.getElementById('s_infOvs').value=cfg.infOvs||6.5;
+  document.getElementById('s_infLivLocal').value=cfg.infLivLocal||4;
+  document.getElementById('s_infLivOvs').value=cfg.infLivOvs||6;
+  document.getElementById('s_uniAge').value=cfg.uniAge||18;
+  openModal('setModal');
+}
+function saveSettings() {
+  cfg.pub=+document.getElementById('s_pub').value||10000; cfg.pubL=+document.getElementById('s_pubL').value||8000;
+  cfg.semi=+document.getElementById('s_semi').value||18000; cfg.semiL=+document.getElementById('s_semiL').value||10000;
+  cfg.pri=+document.getElementById('s_pri').value||35000; cfg.priL=+document.getElementById('s_priL').value||14000;
+  cfg.ovs=+document.getElementById('s_ovs').value||60000; cfg.ovsL=+document.getElementById('s_ovsL').value||30000;
+  cfg.infPub=+document.getElementById('s_infPub').value||5;
+  cfg.infSemi=+document.getElementById('s_infSemi').value||5;
+  cfg.infPri=+document.getElementById('s_infPri').value||5;
+  cfg.infOvs=+document.getElementById('s_infOvs').value||6.5;
+  cfg.infLivLocal=+document.getElementById('s_infLivLocal').value||4;
+  cfg.infLivOvs=+document.getElementById('s_infLivOvs').value||6;
+  cfg.uniAge=+document.getElementById('s_uniAge').value||18;
+  localStorage.setItem('kef_cfg',JSON.stringify(cfg)); closeModal('setModal'); render();
+}
+function clearAll() {
+  if (!confirm('Clear ALL data?')) return;
+  children=[]; save(); closeModal('setModal'); render();
+}
+
+function openTimeline(id) {
+  const c=children.find(x=>x.id===id); if(!c) return;
+  const r=calc(c);
+  document.getElementById('tlTitle').textContent=`${c.name}'s Contribution Timeline`;
+  document.getElementById('tlStats').innerHTML=`
+    <div><div class="tls-lbl">Future Education Cost</div><div class="tls-val">${rm(r.futEdu)}</div></div>
+    <div><div class="tls-lbl">Monthly Saving</div><div class="tls-val">${rm(r.monthly)}/mo</div></div>
+    <div><div class="tls-lbl">Years to Save</div><div class="tls-val">${r.yrs} yrs</div></div>
+    <div><div class="tls-lbl">Your Age at Uni</div><div class="tls-val">${c.parentAge+r.yrs}</div></div>`;
+
+  const mR=(c.curRate||4)/100/12;
+  let bal=0;
+  const rows=[];
+  for(let yr=1;yr<=r.yrs;yr++){
+    for(let m=0;m<12;m++) bal=bal*(1+mR)+r.monthly;
+    const total=bal+(c.savings||0)*Math.pow(1+(c.curRate||4)/100,yr);
+    const pct=Math.min(100,Math.round(total/r.futEdu*100));
+    rows.push({yr,pAge:c.parentAge+yr,monthly:r.monthly,total,pct});
+  }
+  drawChart(rows,r.futEdu);
+  const tbody=document.getElementById('tlBody'); tbody.innerHTML='';
+  const done={};
+  rows.forEach(row=>{
+    let cls='',badge='';
+    if(row.pct>=100&&!done[100]){done[100]=1;cls='m100';badge=`<span class="mbadge" style="background:#d1f0ec;color:#2a7c72">🎓 Goal</span>`;}
+    else if(row.pct>=75&&!done[75]){done[75]=1;cls='m75';badge=`<span class="mbadge" style="background:#d1f0ec;color:#2a7c72">75%</span>`;}
+    else if(row.pct>=50&&!done[50]){done[50]=1;cls='m50';badge=`<span class="mbadge" style="background:#fef3d8;color:#9a6c0a">50%</span>`;}
+    const tr=document.createElement('tr'); if(cls) tr.className=cls;
+    tr.innerHTML=`<td>Yr ${row.yr}</td><td>${row.pAge}</td><td>${rm(row.monthly)}</td>
+      <td>${rm(row.total)}${badge}</td>
+      <td><div style="background:#ebe5de;border-radius:8px;height:5px;width:68px;overflow:hidden;"><div style="background:${row.pct>=100?'#2a7c72':row.pct>=75?'#3a9d90':'#e8a020'};height:100%;width:${Math.min(100,row.pct)}%;border-radius:8px;"></div></div></td>`;
+    tbody.appendChild(tr);
+  });
+  openModal('tlModal');
+}
+
+function drawChart(rows,target){
+  const W=620,H=148,p={t:12,r:24,b:28,l:54};
+  const iW=W-p.l-p.r,iH=H-p.t-p.b;
+  const max=Math.max(target,rows[rows.length-1]?.total||1);
+  const sx=i=>p.l+(i/Math.max(rows.length-1,1))*iW;
+  const sy=v=>p.t+iH-(v/max)*iH;
+  let line='',area='';
+  rows.forEach((r,i)=>{
+    const x=sx(i),y=sy(r.total);
+    if(i===0){line=`M${x},${y}`;area=`M${x},${p.t+iH}`;}
+    else{line+=` L${x},${y}`;}
+    area+=` L${x},${y}`;
+  });
+  if(rows.length) area+=` L${sx(rows.length-1)},${p.t+iH} Z`;
+  const ty=sy(target);
+  const step=Math.max(1,Math.ceil(rows.length/5));
+  const pts=rows.filter((_,i)=>i===0||i===rows.length-1||i%step===0);
+  document.getElementById('tlSvg').innerHTML=`
+    <defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a7c72" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="#2a7c72" stop-opacity="0.02"/>
+    </linearGradient></defs>
+    ${[0.25,0.5,0.75,1].map(f=>{const y=p.t+iH-f*iH;return `<line x1="${p.l}" y1="${y}" x2="${W-p.r}" y2="${y}" stroke="#e8ddd0" stroke-width="1"/>
+    <text x="${p.l-5}" y="${y+4}" text-anchor="end" font-size="8.5" fill="#a0aec0">${rmS(max*f)}</text>`;}).join('')}
+    ${pts.map(r=>{const x=sx(rows.indexOf(r));return `<text x="${x}" y="${H-4}" text-anchor="middle" font-size="8.5" fill="#a0aec0">${r.pAge}</text>`;}).join('')}
+    <path d="${area}" fill="url(#ag)"/>
+    <path d="${line}" fill="none" stroke="#2a7c72" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="${p.l}" y1="${ty}" x2="${W-p.r}" y2="${ty}" stroke="#e8a020" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="${W-p.r+3}" y="${ty+4}" font-size="8" fill="#b07d10">Goal</text>
+    ${pts.map(r=>{const x=sx(rows.indexOf(r)),y=sy(r.total);return `<circle cx="${x}" cy="${y}" r="3" fill="#2a7c72"/>`;}).join('')}`;
+}
+
+function rm(n){return 'RM '+Math.round(n).toLocaleString('en-MY');}
+function rmS(n){if(n>=1e6)return 'RM'+(n/1e6).toFixed(1)+'M';if(n>=1000)return 'RM'+(n/1000).toFixed(0)+'k';return 'RM'+Math.round(n);}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function save(){localStorage.setItem('kef_ch',JSON.stringify(children));}
+
+render();
+</script>
+<div id="globalTip"></div>
+</body>
+</html>
