@@ -13,33 +13,34 @@ html, body {
   min-height: 100vh;
   overflow-x: hidden;
   font-family: 'Nunito Sans', sans-serif;
-  background: #f0f4ff;
-  color: #1e2d4a;
+  background: #13161f;
+  color: #e4eaf6;
   font-size: 15px;
 }
 
 :root {
-  --bg: #f0f4ff;
-  --white: #ffffff;
-  --purple: #6c63ff;
-  --purple-lt: #8b85ff;
-  --purple-pale: #eeecff;
-  --green: #22a87a;
-  --green-lt: #2dc98f;
-  --green-pale: #dff6ee;
+  --bg: #0f1117;
+  --bg2: #0f1117;
+  --white: #0a0c14;
+  --purple: #7c6fff;
+  --purple-lt: #a89aff;
+  --purple-pale: #2a2645;
+  --green: #22c98a;
+  --green-lt: #2de89f;
+  --green-pale: #0e2b22;
   --orange: #f5873a;
-  --orange-pale: #fff0e6;
+  --orange-pale: #2b1c0e;
   --pink: #f05fa0;
-  --pink-pale: #ffedf5;
-  --blue: #3b82f6;
-  --blue-pale: #eff6ff;
-  --ink: #1e2d4a;
-  --ink-mid: #445571;
-  --ink-lt: #7a90b0;
-  --border: #dde5f5;
+  --pink-pale: #2b1022;
+  --blue: #5ba4f5;
+  --blue-pale: #0e1e38;
+  --ink: #e4eaf6;
+  --ink-mid: #a8b8d4;
+  --ink-lt: #5f7494;
+  --border: #1e2340;
   --radius: 18px;
-  --shadow: 0 2px 12px rgba(108,99,255,0.08);
-  --shadow-lg: 0 8px 32px rgba(108,99,255,0.15);
+  --shadow: 0 2px 12px rgba(0,0,0,0.35);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
 }
 
 .app { display: flex; flex-direction: column; min-height: 100vh; width: 100%; }
@@ -62,7 +63,7 @@ html, body {
 .hdr-btns { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
 
 .btn { cursor: pointer; border: none; font-family: 'Nunito', sans-serif; transition: all 0.18s; display: inline-flex; align-items: center; gap: 5px; font-weight: 700; }
-.btn-amber { background: #fff; color: var(--purple); padding: 8px 16px; border-radius: 10px; font-size: 0.84rem; }
+.btn-amber { background:var(--white); color: var(--purple); padding: 8px 16px; border-radius: 10px; font-size: 0.84rem; }
 .btn-amber:hover { background: #f5f3ff; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(255,255,255,0.4); }
 .btn-ghost { background: rgba(255,255,255,0.15); color: #fff; border: 1.5px solid rgba(255,255,255,0.3); padding: 8px 14px; border-radius: 10px; font-size: 0.8rem; }
 .btn-ghost:hover { background: rgba(255,255,255,0.25); }
@@ -98,7 +99,8 @@ html, body {
 
 /* CARDS */
 .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1.2rem; }
-.card { background: var(--white); border-radius: var(--radius); border: 1.5px solid var(--border); box-shadow: var(--shadow); overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; animation: cardIn 0.3s ease; }
+.card { background: var(--white); border-radius: var(--radius); border: 2.5px solid #3a4570; box-shadow: 0 4px 24px rgba(0,0,0,0.5), 0 0 0 1px rgba(124,111,255,0.15); overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; animation: cardIn 0.3s ease; }
+.card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 0 1px rgba(124,111,255,0.3); border-color: #5a5fa0; }
 @keyframes cardIn { from { opacity:0; transform:scale(0.96) translateY(8px); } to { opacity:1; transform:scale(1) translateY(0); } }
 .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
 
@@ -112,7 +114,7 @@ html, body {
 .card-age { color: var(--ink-lt); font-size: 0.78rem; margin-top: 2px; }
 .pill { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.67rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; font-family: 'Nunito', sans-serif; }
 .p-public { background: var(--green-pale); color: var(--green); }
-.p-private { background: var(--orange-pale); color: #c05a10; }
+.p-private { background: var(--orange-pale); color: #f5913a; }
 .p-overseas { background: var(--pink-pale); color: var(--pink); }
 
 .card-body { padding: 1.1rem 1.25rem; }
@@ -134,12 +136,12 @@ html, body {
 .info-icon:hover { background: var(--purple); color: #fff; }
 #globalTip {
   display: none; position: fixed;
-  background: #fffdf7;
-  border: 1.5px solid #e8d9b8;
+  background: #252a40;
+  border: 1.5px solid #3a4460;
   border-radius: 14px; padding: 14px 16px;
   font-size: 0.82rem; line-height: 1.6;
   max-width: min(300px, calc(100vw - 24px));
-  z-index: 1000; box-shadow: 0 8px 28px rgba(180,140,60,0.15);
+  z-index: 1000; box-shadow: 0 8px 28px rgba(0,0,0,0.5);
   pointer-events: none; font-family: 'Nunito Sans', sans-serif;
   font-weight: 400; white-space: normal;
 }
@@ -147,18 +149,18 @@ html, body {
 
 .sv-big { font-family: 'Nunito', sans-serif; font-size: 1.2rem; font-weight: 800; color: var(--green); }
 
-.card-foot { padding: 0.85rem 1.25rem; border-top: 1.5px solid var(--border); display: flex; gap: 7px; background: #fafbff; }
+.card-foot { padding: 0.85rem 1.25rem; border-top: 1.5px solid var(--border); display: flex; gap: 7px; background: var(--white); }
 .bt-tl { flex:1; background: linear-gradient(135deg, var(--purple), var(--purple-lt)); color:#fff; border:none; padding:8px 10px; border-radius:10px; font-family:'Nunito',sans-serif; font-size:0.78rem; font-weight:700; cursor:pointer; transition:all 0.18s; }
 .bt-tl:hover { opacity:0.88; transform:translateY(-1px); }
 .bt-ed { background:var(--bg); color:var(--ink-mid); border:1.5px solid var(--border); padding:8px 13px; border-radius:10px; font-family:'Nunito',sans-serif; font-size:0.78rem; font-weight:600; cursor:pointer; transition:all 0.18s; }
 .bt-ed:hover { border-color:var(--purple); color:var(--purple); }
 .bt-rm { background:none; color:#e05a5a; border:1.5px solid #fad5d5; padding:8px 10px; border-radius:10px; font-size:0.78rem; cursor:pointer; transition:all 0.18s; }
-.bt-rm:hover { background:#fff0f0; }
+.bt-rm:hover { background:#2a1a1a; }
 
 /* OVERLAY / MODAL */
 .overlay { position:fixed; inset:0; z-index:300; background:rgba(20,30,60,0.45); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; padding:1rem; animation:fadeIn 0.18s ease; }
 @keyframes fadeIn { from{opacity:0}to{opacity:1} }
-.modal { background:var(--white); border-radius:22px; width:100%; max-width:500px; max-height:92vh; overflow-y:auto; box-shadow:0 24px 64px rgba(108,99,255,0.22); animation:popIn 0.25s cubic-bezier(0.34,1.5,0.64,1); }
+.modal { background:var(--white); border-radius:22px; width:100%; max-width:500px; max-height:92vh; overflow-y:auto; box-shadow:0 24px 64px rgba(0,0,0,0.6); animation:popIn 0.25s cubic-bezier(0.34,1.5,0.64,1); }
 @keyframes popIn { from{opacity:0;transform:scale(0.93) translateY(16px);}to{opacity:1;transform:scale(1) translateY(0);} }
 .modal-wide { max-width:660px; }
 
@@ -173,7 +175,7 @@ html, body {
 .fg { margin-bottom:1rem; }
 .fl { display:block; font-size:0.8rem; font-weight:700; color:var(--ink-mid); margin-bottom:5px; }
 .opt { font-weight:500; color:var(--ink-lt); font-size:0.74rem; }
-.fi { width:100%; padding:10px 14px; border:2px solid var(--border); border-radius:11px; font-family:'Nunito Sans',sans-serif; font-size:0.9rem; color:var(--ink); background:#fff; outline:none; transition:border-color 0.18s,box-shadow 0.18s; }
+.fi { width:100%; padding:10px 14px; border:2px solid var(--border); border-radius:11px; font-family:'Nunito Sans',sans-serif; font-size:0.9rem; color:var(--ink); background:var(--white); outline:none; transition:border-color 0.18s,box-shadow 0.18s; }
 .fi:focus { border-color:var(--purple); box-shadow:0 0 0 3px rgba(108,99,255,0.12); }
 .fgrid { display:grid; grid-template-columns:1fr 1fr; gap:0.9rem; }
 
@@ -208,7 +210,7 @@ html, body {
 .tbl-wrap { padding:0 1.5rem 0.5rem; max-height:230px; overflow-y:auto; }
 .tbl { width:100%; border-collapse:collapse; font-size:0.8rem; }
 .tbl th { text-align:left; padding:7px 8px; font-size:0.67rem; text-transform:uppercase; letter-spacing:0.07em; color:var(--ink-lt); border-bottom:2px solid var(--border); position:sticky; top:0; background:var(--white); font-weight:700; }
-.tbl td { padding:7px 8px; border-bottom:1px solid #eef1f9; }
+.tbl td { padding:7px 8px; border-bottom:1px solid var(--border); }
 .tbl tr:last-child td { border-bottom:none; }
 .m50 td { background:rgba(245,135,58,0.07); font-weight:700; color:#c05a10; }
 .m75 td { background:rgba(34,168,122,0.07); font-weight:700; color:var(--green); }
@@ -218,10 +220,10 @@ html, body {
 /* SETTINGS */
 .settings-note { font-size:0.79rem; color:var(--ink-lt); margin-bottom:0.9rem; line-height:1.6; }
 .danger-btn { width:100%; margin-top:0.5rem; background:none; border:2px solid #fad5d5; color:#e05a5a; padding:10px; border-radius:11px; cursor:pointer; font-family:'Nunito',sans-serif; font-size:0.82rem; font-weight:600; transition:all 0.18s; }
-.danger-btn:hover { background:#fff0f0; }
+.danger-btn:hover { background:#2a1a1a; }
 
 /* SAVINGS BAR */
-.sav-bar-track { background:#eef1f9; border-radius:20px; height:7px; overflow:hidden; margin:6px 0 4px; }
+.sav-bar-track { background:#1e2540; border-radius:20px; height:7px; overflow:hidden; margin:6px 0 4px; }
 .sav-bar-fill { height:100%; border-radius:20px; transition:width 0.6s cubic-bezier(0.34,1.2,0.64,1); }
 
 ::-webkit-scrollbar { width:5px; height:5px; }
@@ -343,7 +345,7 @@ html, body {
             <label for="t_no" class="t-lbl">✕ No</label>
           </div>
         </div>
-        <div style="margin-top:0.6rem;background:#fff;border:1.5px solid var(--border);border-radius:10px;font-size:0.74rem;line-height:1.6;color:var(--ink-mid);overflow:hidden;">
+        <div style="margin-top:0.6rem;background:var(--white);border:1.5px solid var(--border);border-radius:10px;font-size:0.74rem;line-height:1.6;color:var(--ink-mid);overflow:hidden;">
           <button onclick="const p=this.nextElementSibling;const o=p.style.display==='block';p.style.display=o?'none':'block';this.querySelector('.chev').style.transform=o?'rotate(0deg)':'rotate(180deg)';"
             style="width:100%;background:none;border:none;padding:0.65rem 0.9rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.74rem;font-weight:700;color:var(--ink-mid);text-align:left;">
             <span>💡 How living cost is estimated</span>
@@ -464,7 +466,7 @@ html, body {
             </div>
             <div class="fg" style="margin-bottom:0;">
               <label class="fl">Study Duration <span class="opt">(yrs)</span></label>
-              <input class="fi" value="4" disabled style="background:#eef1f9;color:var(--ink-lt);text-align:center;cursor:not-allowed;">
+              <input class="fi" value="4" disabled style="background:#1a1d2e;color:var(--ink-lt);text-align:center;cursor:not-allowed;">
             </div>
           </div>
           <div style="font-size:0.71rem;color:var(--ink-lt);margin-top:0.55rem;line-height:1.5;">e.g. set 17 for early entry, 19–20 after national service or gap year</div>
@@ -490,7 +492,7 @@ html, body {
 
         <!-- Semi-Private -->
         <div style="border:1.5px solid #ffd0a8;border-radius:12px;overflow:hidden;margin-bottom:0.6rem;">
-          <div style="background:#fff0e8;padding:0.6rem 0.9rem;display:flex;justify-content:space-between;align-items:center;">
+          <div style="background:#2a1e10;padding:0.6rem 0.9rem;display:flex;justify-content:space-between;align-items:center;">
             <span style="font-weight:700;font-size:0.82rem;color:#c07030;">🏫 Semi-Private</span>
             <span style="font-size:0.7rem;color:#c07030;opacity:0.8;">UTAR · MMU · HELP · APU</span>
           </div>
@@ -593,13 +595,13 @@ function toggleTip(e, el) {
   const parts = el.dataset.tip.split('|');
   const [base, calc] = parts[2].split('~');
   tip.innerHTML = `
-    <strong style="font-size:0.85rem;display:block;margin-bottom:6px;color:#2d1f0a;">${parts[0]}</strong>
-    <div style="font-size:0.78rem;color:#8a7050;margin-bottom:10px;">${parts[1]}</div>
-    <div style="display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:0.78rem;border-top:1px solid #e8d9b8;padding-top:10px;">
-      <span style="color:#b89a60;white-space:nowrap;font-weight:600;">Base cost</span><span style="font-weight:700;color:#2d1f0a;">${base}</span>
-      <span style="color:#b89a60;white-space:nowrap;font-weight:600;">Inflation</span><span style="color:#5a4020;">${calc}</span>
+    <strong style="font-size:0.85rem;display:block;margin-bottom:6px;color:#e4eaf6;">${parts[0]}</strong>
+    <div style="font-size:0.78rem;color:#a8b8d4;margin-bottom:10px;">${parts[1]}</div>
+    <div style="display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:0.78rem;border-top:1px solid #3a4460;padding-top:10px;">
+      <span style="color:#a89aff;white-space:nowrap;font-weight:600;">Base cost</span><span style="font-weight:700;color:#e4eaf6;">${base}</span>
+      <span style="color:#a89aff;white-space:nowrap;font-weight:600;">Inflation</span><span style="color:#c8d4f0;">${calc}</span>
     </div>
-    <div style="font-size:0.7rem;color:#c4a870;margin-top:10px;border-top:1px solid #f0e4c8;padding-top:8px;">📌 ${parts[3]}</div>`;
+    <div style="font-size:0.7rem;color:#5f7494;margin-top:10px;border-top:1px solid #2a3350;padding-top:8px;">📌 ${parts[3]}</div>`;
   tip.classList.add('visible');
   // Smart position: prefer below, flip above if not enough room
   const rect = el.getBoundingClientRect();
@@ -620,10 +622,10 @@ function toggleTip(e, el) {
   el._tipOpen = true;
 }
 function closeTip(e) {
-  if (!e.target.classList.contains('info-icon')) {
-    document.getElementById('globalTip').classList.remove('visible');
-    document.querySelectorAll('.info-icon').forEach(i => i._tipOpen = false);
-  }
+  if (e.target.classList && e.target.classList.contains('info-icon')) return;
+  const tip = document.getElementById('globalTip');
+  if (tip) tip.classList.remove('visible');
+  document.querySelectorAll('.info-icon').forEach(i => i._tipOpen = false);
 }
 document.addEventListener('click', closeTip);
 document.addEventListener('touchstart', closeTip, { passive: true });
@@ -656,7 +658,7 @@ function render() {
           <div class="card-av av-${c.uni==='semi'?'private':c.uni}">${ico}</div>
           <div><div class="card-name">${esc(c.name)}</div><div class="card-age">Age ${c.age} · ${r.yrs} yrs to uni (at ${cfg.uniAge||18})</div></div>
         </div>
-        <span class="pill p-${c.uni==='semi'?'private':c.uni}" style="${c.uni==='semi'?'background:#fff0e8;color:#c07030;':''}">${lbl}</span>
+        <span class="pill p-${c.uni==='semi'?'private':c.uni}" style="${c.uni==='semi'?'background:#2a1e10;color:#c07030;':''}">${lbl}</span>
       </div>
       <div class="card-body">
         <div class="living-tag">${c.living==='yes'?'🏠 Includes living':'📚 Tuition only'}</div>
@@ -685,7 +687,7 @@ function render() {
             <span class="stat-lbl">Current Savings Coverage</span>
             <span style="font-size:0.72rem;font-weight:700;color:${r.futSav>=r.futEdu?'#2a7c72':r.futSav/r.futEdu>0.5?'#3a9d90':'#e8a020'}">${Math.min(100,Math.round(r.futSav/r.futEdu*100))}% covered</span>
           </div>
-          <div style="background:#ebe5de;border-radius:10px;height:7px;width:100%;overflow:hidden;">
+          <div style="background:#1e2540;border-radius:10px;height:7px;width:100%;overflow:hidden;">
             <div style="background:${r.futSav>=r.futEdu?'#2a7c72':r.futSav/r.futEdu>0.5?'#3a9d90':'#e8a020'};height:100%;width:${Math.min(100,Math.round(r.futSav/r.futEdu*100))}%;border-radius:10px;"></div>
           </div>
           <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:0.69rem;color:var(--ink-lt);">
@@ -800,14 +802,16 @@ function clearAll() {
 }
 
 function openTimeline(id) {
+  try {
   const c=children.find(x=>x.id===id); if(!c) return;
   const r=calc(c);
-  document.getElementById('tlTitle').textContent=`${c.name}'s Contribution Timeline`;
-  document.getElementById('tlStats').innerHTML=`
-    <div><div class="tls-lbl">Future Education Cost</div><div class="tls-val">${rm(r.futEdu)}</div></div>
-    <div><div class="tls-lbl">Monthly Saving</div><div class="tls-val">${rm(r.monthly)}/mo</div></div>
-    <div><div class="tls-lbl">Years to Save</div><div class="tls-val">${r.yrs} yrs</div></div>
-    <div><div class="tls-lbl">Your Age at Uni</div><div class="tls-val">${c.parentAge+r.yrs}</div></div>`;
+  if(r.yrs<=0){ alert('Child age must be less than university start age.'); return; }
+  document.getElementById('tlTitle').textContent=c.name+"'s Contribution Timeline";
+  document.getElementById('tlStats').innerHTML=
+    '<div><div class="tls-lbl">Future Education Cost</div><div class="tls-val">'+rm(r.futEdu)+'</div></div>'+
+    '<div><div class="tls-lbl">Monthly Saving</div><div class="tls-val">'+rm(r.monthly)+'/mo</div></div>'+
+    '<div><div class="tls-lbl">Years to Save</div><div class="tls-val">'+r.yrs+' yrs</div></div>'+
+    '<div><div class="tls-lbl">Your Age at Uni</div><div class="tls-val">'+(c.parentAge+r.yrs)+'</div></div>';
 
   const mR=(c.curRate||4)/100/12;
   let bal=0;
@@ -821,50 +825,60 @@ function openTimeline(id) {
   drawChart(rows,r.futEdu);
   const tbody=document.getElementById('tlBody'); tbody.innerHTML='';
   const done={};
-  rows.forEach(row=>{
+  rows.forEach(function(row){
     let cls='',badge='';
-    if(row.pct>=100&&!done[100]){done[100]=1;cls='m100';badge=`<span class="mbadge" style="background:#d1f0ec;color:#2a7c72">🎓 Goal</span>`;}
-    else if(row.pct>=75&&!done[75]){done[75]=1;cls='m75';badge=`<span class="mbadge" style="background:#d1f0ec;color:#2a7c72">75%</span>`;}
-    else if(row.pct>=50&&!done[50]){done[50]=1;cls='m50';badge=`<span class="mbadge" style="background:#fef3d8;color:#9a6c0a">50%</span>`;}
+    if(row.pct>=100&&!done[100]){done[100]=1;cls='m100';badge='<span class="mbadge" style="background:#0e2b22;color:#22c98a">🎓 Goal</span>';}
+    else if(row.pct>=75&&!done[75]){done[75]=1;cls='m75';badge='<span class="mbadge" style="background:#0e2b22;color:#22c98a">75%</span>';}
+    else if(row.pct>=50&&!done[50]){done[50]=1;cls='m50';badge='<span class="mbadge" style="background:#2a2210;color:#f0c060">50%</span>';}
     const tr=document.createElement('tr'); if(cls) tr.className=cls;
-    tr.innerHTML=`<td>Yr ${row.yr}</td><td>${row.pAge}</td><td>${rm(row.monthly)}</td>
-      <td>${rm(row.total)}${badge}</td>
-      <td><div style="background:#ebe5de;border-radius:8px;height:5px;width:68px;overflow:hidden;"><div style="background:${row.pct>=100?'#2a7c72':row.pct>=75?'#3a9d90':'#e8a020'};height:100%;width:${Math.min(100,row.pct)}%;border-radius:8px;"></div></div></td>`;
+    tr.innerHTML='<td>Yr '+row.yr+'</td><td>'+row.pAge+'</td><td>'+rm(row.monthly)+'</td>'+
+      '<td>'+rm(row.total)+badge+'</td>'+
+      '<td><div style="background:#1e2540;border-radius:8px;height:5px;width:68px;overflow:hidden;"><div style="background:'+(row.pct>=100?'#22c98a':row.pct>=75?'#3a9d90':'#e8a020')+';height:100%;width:'+Math.min(100,row.pct)+'%;border-radius:8px;"></div></div></td>';
     tbody.appendChild(tr);
   });
   openModal('tlModal');
+  } catch(err) { alert('Error: '+err.message); }
 }
 
 function drawChart(rows,target){
   const W=620,H=148,p={t:12,r:24,b:28,l:54};
   const iW=W-p.l-p.r,iH=H-p.t-p.b;
-  const max=Math.max(target,rows[rows.length-1]?.total||1);
-  const sx=i=>p.l+(i/Math.max(rows.length-1,1))*iW;
-  const sy=v=>p.t+iH-(v/max)*iH;
+  const max=Math.max(target,rows[rows.length-1]?rows[rows.length-1].total:1)||1;
+  const sx=function(i){return p.l+(i/Math.max(rows.length-1,1))*iW;};
+  const sy=function(v){return p.t+iH-(v/max)*iH;};
   let line='',area='';
-  rows.forEach((r,i)=>{
+  rows.forEach(function(r,i){
     const x=sx(i),y=sy(r.total);
-    if(i===0){line=`M${x},${y}`;area=`M${x},${p.t+iH}`;}
-    else{line+=` L${x},${y}`;}
-    area+=` L${x},${y}`;
+    if(i===0){line='M'+x+','+y;area='M'+x+','+(p.t+iH);}
+    else{line+=' L'+x+','+y;}
+    area+=' L'+x+','+y;
   });
-  if(rows.length) area+=` L${sx(rows.length-1)},${p.t+iH} Z`;
+  if(rows.length) area+=' L'+sx(rows.length-1)+','+(p.t+iH)+' Z';
   const ty=sy(target);
   const step=Math.max(1,Math.ceil(rows.length/5));
-  const pts=rows.filter((_,i)=>i===0||i===rows.length-1||i%step===0);
-  document.getElementById('tlSvg').innerHTML=`
-    <defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#2a7c72" stop-opacity="0.28"/>
-      <stop offset="100%" stop-color="#2a7c72" stop-opacity="0.02"/>
-    </linearGradient></defs>
-    ${[0.25,0.5,0.75,1].map(f=>{const y=p.t+iH-f*iH;return `<line x1="${p.l}" y1="${y}" x2="${W-p.r}" y2="${y}" stroke="#e8ddd0" stroke-width="1"/>
-    <text x="${p.l-5}" y="${y+4}" text-anchor="end" font-size="8.5" fill="#a0aec0">${rmS(max*f)}</text>`;}).join('')}
-    ${pts.map(r=>{const x=sx(rows.indexOf(r));return `<text x="${x}" y="${H-4}" text-anchor="middle" font-size="8.5" fill="#a0aec0">${r.pAge}</text>`;}).join('')}
-    <path d="${area}" fill="url(#ag)"/>
-    <path d="${line}" fill="none" stroke="#2a7c72" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-    <line x1="${p.l}" y1="${ty}" x2="${W-p.r}" y2="${ty}" stroke="#e8a020" stroke-width="1.5" stroke-dasharray="4,3"/>
-    <text x="${W-p.r+3}" y="${ty+4}" font-size="8" fill="#b07d10">Goal</text>
-    ${pts.map(r=>{const x=sx(rows.indexOf(r)),y=sy(r.total);return `<circle cx="${x}" cy="${y}" r="3" fill="#2a7c72"/>`;}).join('')}`;
+  const pts=rows.filter(function(_,i){return i===0||i===rows.length-1||i%step===0;});
+  let svg='<defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1">'+
+    '<stop offset="0%" stop-color="#22c98a" stop-opacity="0.28"/>'+
+    '<stop offset="100%" stop-color="#22c98a" stop-opacity="0.02"/>'+
+    '</linearGradient></defs>';
+  [0.25,0.5,0.75,1].forEach(function(f){
+    const y=p.t+iH-f*iH;
+    svg+='<line x1="'+p.l+'" y1="'+y+'" x2="'+(W-p.r)+'" y2="'+y+'" stroke="#2a3350" stroke-width="1"/>';
+    svg+='<text x="'+(p.l-5)+'" y="'+(y+4)+'" text-anchor="end" font-size="8.5" fill="#5f7494">'+rmS(max*f)+'</text>';
+  });
+  pts.forEach(function(r){
+    const x=sx(rows.indexOf(r));
+    svg+='<text x="'+x+'" y="'+(H-4)+'" text-anchor="middle" font-size="8.5" fill="#5f7494">'+r.pAge+'</text>';
+  });
+  svg+='<path d="'+area+'" fill="url(#ag)"/>';
+  svg+='<path d="'+line+'" fill="none" stroke="#22c98a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>';
+  svg+='<line x1="'+p.l+'" y1="'+ty+'" x2="'+(W-p.r)+'" y2="'+ty+'" stroke="#e8a020" stroke-width="1.5" stroke-dasharray="4,3"/>';
+  svg+='<text x="'+(W-p.r+3)+'" y="'+(ty+4)+'" font-size="8" fill="#e8a020">Goal</text>';
+  pts.forEach(function(r){
+    const x=sx(rows.indexOf(r)),y=sy(r.total);
+    svg+='<circle cx="'+x+'" cy="'+y+'" r="3" fill="#22c98a"/>';
+  });
+  document.getElementById('tlSvg').innerHTML=svg;
 }
 
 function rm(n){return 'RM '+Math.round(n).toLocaleString('en-MY');}
