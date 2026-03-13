@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kids Education Fund</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Nunito+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{width:100%;min-height:100vh;font-family:'Nunito Sans',sans-serif;background:#13161f;color:#f0f4ff;font-size:15px;overflow-x:hidden}
+html,body{width:100%;min-height:100vh;font-family:'DM Sans',sans-serif;background:#13161f;color:#f0f4ff;font-size:16px;overflow-x:hidden}
 :root{
   --card:#0d0f1a;
   --purple:#7c6fff;--purple-lt:#a89aff;--purple-pale:#2a2645;
@@ -19,87 +19,93 @@ html,body{width:100%;min-height:100vh;font-family:'Nunito Sans',sans-serif;backg
   --border:#2a3050;--radius:18px;
 }
 /* HEADER */
-.hdr{background:linear-gradient(135deg,#6c63ff,#9b74ff);width:100%;padding:0 1.25rem;height:66px;display:flex;align-items:center;justify-content:space-between;gap:.75rem;box-shadow:0 4px 20px rgba(108,99,255,.35);flex-shrink:0}
-.hdr-brand{display:flex;align-items:center;gap:12px}
-.hdr-icon{width:38px;height:38px;background:rgba(255,255,255,.22);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px}
-.hdr-title{font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:800;color:#fff;white-space:nowrap}
-.hdr-btns{display:flex;gap:8px;align-items:center}
-.btn{cursor:pointer;border:none;font-family:'Nunito',sans-serif;font-weight:700;display:inline-flex;align-items:center;gap:5px;transition:all .18s}
-.btn-white{background:#fff;color:var(--purple);padding:8px 16px;border-radius:10px;font-size:.84rem}
-.btn-ghost{background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.3);padding:8px 14px;border-radius:10px;font-size:.8rem}
+.hdr{background:linear-gradient(135deg,#6c63ff,#9b74ff);width:100%;padding:0 1rem;height:70px;display:flex;align-items:center;justify-content:space-between;gap:1rem;box-shadow:0 4px 20px rgba(108,99,255,.35);flex-shrink:0}
+.hdr-brand{display:flex;align-items:center;gap:10px;min-width:0;flex:1;overflow:hidden}
+.hdr-icon{width:40px;height:40px;background:rgba(255,255,255,.22);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.hdr-title{font-family:'Poppins',sans-serif;font-size:1.1rem;font-weight:900;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.02em;line-height:1.15}
+.hdr-sub{font-family:'Poppins',sans-serif;font-size:.78rem;font-weight:600;color:rgba(255,255,255,.8);white-space:nowrap;line-height:1}
+.hdr-btns{display:flex;gap:8px;align-items:center;flex-shrink:0}
+.btn{cursor:pointer;border:none;font-family:'Poppins',sans-serif;font-weight:700;display:inline-flex;align-items:center;gap:4px;transition:all .18s;white-space:nowrap}
+.btn-white{background:linear-gradient(135deg,#fff 0%,#f0edff 100%);color:var(--purple);padding:9px 14px;border-radius:10px;font-size:.85rem;box-shadow:0 2px 12px rgba(255,255,255,.25);border:none}
+.btn-white:hover{background:#fff;box-shadow:0 4px 18px rgba(255,255,255,.4);transform:translateY(-1px)}
+.btn-icon{width:38px;height:38px;padding:0;border-radius:10px;background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.3);font-size:1.1rem;justify-content:center;flex-shrink:0;transition:all .2s}
+.btn-icon:hover{background:rgba(255,255,255,.25);transform:rotate(22deg)}
+@media(max-width:400px){
+  .hdr-title{font-size:.95rem}
+}
 /* CONTENT */
-.content{width:100%;max-width:1040px;margin:0 auto;padding:1.6rem 1.25rem 3rem}
+.content{width:100%;max-width:1040px;margin:0 auto;padding:.9rem 1rem 2rem}
 /* EMPTY */
 .empty{text-align:center;padding:3.5rem 1.5rem;background:var(--card);border-radius:var(--radius);border:2px dashed var(--border)}
-.empty h2{font-family:'Nunito',sans-serif;font-size:1.4rem;font-weight:800;margin:.75rem 0 .4rem}
+.empty h2{font-family:'Poppins',sans-serif;font-size:1.4rem;font-weight:800;margin:.75rem 0 .4rem}
 .empty p{color:var(--ink-lt);font-size:.9rem;margin-bottom:1.4rem;line-height:1.65}
 /* SUMMARY */
-.summary{background:linear-gradient(135deg,#1a9e6e,#22c98a);border-radius:var(--radius);padding:1.3rem 1.5rem;margin-bottom:1.4rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;color:#fff;box-shadow:0 6px 24px rgba(34,168,122,.3)}
-.sum-lbl{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;opacity:.82;margin-bottom:3px;font-weight:600}
-.sum-amt{font-family:'Nunito',sans-serif;font-size:2rem;font-weight:800;line-height:1}
-.sum-note{font-size:.76rem;opacity:.75;margin-top:4px}
-.sum-chips{display:flex;gap:6px;flex-wrap:wrap}
-.chip{background:rgba(255,255,255,.2);border-radius:20px;padding:4px 12px;font-size:.77rem;font-weight:600}
+.summary{background:linear-gradient(135deg,#1a9e6e,#22c98a);border-radius:14px;padding:.85rem 1.1rem;margin-bottom:.9rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;color:#fff;box-shadow:0 4px 16px rgba(34,168,122,.25)}
+.sum-lbl{font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;opacity:.82;margin-bottom:1px;font-weight:600}
+.sum-amt{font-family:'Poppins',sans-serif;font-size:1.7rem;font-weight:800;line-height:1}
+.sum-note{font-size:.7rem;opacity:.75;margin-top:2px}
+.sum-chips{display:flex;gap:5px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.2);border-radius:20px;padding:3px 10px;font-size:.72rem;font-weight:600}
 /* SECTION */
-.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
-.sec-title{font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;color:var(--ink-mid);display:flex;align-items:center;gap:8px}
-.badge-n{background:var(--card);border:1.5px solid var(--border);border-radius:20px;padding:2px 10px;font-size:.75rem;font-weight:700;color:var(--ink-lt);font-family:'Nunito',sans-serif}
-.btn-reset{background:none;border:1.5px solid #6a2a2a;color:#e05a5a;padding:6px 12px;border-radius:9px;font-family:'Nunito',sans-serif;font-size:.74rem;font-weight:700;cursor:pointer}
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:.7rem}
+.sec-title{font-family:'Poppins',sans-serif;font-size:.9rem;font-weight:700;color:var(--ink-mid);display:flex;align-items:center;gap:8px}
+.badge-n{background:var(--card);border:1.5px solid var(--border);border-radius:20px;padding:2px 10px;font-size:.72rem;font-weight:700;color:var(--ink-lt);font-family:'Poppins',sans-serif}
+.btn-reset{background:none;border:1.5px solid #6a2a2a;color:#e05a5a;padding:5px 10px;border-radius:9px;font-family:'Poppins',sans-serif;font-size:.7rem;font-weight:700;cursor:pointer}
 /* CARDS */
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.2rem}
-.card{background:var(--card);border-radius:var(--radius);border:2.5px solid #3a4570;box-shadow:0 4px 24px rgba(0,0,0,.5);overflow:hidden}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
+.card{background:var(--card);border-radius:14px;border:2.5px solid #3a4570;box-shadow:0 4px 24px rgba(0,0,0,.5);overflow:hidden}
 /* CARD PARTS */
-.card-hdr{padding:1.1rem 1.2rem .9rem;display:flex;align-items:flex-start;justify-content:space-between;border-bottom:1.5px solid var(--border)}
-.card-av{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;margin-right:10px}
+.card-hdr{padding:.75rem 1rem .65rem;display:flex;align-items:flex-start;justify-content:space-between;border-bottom:1.5px solid var(--border)}
+.card-av{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;margin-right:8px}
 .av-pub{background:var(--green-pale)} .av-prv{background:var(--orange-pale)} .av-ovs{background:var(--pink-pale)}
 .card-name-row{display:flex;align-items:center}
-.card-name{font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:800;color:var(--ink)}
-.card-age{color:var(--ink-lt);font-size:.77rem;margin-top:2px}
-.pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.67rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-family:'Nunito',sans-serif}
+.card-name{font-family:'Poppins',sans-serif;font-size:1.05rem;font-weight:800;color:var(--ink)}
+.card-age{color:var(--ink-lt);font-size:.74rem;margin-top:1px}
+.pill{display:inline-block;padding:2px 8px;border-radius:20px;font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-family:'Poppins',sans-serif}
 .p-pub{background:var(--green-pale);color:var(--green)} .p-semi{background:#1e1a0e;color:#d4a040}
 .p-prv{background:var(--orange-pale);color:var(--orange)} .p-ovs{background:var(--pink-pale);color:var(--pink)}
-.card-body{padding:1rem 1.2rem}
-.living-tag{font-size:.72rem;color:var(--ink-lt);background:#16192a;border-radius:20px;display:inline-flex;align-items:center;gap:4px;padding:3px 10px;margin-bottom:.85rem;border:1px solid var(--border)}
-.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:.85rem}
-.stat-lbl{font-size:.67rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-lt);margin-bottom:3px;font-weight:700}
+.card-body{padding:.7rem 1rem}
+.living-tag{font-size:.68rem;color:var(--ink-lt);background:#16192a;border-radius:20px;display:inline-flex;align-items:center;gap:4px;padding:2px 9px;margin-bottom:.6rem;border:1px solid var(--border)}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:.65rem}
+.stat-lbl{font-size:.65rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-lt);margin-bottom:2px;font-weight:700}
 .stat-val{font-size:.95rem;font-weight:700;color:var(--ink)}
-.sv-green{color:var(--green)} .sv-big{font-family:'Nunito',sans-serif;font-size:1.2rem;font-weight:800;color:var(--green)}
+.sv-green{color:var(--green)} .sv-big{font-family:'Poppins',sans-serif;font-size:1.15rem;font-weight:800;color:var(--green)}
 .info-icon{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--purple-pale);color:var(--purple-lt);font-size:10px;font-weight:800;cursor:pointer;font-style:normal;flex-shrink:0;margin-left:5px;user-select:none;border:1.5px solid var(--purple);vertical-align:middle;transition:all .15s;line-height:1}
 .info-icon:hover{background:var(--purple);color:#fff;box-shadow:0 0 8px rgba(124,111,255,.6);transform:scale(1.15)}
-.sav-wrap{margin-top:.8rem}
-.sav-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}
-.sav-track{background:#1a1e30;border-radius:10px;height:7px;width:100%;overflow:hidden}
+.sav-wrap{margin-top:.55rem}
+.sav-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+.sav-track{background:#1a1e30;border-radius:10px;height:6px;width:100%;overflow:hidden}
 .sav-fill{height:100%;border-radius:10px}
-.sav-info{display:flex;justify-content:space-between;margin-top:4px;font-size:.69rem;color:var(--ink-lt)}
-.card-foot{padding:.85rem 1.2rem;border-top:1.5px solid var(--border);display:flex;gap:7px;background:var(--card)}
-.bt-tl{flex:1;background:linear-gradient(135deg,var(--purple),var(--purple-lt));color:#fff;border:none;padding:9px 10px;border-radius:10px;font-family:'Nunito',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.bt-ed{background:#16192a;color:var(--ink-mid);border:1.5px solid var(--border);padding:9px 13px;border-radius:10px;font-family:'Nunito',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.bt-rm{background:none;color:#e05a5a;border:1.5px solid #4a2020;padding:9px 10px;border-radius:10px;font-size:.78rem;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.sav-info{display:flex;justify-content:space-between;margin-top:3px;font-size:.64rem;color:var(--ink-lt)}
+.card-foot{padding:.65rem 1rem;border-top:1.5px solid var(--border);display:flex;gap:6px;background:var(--card)}
+.bt-tl{flex:1;background:linear-gradient(135deg,var(--purple),var(--purple-lt));color:#fff;border:none;padding:7px 10px;border-radius:9px;font-family:'Poppins',sans-serif;font-size:.74rem;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.bt-ed{background:#16192a;color:var(--ink-mid);border:1.5px solid var(--border);padding:7px 12px;border-radius:9px;font-family:'Poppins',sans-serif;font-size:.74rem;font-weight:600;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.bt-rm{background:none;color:#e05a5a;border:1.5px solid #4a2020;padding:7px 10px;border-radius:9px;font-size:.74rem;cursor:pointer;-webkit-tap-highlight-color:transparent}
 /* OVERLAY + MODAL */
 .overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;padding:1rem}
 .modal{background:#0d0f1a;border-radius:22px;width:100%;max-width:500px;max-height:92vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,.8);border:1.5px solid var(--border)}
 .modal-wide{max-width:680px}
 .modal-hdr{padding:1.2rem 1.5rem 1rem;border-bottom:1.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#0d0f1a;z-index:1}
-.modal-title{font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:800;color:var(--ink)}
+.modal-title{font-family:'Poppins',sans-serif;font-size:1.1rem;font-weight:800;color:var(--ink)}
 .modal-x{width:32px;height:32px;background:#16192a;border:none;border-radius:9px;cursor:pointer;font-size:1rem;color:var(--ink-mid);display:flex;align-items:center;justify-content:center}
 .modal-body{padding:1.2rem 1.5rem}
 .modal-foot{padding:1rem 1.5rem;border-top:1.5px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
 /* FORM */
 .fg{background:#16192a;border-radius:12px;padding:.9rem 1rem;margin-bottom:.9rem}
 .fg:last-child{margin-bottom:0}
-.fg-title{font-family:'Nunito',sans-serif;font-size:.75rem;font-weight:800;color:var(--purple-lt);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.7rem}
+.fg-title{font-family:'Poppins',sans-serif;font-size:.75rem;font-weight:800;color:var(--purple-lt);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.7rem}
 .fr{margin-bottom:.7rem} .fr:last-child{margin-bottom:0}
 .lbl{display:block;font-size:.78rem;font-weight:600;color:var(--ink-mid);margin-bottom:5px}
-.fi{width:100%;padding:10px 14px;border:2px solid var(--border);border-radius:11px;font-family:'Nunito Sans',sans-serif;font-size:.9rem;color:var(--ink);background:#0d0f1a;outline:none;transition:border-color .18s}
+.fi{width:100%;padding:10px 14px;border:2px solid var(--border);border-radius:11px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--ink);background:#0d0f1a;outline:none;transition:border-color .18s}
 .fi:focus{border-color:var(--purple)}
 .r-opt{display:none} .r-lbl{display:block;padding:8px 6px;border-radius:9px;border:1.5px solid var(--border);font-size:.76rem;font-weight:600;cursor:pointer;text-align:center;color:var(--ink-mid);transition:all .15s;background:#0d0f1a}
 .r-opt:checked+.r-lbl{border-color:var(--purple);background:var(--purple-pale);color:var(--purple)}
 .t-opt{display:none} .t-lbl{flex:1;display:block;padding:8px 10px;border-radius:9px;border:1.5px solid var(--border);font-size:.78rem;font-weight:600;cursor:pointer;text-align:center;color:var(--ink-mid);background:#0d0f1a;transition:all .15s}
 .t-opt:checked+.t-lbl{border-color:var(--orange);background:var(--orange-pale);color:var(--orange)}
-.qb{flex:1;padding:6px 4px;border-radius:8px;font-family:'Nunito',sans-serif;font-size:.68rem;font-weight:700;cursor:pointer;border:1.5px solid;white-space:nowrap}
-.btn-primary{background:linear-gradient(135deg,var(--purple),var(--purple-lt));color:#fff;border:none;padding:11px 24px;border-radius:11px;font-family:'Nunito',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer}
-.btn-cancel{background:#16192a;color:var(--ink-mid);border:1.5px solid var(--border);padding:11px 18px;border-radius:11px;font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer}
-.danger-btn{width:100%;margin-top:.5rem;background:none;border:2px solid #4a2020;color:#e05a5a;padding:10px;border-radius:11px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:.82rem;font-weight:600}
+.qb{flex:1;padding:6px 4px;border-radius:8px;font-family:'Poppins',sans-serif;font-size:.68rem;font-weight:700;cursor:pointer;border:1.5px solid;white-space:nowrap}
+.btn-primary{background:linear-gradient(135deg,var(--purple),var(--purple-lt));color:#fff;border:none;padding:11px 24px;border-radius:11px;font-family:'Poppins',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer}
+.btn-cancel{background:#16192a;color:var(--ink-mid);border:1.5px solid var(--border);padding:11px 18px;border-radius:11px;font-family:'Poppins',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer}
+.danger-btn{width:100%;margin-top:.5rem;background:none;border:2px solid #4a2020;color:#e05a5a;padding:10px;border-radius:11px;cursor:pointer;font-family:'Poppins',sans-serif;font-size:.82rem;font-weight:600}
 /* TIMELINE */
 .tl-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;padding:1rem 1.5rem;border-bottom:1.5px solid var(--border)}
 .tls-lbl{font-size:.65rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-lt);font-weight:700}
@@ -113,14 +119,14 @@ html,body{width:100%;min-height:100vh;font-family:'Nunito Sans',sans-serif;backg
 .m75 td,.m100 td{color:var(--green);font-weight:700}
 .mbadge{display:inline-block;font-size:.65rem;font-weight:700;padding:1px 6px;border-radius:6px;margin-left:4px}
 /* SETTINGS */
-.ss-title{font-family:'Nunito',sans-serif;font-size:.78rem;font-weight:800;color:var(--purple-lt);text-transform:uppercase;letter-spacing:.07em;margin:1rem 0 .5rem}
+.ss-title{font-family:'Poppins',sans-serif;font-size:.78rem;font-weight:800;color:var(--purple-lt);text-transform:uppercase;letter-spacing:.07em;margin:1rem 0 .5rem}
 .ss-title:first-child{margin-top:0}
 .uni-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.75rem}
 .uni-card{border-radius:10px;padding:.7rem .9rem;border:1.5px solid var(--border);background:#0d0f1a}
 .uc-title{font-size:.72rem;font-weight:700;margin-bottom:.5rem}
 .inf-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
 /* TOOLTIP */
-#tip{display:none;position:absolute;z-index:999;background:#1a1d2e;border:1.5px solid #3a4460;border-radius:14px;padding:12px 14px;font-size:.8rem;line-height:1.6;max-width:280px;box-shadow:0 8px 28px rgba(0,0,0,.6);pointer-events:none;font-family:'Nunito Sans',sans-serif}
+#tip{display:none;position:absolute;z-index:999;background:#1a1d2e;border:1.5px solid #3a4460;border-radius:14px;padding:12px 14px;font-size:.8rem;line-height:1.6;max-width:280px;box-shadow:0 8px 28px rgba(0,0,0,.6);pointer-events:none;font-family:'DM Sans',sans-serif}
 ::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:10px}
 @media(max-width:480px){.tl-stats{grid-template-columns:1fr 1fr}.cards{grid-template-columns:1fr}}
 </style>
@@ -130,29 +136,40 @@ html,body{width:100%;min-height:100vh;font-family:'Nunito Sans',sans-serif;backg
   <header class="hdr">
     <div class="hdr-brand">
       <div class="hdr-icon">🎓</div>
-      <div class="hdr-title">Kids Education Fund</div>
+      <div>
+        <div class="hdr-title">Kids Education Fund</div>
+      </div>
     </div>
     <div class="hdr-btns">
-      <button class="btn btn-ghost" id="btnSettings">⚙ Settings</button>
-      <button class="btn btn-white" id="btnAdd">＋ Add Child</button>
+      <button class="btn btn-icon" id="btnSettings" title="Settings">⚙</button>
+      <button class="btn btn-white" id="btnAdd">+ 👦</button>
     </div>
   </header>
 
   <div class="content">
     <div class="empty" id="emptyState">
-      <div style="font-size:3.5rem">🎒</div>
+      <div style="font-size:3.5rem">🎓</div>
       <h2>No children added yet</h2>
       <p>Add a child to start planning their education fund.</p>
       <button class="btn" id="btnAddEmpty" style="background:var(--purple);color:#fff;padding:10px 22px;border-radius:12px;font-size:.9rem">＋ Add First Child</button>
     </div>
     <div id="dash" style="display:none">
       <div class="summary">
-        <div>
-          <div class="sum-lbl">Total Monthly Saving Needed</div>
-          <div class="sum-amt" id="totalAmt">RM 0</div>
-          <div class="sum-note">Combined for all children's education funds</div>
+        <div style="width:100%">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:.75rem">
+            <div>
+              <div class="sum-lbl">Total Monthly Saving Needed</div>
+              <div class="sum-amt" id="totalAmt">RM 0</div>
+              <div class="sum-note">Combined for all children's education funds</div>
+            </div>
+            <div class="sum-chips" id="sumChips"></div>
+          </div>
+          <!-- CONTRIBUTION TIMELINE BAR -->
+          <div id="ageMilestoneBar" style="display:none;margin-top:.6rem;padding-top:.65rem;border-top:1px solid rgba(255,255,255,.2)">
+            <div style="font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;opacity:.75;font-weight:700;margin-bottom:.55rem">Monthly Contribution Timeline</div>
+            <div id="contribTimeline"></div>
+          </div>
         </div>
-        <div class="sum-chips" id="sumChips"></div>
       </div>
       <div class="sec-hdr">
         <div class="sec-title">Children <span class="badge-n" id="childCount">0</span></div>
@@ -201,7 +218,7 @@ html,body{width:100%;min-height:100vh;font-family:'Nunito Sans',sans-serif;backg
             <label style="flex:1"><input class="t-opt" type="radio" name="living" value="no"><span class="t-lbl">📚 No</span></label>
           </div>
           <div style="margin-top:.6rem">
-            <button type="button" id="livToggle" style="background:none;border:none;color:var(--orange);font-family:'Nunito',sans-serif;font-size:.74rem;font-weight:700;cursor:pointer;padding:0;display:flex;align-items:center;gap:4px">🏠 How living cost is estimated? <span id="livChev" style="transition:transform .2s">▼</span></button>
+            <button type="button" id="livToggle" style="background:none;border:none;color:var(--orange);font-family:'Poppins',sans-serif;font-size:.74rem;font-weight:700;cursor:pointer;padding:0;display:flex;align-items:center;gap:4px">🏠 How living cost is estimated? <span id="livChev" style="transition:transform .2s">▼</span></button>
             <div id="livPanel" style="display:none;margin-top:.5rem;background:#0d0f1a;border:1.5px solid var(--border);border-radius:10px;padding:.85rem;font-size:.74rem;line-height:1.7;color:var(--ink-mid)">
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.75rem">
                 <div style="background:var(--orange-pale);border-radius:8px;padding:.6rem .75rem;border:1px solid #3a2010">
@@ -255,7 +272,7 @@ html,body{width:100%;min-height:100vh;font-family:'Nunito Sans',sans-serif;backg
             <button class="qb" id="qb3" style="background:var(--orange-pale);color:var(--orange);border-color:#4a3010">📈 Unit Trust ~7%</button>
           </div>
           <div style="margin-top:.6rem">
-            <button type="button" id="sspnToggle" style="background:none;border:none;color:var(--purple-lt);font-family:'Nunito',sans-serif;font-size:.74rem;font-weight:700;cursor:pointer;padding:0;display:flex;align-items:center;gap:4px">🎓 Why consider SSPN? <span id="sspnChev" style="transition:transform .2s">▼</span></button>
+            <button type="button" id="sspnToggle" style="background:none;border:none;color:var(--purple-lt);font-family:'Poppins',sans-serif;font-size:.74rem;font-weight:700;cursor:pointer;padding:0;display:flex;align-items:center;gap:4px">🎓 Why consider SSPN? <span id="sspnChev" style="transition:transform .2s">▼</span></button>
             <div id="sspnPanel" style="display:none;margin-top:.5rem;background:#0d0f1a;border:1.5px solid var(--border);border-radius:10px;padding:.85rem;font-size:.74rem;line-height:1.7;color:var(--ink-mid)">
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.65rem">
                 <div style="background:var(--green-pale);border-radius:8px;padding:.5rem .7rem;color:var(--green)"><div style="font-weight:800;font-size:.82rem">4.05%</div><div style="font-size:.7rem;opacity:.85">2024 Dividend</div></div>
@@ -432,6 +449,57 @@ function render(){
 
   document.getElementById('totalAmt').textContent=rm(total)+'/mo';
   document.getElementById('sumChips').innerHTML=DATA.map(function(c){return '<div class="chip">👤 '+esc(c.name)+'</div>';}).join('');
+
+  // ── CONTRIBUTION TIMELINE ─────────────────────────────────────────────────
+  var bar=document.getElementById('ageMilestoneBar');
+  if(!DATA.length||total<=0){ bar.style.display='none'; return; }
+  bar.style.display='block';
+
+  var baseAge=DATA[0].parentAge;
+  var msYrs=[0];
+  DATA.forEach(function(c){ var y=calc(c).yrs; if(msYrs.indexOf(y)<0) msYrs.push(y); });
+  msYrs.sort(function(a,b){return a-b;});
+  var totalYrs=msYrs[msYrs.length-1];
+  if(!totalYrs){ bar.style.display='none'; return; }
+
+  // Build phases
+  var phases=[];
+  for(var i=0;i<msYrs.length-1;i++){
+    var fromYr=msYrs[i], toYr=msYrs[i+1];
+    var mo=0;
+    DATA.forEach(function(c){ if(calc(c).yrs>fromYr) mo+=calc(c).monthly; });
+    var grads=DATA.filter(function(c){ return calc(c).yrs===toYr; });
+    phases.push({ fromAge:baseAge+fromYr, toAge:baseAge+toYr, monthly:mo, grads:grads, pct:Math.round((toYr-fromYr)/totalYrs*100) });
+  }
+
+  var html='<div style="display:flex;flex-direction:column;gap:6px">';
+
+  phases.forEach(function(p, i){
+    var opacity = i===0 ? '1' : i===1 ? '.75' : '.55';
+    var gradLabel = p.grads.length ? ' · 🎓 '+p.grads.map(function(c){return c.name;}).join(' & ')+' graduates' : '';
+    html+=
+      '<div style="display:flex;align-items:center;gap:10px">'+
+        // Amount badge
+        '<div style="background:rgba(0,0,0,.25);border-radius:10px;padding:7px 12px;text-align:center;flex-shrink:0;min-width:105px;border:1px solid rgba(255,255,255,.15)">'+
+          '<div style="font-size:.78rem;font-weight:800;color:#fff;line-height:1">'+rm(p.monthly)+'<span style="font-size:.6rem;font-weight:600;opacity:.7">/mo</span></div>'+
+        '</div>'+
+        // Arrow + age range
+        '<div style="flex:1;min-width:0">'+
+          '<div style="display:flex;align-items:center;gap:5px;margin-bottom:3px">'+
+            '<div style="font-size:.68rem;font-weight:700;color:rgba(255,255,255,.9);white-space:nowrap">Age '+p.fromAge+'</div>'+
+            '<div style="flex:1;display:flex;align-items:center;min-width:0">'+
+              '<div style="flex:1;height:1.5px;background:rgba(255,255,255,.35)"></div>'+
+              '<div style="width:0;height:0;border-top:3.5px solid transparent;border-bottom:3.5px solid transparent;border-left:5px solid rgba(255,255,255,.35);flex-shrink:0"></div>'+
+            '</div>'+
+            '<div style="font-size:.68rem;font-weight:700;color:rgba(255,255,255,.9);white-space:nowrap">Age '+p.toAge+'</div>'+
+          '</div>'+
+          '<div style="font-size:.62rem;color:rgba(255,255,255,.6)">'+(p.toAge-p.fromAge)+' yrs'+gradLabel+'</div>'+
+        '</div>'+
+      '</div>';
+  });
+
+  html+='</div>';
+  document.getElementById('contribTimeline').innerHTML=html;
 }
 
 // ── ADD / EDIT ───────────────────────────────────────────────────────────────
