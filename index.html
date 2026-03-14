@@ -550,36 +550,48 @@ input[type=checkbox].hidden-cb { display:none; }
             </div>
           </div>
 
-          <!-- Dividend + Passive Income box -->
-          <div style="background:rgba(0,229,160,0.06);border-radius:8px;padding:6px 8px;">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
-              <div style="font-size:9px;font-weight:700;color:#34d399;">💚 Passive Income (dividend, interest, etc.)</div>
-              <button onclick="var el=document.getElementById('div-passive-tip');el.style.display=el.style.display==='block'?'none':'block';" style="background:rgba(0,229,160,0.15);border:1px solid rgba(0,229,160,0.3);border-radius:50%;width:18px;height:18px;font-size:10px;color:#34d399;cursor:pointer;line-height:18px;text-align:center;padding:0;flex-shrink:0;">ℹ</button>
+          <!-- Dividend + Passive Income box — collapsible -->
+          <div style="background:rgba(0,229,160,0.06);border-radius:8px;">
+            <div onclick="var b=document.getElementById('fi-passive-body');var c=document.getElementById('fi-passive-chev');b.style.display=b.style.display==='none'?'block':'none';c.style.transform=b.style.display==='block'?'rotate(180deg)':'';" style="display:flex;align-items:center;justify-content:space-between;padding:7px 10px;cursor:pointer;">
+              <div style="display:flex;align-items:center;gap:5px;min-width:0;">
+                <span style="font-size:11px;flex-shrink:0;">💚</span>
+                <div style="font-size:11px;font-weight:700;color:#34d399;white-space:nowrap;">Passive Income</div>
+                <button onclick="event.stopPropagation();var el=document.getElementById('div-passive-tip');el.style.display=el.style.display==='block'?'none':'block';" style="background:rgba(0,229,160,0.15);border:1px solid rgba(0,229,160,0.3);border-radius:50%;width:16px;height:16px;font-size:9px;color:#34d399;cursor:pointer;line-height:16px;text-align:center;padding:0;flex-shrink:0;position:relative;z-index:1;">ℹ</button>
+              </div>
+              <span id="fi-passive-chev" style="color:#34d399;font-size:11px;transition:transform 0.2s;">▼</span>
             </div>
-            <div id="div-passive-tip" style="display:none;font-size:11px;color:var(--text-sub);line-height:1.6;margin-bottom:6px;padding:8px 10px;background:rgba(0,229,160,0.06);border-radius:6px;border:1px solid rgba(0,229,160,0.15);">
-              💡 You don't withdraw everything — only 4% of your portfolio per year (the 4% withdrawal rule). This is a globally recognised safe withdrawal rate. The rest stays invested and keeps growing. Over time, your principal grows too, meaning your income can increase year on year.
+            <div id="div-passive-tip" style="display:none;font-size:11px;color:var(--text-sub);line-height:1.6;padding:8px 10px;margin:0 8px 6px;background:rgba(0,229,160,0.06);border-radius:6px;border:1px solid rgba(0,229,160,0.15);">
+              💡 Loading...
             </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;">
-              <div>
-                <div style="font-size:11px;color:var(--text);opacity:0.6;">Total/month</div>
-                <div class="stat-val vals" style="font-size:12px;color:#34d399;font-weight:700;" id="mile-fi-divpassive">–</div>
+            <div id="fi-passive-body" style="display:none;padding:0 10px 8px;">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:4px;">
+                <div>
+                  <div style="font-size:11px;color:var(--text);opacity:0.6;">Monthly Income</div>
+                  <div class="stat-val vals" style="font-size:12px;color:#34d399;font-weight:700;" id="mile-fi-divpassive-detail">–</div>
+                </div>
+                <div>
+                  <div style="font-size:11px;color:var(--text);opacity:0.6;">Portfolio at 90</div>
+                  <div class="stat-val vals" style="font-size:12px;color:#34d399;" id="mile-fi-div90-detail">–</div>
+                </div>
               </div>
-              <div>
-                <div style="font-size:11px;color:var(--text);opacity:0.6;">From EPF</div>
-                <div class="stat-val vals" style="font-size:12px;color:#34d399;" id="mile-fi-div-epf">–</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:6px;">
+                <div>
+                  <div style="font-size:11px;color:var(--text);opacity:0.6;">EPF/mo</div>
+                  <div class="stat-val vals" style="font-size:12px;color:#34d399;" id="mile-fi-div-epf">–</div>
+                </div>
+                <div>
+                  <div style="font-size:11px;color:var(--text);opacity:0.6;">Non-EPF/mo</div>
+                  <div class="stat-val vals" style="font-size:12px;color:#34d399;" id="mile-fi-div-nonepf">–</div>
+                </div>
               </div>
-              <div>
-                <div style="font-size:11px;color:var(--text);opacity:0.6;">Non-EPF</div>
-                <div class="stat-val vals" style="font-size:12px;color:#34d399;" id="mile-fi-div-nonepf">–</div>
+              <div id="mile-fi-epf-note-wrap" style="display:none;margin-top:5px;">
+                <div onclick="var el=document.getElementById('mile-fi-epf-note-body');el.style.display=el.style.display==='none'?'block':'none';" style="display:flex;align-items:center;gap:5px;cursor:pointer;font-size:11px;color:#ffb800;font-weight:600;">
+                  <span id="mile-fi-epf-note-icon">⚠️</span>
+                  <span id="mile-fi-epf-note-title">EPF access note</span>
+                  <span style="margin-left:auto;font-size:10px;">▼</span>
+                </div>
+                <div id="mile-fi-epf-note-body" style="display:none;margin-top:4px;font-size:11px;line-height:1.6;padding:8px 10px;background:rgba(255,184,0,0.06);border-radius:6px;border:1px solid rgba(255,184,0,0.2);"></div>
               </div>
-            </div>
-            <div id="mile-fi-epf-note-wrap" style="display:none;margin-top:5px;">
-              <div onclick="var el=document.getElementById('mile-fi-epf-note-body');el.style.display=el.style.display==='none'?'block':'none';" style="display:flex;align-items:center;gap:5px;cursor:pointer;font-size:11px;color:#ffb800;font-weight:600;">
-                <span id="mile-fi-epf-note-icon">⚠️</span>
-                <span id="mile-fi-epf-note-title">EPF access note</span>
-                <span style="margin-left:auto;font-size:10px;">▼</span>
-              </div>
-              <div id="mile-fi-epf-note-body" style="display:none;margin-top:4px;font-size:11px;line-height:1.6;padding:8px 10px;background:rgba(255,184,0,0.06);border-radius:6px;border:1px solid rgba(255,184,0,0.2);"></div>
             </div>
           </div>
 
@@ -609,9 +621,20 @@ input[type=checkbox].hidden-cb { display:none; }
 
           <!-- Portfolio at 55 + EPF/Non-EPF -->
           <div style="border-top:1px solid rgba(167,139,250,0.15);padding-top:7px;margin-bottom:6px;">
-            <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:5px;">
-              <div style="font-size:11px;color:var(--text);opacity:0.6;text-transform:uppercase;letter-spacing:0.03em;">Total Portfolio at 55</div>
-              <div class="stat-val vals" style="font-size:14px;color:var(--passive);font-weight:700;" id="mile-epf-target">–</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-bottom:5px;">
+              <div>
+                <div style="font-size:11px;color:var(--text);opacity:0.6;text-transform:uppercase;letter-spacing:0.03em;">Portfolio at 55</div>
+                <div class="stat-val vals" style="font-size:14px;color:var(--passive);font-weight:700;" id="mile-epf-target">–</div>
+              </div>
+              <div>
+                <div style="font-size:11px;color:var(--text);opacity:0.6;text-transform:uppercase;letter-spacing:0.03em;">Monthly Income</div>
+                <div class="stat-val vals" style="font-size:14px;color:var(--passive);font-weight:700;" id="mile-epf-income">–</div>
+                <div style="font-size:9px;color:var(--text-muted);">via <span id="fi-wr-label-2">4</span>% withdrawal rule</div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-size:11px;color:var(--text);opacity:0.6;text-transform:uppercase;letter-spacing:0.03em;">Portfolio at 90</div>
+                <div class="stat-val vals" style="font-size:12px;color:var(--passive);opacity:0.75;" id="mile-epf-port90-wr">–</div>
+              </div>
             </div>
             <div style="display:flex;gap:5px;">
               <div style="flex:1;background:rgba(167,139,250,0.08);border-radius:6px;padding:4px 7px;">
@@ -625,23 +648,33 @@ input[type=checkbox].hidden-cb { display:none; }
             </div>
           </div>
 
-          <!-- Two paths side by side -->
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-            <div style="background:rgba(167,139,250,0.06);border-radius:8px;padding:7px 8px;">
-              <div style="font-size:10px;font-weight:700;color:var(--passive);margin-bottom:4px;">📊 <span id="fi-wr-label-2">4</span>% Withdrawal Rule</div>
-              <div style="font-size:11px;color:var(--text);opacity:0.6;">Monthly Income</div>
-              <div class="stat-val vals" style="font-size:13px;color:var(--passive);font-weight:700;margin-bottom:4px;" id="mile-epf-income">–</div>
-              <div style="height:1px;background:rgba(167,139,250,0.15);margin-bottom:4px;"></div>
-              <div style="font-size:11px;color:var(--text);opacity:0.6;">Portfolio at 90</div>
-              <div class="stat-val vals" style="font-size:11px;color:var(--passive);font-weight:600;" id="mile-epf-port90-wr">–</div>
+          <!-- Two paths — collapsible -->
+          <div style="background:rgba(167,139,250,0.06);border-radius:8px;overflow:hidden;">
+            <div onclick="var b=document.getElementById('age55-paths-body');var c=document.getElementById('age55-paths-chev');b.style.display=b.style.display==='none'?'block':'none';c.style.transform=b.style.display==='block'?'rotate(180deg)':'';" style="display:flex;align-items:center;justify-content:space-between;padding:7px 10px;cursor:pointer;">
+              <div style="font-size:11px;font-weight:700;color:var(--passive);">💜 Passive Income</div>
+              <span id="age55-paths-chev" style="color:var(--passive);font-size:11px;transition:transform 0.2s;">▼</span>
             </div>
-            <div style="background:rgba(167,139,250,0.06);border-radius:8px;padding:7px 8px;">
-              <div style="font-size:10px;font-weight:700;color:#c084fc;margin-bottom:4px;">💜 Passive Income</div>
-              <div style="font-size:11px;color:var(--text);opacity:0.6;">Monthly Income</div>
-              <div class="stat-val vals" style="font-size:13px;color:#c084fc;font-weight:700;margin-bottom:4px;" id="mile-epf-dividend">–</div>
-              <div style="height:1px;background:rgba(167,139,250,0.15);margin-bottom:4px;"></div>
-              <div style="font-size:11px;color:var(--text);opacity:0.6;">Portfolio at 90</div>
-              <div class="stat-val vals" style="font-size:11px;color:#c084fc;font-weight:600;" id="mile-epf-port90-div">–</div>
+            <div id="age55-paths-body" style="display:none;padding:0 8px 8px;">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:4px;">
+                <div>
+                  <div style="font-size:11px;color:var(--text);opacity:0.6;">Monthly Income</div>
+                  <div class="stat-val vals" style="font-size:13px;color:#c084fc;font-weight:700;" id="mile-epf-dividend">–</div>
+                </div>
+                <div>
+                  <div style="font-size:11px;color:var(--text);opacity:0.6;">Portfolio at 90</div>
+                  <div class="stat-val vals" style="font-size:11px;color:#c084fc;font-weight:600;" id="mile-epf-port90-div">–</div>
+                </div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">
+                <div>
+                  <div style="font-size:11px;color:var(--text);opacity:0.6;">EPF/mo</div>
+                  <div class="stat-val vals" style="font-size:11px;color:#c084fc;" id="mile-epf-div-epf">–</div>
+                </div>
+                <div>
+                  <div style="font-size:11px;color:var(--text);opacity:0.6;">Non-EPF/mo</div>
+                  <div class="stat-val vals" style="font-size:11px;color:#c084fc;" id="mile-epf-div-nonepf">–</div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -976,10 +1009,12 @@ input[type=checkbox].hidden-cb { display:none; }
             </div>
           </div>
 
+          <div onclick="toggleInfoPanel('info-my-reality')" style="display:flex;align-items:center;justify-content:center;gap:4px;margin-top:14px;cursor:pointer;font-size:11px;color:var(--text-muted);">
+            <span>Minimise</span><span style="font-size:10px;">▲</span>
+          </div>
+
         </div>
       </div>
-
-      <!-- Collapsible: Why Start Now -->
       <div class="card" style="margin-bottom:14px;padding:0;overflow:hidden;">
         <div onclick="toggleInfoPanel('info-why-now')" style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;">
           <div style="display:flex;align-items:center;gap:10px;">
@@ -1036,9 +1071,11 @@ input[type=checkbox].hidden-cb { display:none; }
               </div>
             </div>
           </div>
+          <div onclick="toggleInfoPanel('info-why-now')" style="display:flex;align-items:center;justify-content:center;gap:4px;margin-top:10px;cursor:pointer;font-size:11px;color:var(--text-muted);">
+            <span>Minimise</span><span style="font-size:10px;">▲</span>
+          </div>
         </div>
       </div>
-
       <div class="disclaimer"><b>Disclaimer:</b> For educational and awareness purposes only. Not financial advice.</div>
 
     </div>
@@ -1692,8 +1729,32 @@ function recalc() {
       }
     }
     const nonEpfDivAtFI = divPassiveAtFI - epfDivAtFI;
+    const wr4pctIncome = fiRow.total * wr / 12;
+    const passiveTipEl = document.getElementById('div-passive-tip');
+    if (passiveTipEl) {
+      let tipMsg;
+      if (divPassiveAtFI >= wr4pctIncome * 1.05) {
+        tipMsg = `💡 Your passive income (${fmtRM(divPassiveAtFI)}/mo) already exceeds your 4% withdrawal income (${fmtRM(wr4pctIncome)}/mo). You don't need to sell any assets — but you'd still only draw 4% and let the rest compound. The surplus passive income reinvests and grows your wealth further.`;
+      } else if (divPassiveAtFI >= wr4pctIncome * 0.95) {
+        tipMsg = `💡 Your passive income (${fmtRM(divPassiveAtFI)}/mo) is roughly equal to your 4% withdrawal income (${fmtRM(wr4pctIncome)}/mo). Either strategy gives similar results. Passive-only keeps your principal intact; 4% withdrawal draws it down gradually.`;
+      } else {
+        const gap = wr4pctIncome - divPassiveAtFI;
+        tipMsg = `💡 Your passive income (${fmtRM(divPassiveAtFI)}/mo) falls short of your 4% withdrawal income (${fmtRM(wr4pctIncome)}/mo) by ${fmtRM(gap)}/mo. The 4% rule tops up the gap by gradually selling assets. Building more passive income sources can reduce this reliance over time.`;
+      }
+      passiveTipEl.innerHTML = tipMsg;
+    }
     const divPassiveEl = document.getElementById('mile-fi-divpassive');
     if (divPassiveEl) divPassiveEl.textContent = fmtRM(divPassiveAtFI) + '/mo';
+    const divPassiveDetailEl = document.getElementById('mile-fi-divpassive-detail');
+    if (divPassiveDetailEl) divPassiveDetailEl.textContent = fmtRM(divPassiveAtFI) + '/mo';
+    // Portfolio at 90 — passive-only: principal untouched, grows at adjRate minus yield drawn
+    const fiPortTotal = fiRow.total;
+    const yieldRateFI = fiPortTotal > 0 ? (divPassiveAtFI * 12) / fiPortTotal : 0;
+    const growthRateFI = Math.max(0, adjRate - yieldRateFI);
+    const yearsTo90 = Math.max(0, 90 - fiMileAge);
+    const port90passive = fiPortTotal * Math.pow(1 + growthRateFI, yearsTo90);
+    const div90DetailEl = document.getElementById('mile-fi-div90-detail');
+    if (div90DetailEl) div90DetailEl.textContent = port90passive > 0 ? fmtRM(port90passive) : '–';
     const divEpfEl = document.getElementById('mile-fi-div-epf');
     if (divEpfEl) divEpfEl.textContent = fmtRM(epfDivAtFI) + '/mo';
     const divNonEpfEl = document.getElementById('mile-fi-div-nonepf');
@@ -1801,6 +1862,9 @@ function recalc() {
     const yieldRate = port55 > 0 ? annualDividend / port55 : 0;
     const growthRate = Math.max(0, adjRate - yieldRate);
     const port90div = port55 * Math.pow(1 + growthRate, 35);
+    // EPF/Non-EPF passive split at 55
+    const epfYield55 = epfVal > 0 ? (epfVal * 0.06) / 12 : 0;
+    const nonEpfPassive55 = Math.max(0, monthlyDividend - epfYield55);
 
     epfSubEl.textContent = `Dividend + passive: ${fmtRM(monthlyDividend)}/mo`;
     epfSubEl.style.fontSize = '10px';
@@ -1817,6 +1881,11 @@ function recalc() {
     const div90El = document.getElementById('mile-epf-port90-div');
     div90El.textContent = fmtRM(port90div);
     div90El.style.color = '';
+
+    const epfDiv55El = document.getElementById('mile-epf-div-epf');
+    if (epfDiv55El) epfDiv55El.textContent = fmtRM(epfYield55) + '/mo';
+    const nonEpfDiv55El = document.getElementById('mile-epf-div-nonepf');
+    if (nonEpfDiv55El) nonEpfDiv55El.textContent = fmtRM(nonEpfPassive55) + '/mo';
   }
 
   if (age55Row && state.age < 55) {
